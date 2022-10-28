@@ -1,0 +1,31 @@
+env: qa
+pod_env: EASY-12138
+server:
+    port: 10001
+spring:
+    application:
+        name: easy-gray-provider
+    cloud:
+
+        nacos:
+            # nacos 服务注册
+            discovery:
+                register-enabled: true
+                server-addr: nacos.easy.cn:8848
+                namespace: 8b496572-c9ca-4361-9fe2-e0444d0a0b3f
+                metadata:
+                    pod_env: ${pod_env}
+
+            # nacos 配置
+            config:
+                server-addr: nacos.easy.cn:8848
+                namespace: 8b496572-c9ca-4361-9fe2-e0444d0a0b3f
+                extension-configs:
+                    # 公共配置
+                    - data-id: common.yaml
+                      refresh: true
+                      group: DEFAULT_GROUP
+
+    main:
+        allow-bean-definition-overriding: true
+
