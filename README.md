@@ -66,8 +66,8 @@ rocket-mq:
 ```xml
 <repositories>
     <repository>
-        <id>rdc-releases</id>
-        <url>https://repo.rdc.aliyun.com/repository/139501-release-uIebvo/</url>
+        <id>rdc-snapshots</id>
+        <url>https://repo.rdc.aliyun.com/repository/139501-snapshot-yAmm21/</url>
     </repository>
 </repositories>
 ```
