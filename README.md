@@ -62,16 +62,48 @@ rocket-mq:
 
 ## 2.2 项目配置更改
 
-修改 `easy-gray-consumer`、`easy-gray-provider-one`、`easy-gray-provider-two` 三个项目中的`bootstrap.yml` 配置文件；
-namespace 改为2.1 中创建的`命名空间的id`;
+本服务jar包目前仓库地址配置如下：
+```xml
+<repositories>
+    <repository>
+        <id>rdc-releases</id>
+        <url>https://repo.rdc.aliyun.com/repository/139501-release-uIebvo/</url>
+    </repository>
+</repositories>
+```
 
-## 2.3 运行
+
+spring-cloud-gateway api网关中引入如下 jar:
+
+```xml
+<dependency>
+    <groupId>com.easy</groupId>
+    <artifactId>easy-gray-gateway</artifactId>
+    <version>0.0.3-SNAPSHOT</version>
+    
+</dependency>
+```
+参见演示项目`easy-gray-gateway-api`
+
+spring-boot-web 类服务中引入如下jar:
+```xml
+<dependency>
+    <groupId>com.easy</groupId>
+    <artifactId>easy-gray-core</artifactId>
+    <version>0.0.19-SNAPSHOT</version>
+</dependency>
+```
+
+参见演示项目： `easy-gray-consumer`、`easy-gray-provider-one`、`easy-gray-provider-two` ;
+
+
+## 2.3 示例项目运行
 同时启动`easy-gray-consumer`、`easy-gray-provider-one`、`easy-gray-provider-two`项目；
 
-不带环境变量访问：
+携带环境变量访问：
 ```shell
 curl --request GET \
-  --url http://localhost:20001/eat/apple \
+  --url http://localhost:10080/eat/apple \
   --header 'content-type: multipart/form-data'
 
 # 结果
@@ -80,10 +112,10 @@ provider:  我吃了 苹果 on 10001
 provider:  我吃了 苹果 on 10001
 ```
 
-携带环境变量访问：
+不携带环境变量访问：
 ```shell
 curl --request GET \
-  --url http://localhost:20001/eat/apple \
+  --url http://localhost:10080/eat/apple \
   --header 'content-type: multipart/form-data' \
   --header 'pod_env: EASY-12138'
   
@@ -131,13 +163,15 @@ feat: 初始化项目
 
 ## 5.2 计划上线：
 
+- 0.0.2版计划功能
+
 | 功能                      | 进度 |
 |-------------------------|--|
-| spring-cloud-gateway 集成 | 进行中 🚀|
-| spring-mvc 集成           | 进行中 🚀|
-| 管理后台-表结构设计                | 规划中 📚|
-| 管理后台-api                | 规划中 📚|
-| 管理后台-git版本获取            | 规划中 📚|
+| spring-cloud-gateway 集成 | 已完成✅|
+| spring-mvc 集成           | 已完成✅|
+| 管理后台-表结构设计                | 进行中🚀|
+| 管理后台-api                | 进行中🚀|
+| 管理后台-git版本获取            | 进行中🚀|
 | 管理后台-服务管理ssh            | 规划中 📚|
 
 
