@@ -1,4 +1,4 @@
-package com.easy.loadbalancer;
+package com.easy.core.loadbalancer;
 
 
 import java.util.HashMap;

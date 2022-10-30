@@ -2,31 +2,25 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
+
     <parent>
         <groupId>com.easy</groupId>
         <artifactId>easy-gray</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
-    <groupId>com.husky</groupId>
-    <artifactId>easy-gray-provider-one</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>easy-gray-provider-one</name>
-    <description>easy-gray-provider-one</description>
-    <properties>
 
-    </properties>
+    <artifactId>easy-gray-gateway-api</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>easy-gray-gateway-api</name>
+    <description>easy-gray-gateway-api</description>
+
     <dependencies>
 
         <dependency>
             <groupId>com.easy</groupId>
-            <artifactId>easy-gray-core</artifactId>
-            <version>${easy-gray-core.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.husky</groupId>
-            <artifactId>easy-gray-intf</artifactId>
-            <version>${easy-gray-intf.version}</version>
+            <artifactId>easy-gray-gateway</artifactId>
+            <version>${easy-gray-gateway.version}</version>
         </dependency>
 
     </dependencies>

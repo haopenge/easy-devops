@@ -1,8 +1,7 @@
-package com.easy.env;
+package com.easy.core.loadbalancer;
 
-import com.easy.common.Constants;
-import com.easy.loadbalancer.EnvHolder;
-import com.easy.util.IpUtils;
+import com.easy.core.domain.Constants;
+import com.easy.core.util.IpUtils;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import lombok.extern.slf4j.Slf4j;

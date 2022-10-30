@@ -1,4 +1,4 @@
-package com.easy.common;
+package com.easy.core.domain;
 
 
 /**

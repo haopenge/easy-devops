@@ -3,10 +3,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.3</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <groupId>com.easy</groupId>
+        <artifactId>easy-gray</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
     <groupId>com.husky</groupId>
     <artifactId>easy-gray-provider-two</artifactId>
@@ -14,63 +13,22 @@
     <name>easy-gray-provider-two</name>
     <description>easy-gray-provider-two</description>
     <properties>
-        <java.version>1.8</java.version>
-        <lombok.version>1.18.20</lombok.version>
-        <yiyi-mq.version>0.0.1-SNAPSHOT</yiyi-mq.version>
-        <spring-cloud-version>2.1.0.RELEASE</spring-cloud-version>
+
     </properties>
 
     <dependencies>
 
-        <!-- =========================== spring start =========================== -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <version>2.6.3</version>
+            <groupId>com.easy</groupId>
+            <artifactId>easy-gray-core</artifactId>
+            <version>${easy-gray-core.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
-            <version>2021.0.1.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-            <version>2021.0.1.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-bootstrap</artifactId>
-            <version>3.1.4</version>
-        </dependency>
-
-        <!-- =========================== spring end =========================== -->
-
-
-
-        <!-- =========================== other start =========================== -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-
-
-        <!-- =========================== other end =========================== -->
-
-
-        <!-- =========================== my start =========================== -->
 
         <dependency>
             <groupId>com.husky</groupId>
             <artifactId>easy-gray-intf</artifactId>
             <version>0.0.2-SNAPSHOT</version>
         </dependency>
-
-        <!-- =========================== my end =========================== -->
-
 
     </dependencies>
 

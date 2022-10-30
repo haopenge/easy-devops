@@ -1,4 +1,4 @@
-package com.easy.util;
+package com.easy.core.util;
 
 public class IPV4Util {
 

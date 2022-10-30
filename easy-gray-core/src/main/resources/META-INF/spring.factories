@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.easy.loadbalancer.GrayLoadBalanceAutoConfiguration
+com.easy.core.loadbalancer.GrayLoadBalanceAutoConfiguration

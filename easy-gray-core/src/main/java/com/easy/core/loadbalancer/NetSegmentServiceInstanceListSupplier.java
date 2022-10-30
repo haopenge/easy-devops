@@ -1,8 +1,8 @@
-package com.easy.loadbalancer;
+package com.easy.core.loadbalancer;
 
 import com.alibaba.cloud.commons.lang.StringUtils;
-import com.easy.common.Constants;
-import com.easy.util.IPV4Util;
+import com.easy.core.domain.Constants;
+import com.easy.core.util.IPV4Util;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -62,6 +62,7 @@ public class NetSegmentServiceInstanceListSupplier extends DelegatingServiceInst
 
         // 灰度环境标识
         String podEnv = EnvHolder.getEnv(Constants.POD_ENV);
+        EnvHolder.clear();
         if(Objects.equals(grayEnable,Boolean.FALSE)
                 ||CollectionUtils.isEmpty(envList)
                 || !envList.contains(env)

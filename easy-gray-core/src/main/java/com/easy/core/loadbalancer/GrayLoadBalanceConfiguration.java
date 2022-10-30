@@ -1,4 +1,4 @@
-package com.easy.loadbalancer;
+package com.easy.core.loadbalancer;
 
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.loadbalancer.core.ReactorLoadBalancer;

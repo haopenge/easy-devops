@@ -1,7 +1,9 @@
-package com.easy.util;
+package com.easy.core.util;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -55,6 +57,32 @@ public class IpUtils {
         return ipAddress;
     }
 
+    public static String getRealIp(ServerHttpRequest r) {
+        HttpHeaders headers = r.getHeaders();
+        String ip = headers.getFirst("x-forwarded-for");
+        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+            ip = headers.getFirst("Proxy-Client-IP");
+        }
+
+        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+            ip = headers.getFirst("WL-Proxy-Client-IP");
+        }
+
+        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+            ip = r.getRemoteAddress().toString();
+        }
+
+        if ("127.0.0.1".equals(ip) || ip.contains("0:0:0:0:0:0:0:1")) {
+            ip = getMyIp();
+        }
+
+        if (ip != null && ip.length() > 15 && ip.indexOf(",") > 0) {
+            ip = ip.substring(0, ip.indexOf(","));
+        }
+
+        return ip;
+    }
+
 
     public static String getMyIp() {
         try {
@@ -101,5 +129,10 @@ public class IpUtils {
             log.error("getMACAddress()", e);
         }
         return macAddress;
+    }
+
+    public static String getReferer(ServerHttpRequest request) {
+        String referer = request.getHeaders().getFirst("referer");
+        return StringUtils.isBlank(referer) ? "" : referer;
     }
 }

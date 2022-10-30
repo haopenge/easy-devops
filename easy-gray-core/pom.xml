@@ -4,22 +4,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.3</version>
+        <groupId>com.easy</groupId>
+        <artifactId>easy-gray</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
-    <groupId>com.easy</groupId>
+
     <artifactId>easy-gray-core</artifactId>
-    <version>0.0.15-SNAPSHOT</version>
+    <version>${easy-gray-core.version}</version>
     <name>easy-gray-core</name>
     <description>easy-gray-core</description>
-
     <properties>
-        <java.version>1.8</java.version>
-        <spring-cloud.version>3.1.1</spring-cloud.version>
-        <spring-boot.version>2.6.3</spring-boot.version>
-        <spring-cloud-nacos.version>2021.0.1.0</spring-cloud-nacos.version>
-        <commons-lang3.version>3.12.0</commons-lang3.version>
+
     </properties>
 
     <dependencies>
@@ -62,12 +57,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <scope>test</scope>
+            <version>${lombok.version}</version>
         </dependency>
 
         <dependency>
@@ -76,6 +66,11 @@
             <version>${commons-lang3.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
+        </dependency>
 
         <!-- =========================== other end =========================== -->
 
