@@ -1,0 +1,20 @@
+env: dev
+spring:
+  # 允许bean被覆写
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+  # 数据源
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://mysql.easy.cn:3306/easy_admin?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true
+    username: root
+    password: root
+  application:
+    name: easy-gray-api
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
