@@ -25,6 +25,7 @@
 		<easy-gray-core.version>0.0.19-SNAPSHOT</easy-gray-core.version>
 		<easy-gray-intf.version>0.0.2-SNAPSHOT</easy-gray-intf.version>
 		<easy-gray-gateway.version>0.0.3-SNAPSHOT</easy-gray-gateway.version>
+		<org.eclipse.jgit.version>5.2.0.201812061821-r</org.eclipse.jgit.version>
 	</properties>
 
 
