@@ -131,6 +131,8 @@ provider:  我吃了 苹果 on 10001
 
 [**实现原理-eureka-ribbon版**](doc/实现原理-eureka-ribbon版.md)
 
+[**admin管理后台接口文档**](https://console-docs.apipost.cn/preview/a02138bb162545c3/d3b1ac7dc543eacf)
+
 # 4. mr规范
 
 commit格式：`type: ${decription}`
