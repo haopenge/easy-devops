@@ -1,6 +1,9 @@
-package com.easy.mapper;
+package com.easy.api.mapper;
 
-import com.easy.domain.entity.GrayEnvEntity;
+import com.easy.api.domain.entity.GrayEnvEntity;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
 * @author liupenghao
@@ -8,6 +11,7 @@ import com.easy.domain.entity.GrayEnvEntity;
 * @createDate 2022-11-01 18:11:34
 * @Entity com.easy.domain.entity.GrayEnvEntity
 */
+@Repository
 public interface GrayEnvMapper {
 
     int deleteByPrimaryKey(Integer id);
@@ -22,4 +26,5 @@ public interface GrayEnvMapper {
 
     int updateByPrimaryKey(GrayEnvEntity record);
 
+    List<GrayEnvEntity> selectByState(Integer state);
 }

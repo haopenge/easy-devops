@@ -16,19 +16,12 @@
     <properties>
         <mysql-connector-java.version>5.1.47</mysql-connector-java.version>
         <mybatis-spring-boot-starter.version>2.2.2</mybatis-spring-boot-starter.version>
-
     </properties>
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <version>${spring-boot.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql-connector-java.version}</version>
+            <groupId>com.easy</groupId>
+            <artifactId>easy-gray-core</artifactId>
+            <version>${easy-gray-core.version}</version>
         </dependency>
 
         <dependency>
@@ -38,20 +31,23 @@
         </dependency>
 
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>${fastjson.version}</version>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql-connector-java.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>${commons-lang3.version}</version>
+            <groupId>org.eclipse.jgit</groupId>
+            <artifactId>org.eclipse.jgit</artifactId>
+            <version>${org.eclipse.jgit.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.easy</groupId>
+            <artifactId>easy-gray-core</artifactId>
+            <version>0.0.19-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
 
     </dependencies>

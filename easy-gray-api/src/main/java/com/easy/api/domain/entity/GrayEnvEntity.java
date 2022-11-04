@@ -1,4 +1,4 @@
-package com.easy.domain.entity;
+package com.easy.api.domain.entity;
 
 import lombok.Data;
 
@@ -19,7 +19,7 @@ public class GrayEnvEntity {
 
     private String name;
 
-    private LocalDateTime expire;
+    private LocalDateTime expireTime;
 
     private String extObj;
 }

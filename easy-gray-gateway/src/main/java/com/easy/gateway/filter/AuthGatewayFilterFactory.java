@@ -2,7 +2,7 @@ package com.easy.gateway.filter;
 
 import com.alibaba.fastjson.JSON;
 import com.easy.core.domain.ApiResult;
-import com.easy.core.domain.FailureEnum;
+import com.easy.core.enumx.FailureEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;

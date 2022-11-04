@@ -1,7 +1,7 @@
-package com.easy.controller;
+package com.easy.core.controller;
 
-import com.easy.domain.enumx.FailureEnum;
-import com.easy.domain.vo.ApiResult;
+import com.easy.core.domain.ApiResult;
+import com.easy.core.enumx.FailureEnum;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -16,15 +16,15 @@ public class BaseController {
         return ApiResult.ok(t);
     }
 
-    public <T> ApiResult<T> failure(T t){
-        return ApiResult.ok(t);
+    public ApiResult failure(){
+        return ApiResult.error();
     }
 
-    public ApiResult<Void> failure(FailureEnum failureEnum){
+    public ApiResult failure(FailureEnum failureEnum){
         return ApiResult.error(failureEnum);
     }
 
-    public ApiResult<Void> failure(int code,String message){
+    public ApiResult failure(int code,String message){
         return ApiResult.error(code,message);
     }
 }

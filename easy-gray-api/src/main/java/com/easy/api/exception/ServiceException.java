@@ -1,6 +1,6 @@
-package com.easy.exception;
+package com.easy.api.exception;
 
-import com.easy.domain.enumx.FailureEnum;
+import com.easy.core.enumx.FailureEnum;
 import lombok.Getter;
 
 /**

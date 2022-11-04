@@ -1,5 +1,6 @@
 package com.easy.core.domain;
 
+import com.easy.core.enumx.FailureEnum;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class ApiResult<T> {
 
-    private Integer code;
+    private int code;
 
     private T data;
 
@@ -17,10 +18,17 @@ public class ApiResult<T> {
 
     private String message;
 
-    public static ApiResult<Object> ok() {
-        ApiObjectResult result = new ApiObjectResult();
+    public static ApiResult<Void> ok() {
+        ApiVoidResult result = new ApiVoidResult();
         result.setSuccess(true);
         return result;
+    }
+
+    public static <T> ApiResult<T> ok(T t) {
+        ApiObjectResult result = new ApiObjectResult();
+        result.setSuccess(true);
+        result.setData(t);
+        return (ApiResult<T>) result;
     }
 
     public ApiResult<T> data(T data) {
@@ -34,16 +42,29 @@ public class ApiResult<T> {
         return result;
     }
 
-    public static ApiObjectResult error(FailureEnum failureEnum) {
-        ApiObjectResult result = new ApiObjectResult();
+    public static ApiResult<Void> error(FailureEnum failureEnum) {
+        ApiVoidResult result = new ApiVoidResult();
         result.setSuccess(false);
         result.setCode(failureEnum.getCode());
         result.setMessage(failureEnum.getMsg());
         return result;
     }
 
+    public static ApiResult<Void> error(int code,String message) {
+        ApiVoidResult result = new ApiVoidResult();
+        result.setSuccess(false);
+        result.setCode(code);
+        result.setMessage(message);
+        return result;
+    }
+
     @NoArgsConstructor
     public static class ApiObjectResult extends ApiResult<Object> {
+
+    }
+
+    @NoArgsConstructor
+    public static class ApiVoidResult extends ApiResult<Void> {
 
     }
 }
