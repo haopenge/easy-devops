@@ -171,14 +171,26 @@ feat: 初始化项目
 |-------------------------|--|
 | spring-cloud-gateway 集成 | 已完成✅|
 | spring-mvc 集成           | 已完成✅|
-| 管理后台-表结构设计                | 进行中🚀|
-| 管理后台-api                | 进行中🚀|
-| 管理后台-git版本获取            | 进行中🚀|
-| 管理后台-服务管理ssh            | 规划中 📚|
+| 管理后台-表结构设计                | 已完成✅|
+| 管理后台-api                | 已完成✅|
+| 管理后台-git版本获取            | 已完成✅|
+| 管理后台-服务管理ssh            | 进行中🚀|
 
 
+## 5.3 如何参与（一起玩）
 
+可以gitee、github 私信我，成为仓库成员，也可以提mr （要规范哦😄）,我来合并，如下；
+
+# 项目贡献者
+
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/haopenge"><img src="https://avatars.githubusercontent.com/u/37403993?v=4" width="100px;" alt=""/><br /><sub><b>小雨淅淅淅</b></sub></a><br />🤔📓</td>
+    <td align="center"><a href="https://github.com/RuanRoah"><img src="https://avatars.githubusercontent.com/u/12394571?v=4" width="100px;" alt=""/><br /><sub><b>阮阮酱！</b></sub></a><br />🤔📓</td>
+</tr>
+</table>
 
 0.0.1版：
 - 基于nacos配置、注册中心的核心完成；
+
 
