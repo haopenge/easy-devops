@@ -1,4 +1,4 @@
-package com.easy.core.enumx;
+package com.easy.api.domain.enumx;
 
 import lombok.Getter;
 

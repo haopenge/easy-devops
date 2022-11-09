@@ -46,7 +46,7 @@ public class ApiResult<T> {
         ApiVoidResult result = new ApiVoidResult();
         result.setSuccess(false);
         result.setCode(failureEnum.getCode());
-        result.setMessage(failureEnum.getMsg());
+        result.setMessage(failureEnum.getMessage());
         return result;
     }
 
