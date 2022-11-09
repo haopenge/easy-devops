@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: easy-12138
+  name: shiqi-deploy
+  labels:
+    app: shiqi-deploy
+    release: shiqi-deploy
+
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+
+  selector:
+    matchLabels:
+      app: shiqi-deploy
+      release: shiqi-deploy
+  template:
+    metadata:
+      labels:
+        app: shiqi-deploy
+        release: shiqi-deploy
+    spec:
+      imagePullSecrets:
+        - name: ali-docker-auth
+      containers:
+        - name: shiqi-deploy
+          image: registry.cn-hangzhou.aliyuncs.com/ranmo/shiqi-deploy:103
+          command:
+            - sh
+            - -c
+            - (sh /root/deploy/run.sh)
+
+          env:
+            - name: JAVA_OPTS
+              value: -Xms2048m -Xmx2048m
+            - name: evn
+              value: qa
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: APP_NAME
+              value: shiqi-deploy
+
+          envFrom:
+            []
+
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          #          livenessProbe:
+          #            httpGet:
+          #              path: /healthz
+          #              port: http
+          #            initialDelaySeconds: 5
+
+          resources:
+            limits:
+              cpu: 2
+              memory: 2048Mi
+            requests:
+              cpu: 0.1
+              memory: 1024Mi
