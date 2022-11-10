@@ -1,5 +1,5 @@
 env: qa
-pod_env: EASY-12138
+#pod_env: EASY-12138
 user_token_field: token
 server:
     port: 10080

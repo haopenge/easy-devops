@@ -4,53 +4,43 @@ import com.alibaba.fastjson.JSON;
 import com.easy.api.domain.entity.GrayEnvEntity;
 import com.easy.api.domain.enumx.FailureEnum;
 import com.easy.api.domain.enumx.StateEnum;
-import com.easy.api.domain.vo.GithubProjectVo;
-import com.easy.api.domain.vo.GitlabProjectVo;
 import com.easy.api.domain.vo.GrayEnvExtObjVo;
-import com.easy.api.domain.vo.response.GitProjectResponseVo;
 import com.easy.api.domain.vo.response.GrayEnvResponseVo;
 import com.easy.api.exception.ServiceException;
 import com.easy.api.mapper.GrayEnvMapper;
-import com.easy.api.util.EasyHttp;
-import com.easy.api.util.GitUtil;
+import com.easy.api.util.CommandUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.exec.CommandLine;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.transport.CredentialsProvider;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Slf4j
 @Service
 public class GrayService {
 
-    @Value("${git.github.username:}")
-    private String githubUsername;
-
-    @Value("${git.github.password:}")
-    private String githubPassword;
-
-    @Value("${git.github.repository_project_find_url:https://api.github.com/user/repos?sort=updated&direction=desc}")
-    private String githubRepositoryProjectFindUrl;
-
-
-    @Value("${git.gitlab.username:}")
-    private String gitlabUsername;
-
-    @Value("${git.gitlab.password:}")
-    private String gitlabPassword;
-
-    @Value("${git.gitlab.repository_project_find_url:https://git.uino.com/api/v4/projects?membership=true}")
-    private String gitlabRepositoryProjectFindUrl;
+    @Value("${k8s.project_clone_path:/root/easy-gray}")
+    private String k8sProjectClonePath;
 
     @Autowired
     private GrayEnvMapper grayEnvMapper;
+
+    @Autowired
+    private GithubService githubService;
+
+    @Autowired
+    private K8sService k8sService;
 
     public Integer addGrayEnv(String name, LocalDateTime expireTime) {
         GrayEnvEntity saveEntity = new GrayEnvEntity();
@@ -59,54 +49,6 @@ public class GrayService {
 
         grayEnvMapper.insertSelective(saveEntity);
         return saveEntity.getId();
-    }
-
-    public List<GitProjectResponseVo> findRepositoryProject(Integer gitType){
-        List<GitProjectResponseVo> returnVoList = new ArrayList<>();
-
-       if(gitType == 1){
-           Map<String, String> headerMap = new HashMap<>();
-           headerMap.put("Accept","application/vnd.github+json");
-           headerMap.put("Authorization","Bearer " + githubPassword);
-           List<GithubProjectVo> voList = EasyHttp.httpGetArray(githubRepositoryProjectFindUrl, headerMap, GithubProjectVo.class);
-
-           for (GithubProjectVo loopVo : voList) {
-               GitProjectResponseVo gitProjectVo = new GitProjectResponseVo();
-               BeanUtils.copyProperties(loopVo, gitProjectVo);
-               returnVoList.add(gitProjectVo);
-           }
-           return returnVoList;
-       }else{
-           Map<String, String> headerMap = new HashMap<>();
-           headerMap.put("PRIVATE-TOKEN",gitlabPassword);
-           List<GitlabProjectVo> voList = EasyHttp.httpGetArray(gitlabRepositoryProjectFindUrl, headerMap, GitlabProjectVo.class);
-
-           for (GitlabProjectVo loopVo : voList) {
-               GitProjectResponseVo gitProjectVo = new GitProjectResponseVo();
-               BeanUtils.copyProperties(loopVo, gitProjectVo);
-               returnVoList.add(gitProjectVo);
-           }
-           return returnVoList;
-       }
-    }
-
-    public List<String> findProjectBranch(Integer gitType,String projectUrl) {
-        CredentialsProvider credentialsProvider = getCredentialsProvider(gitType);
-        try {
-            return GitUtil.getRemoteBranches(credentialsProvider,projectUrl);
-        } catch (GitAPIException e) {
-            throw new ServiceException(FailureEnum.GIT_FETCH_EXCEPTION);
-        }
-    }
-
-    public CredentialsProvider getCredentialsProvider(Integer gitType){
-        String username = githubUsername;
-        String password = githubPassword;
-        if(gitType == 2){
-            username = gitlabUsername;
-            password = gitlabPassword;
-        }
-        return GitUtil.createPwdCredential(username, password);
     }
 
     /**
@@ -159,5 +101,66 @@ public class GrayService {
             returnList.add(envVo);
         }
         return returnList;
+    }
+
+    public void runProjectInGrayEnv(Integer id, String projectName) {
+        // 获取灰度环境项目
+        GrayEnvEntity grayEnvEntity = grayEnvMapper.selectByPrimaryKey(id);
+        if(Objects.isNull(grayEnvEntity) || !Objects.equals(grayEnvEntity.getState(), StateEnum.NORMAL.getValue())){
+            throw new ServiceException(FailureEnum.GIT_FETCH_EXCEPTION);
+        }
+
+        List<GrayEnvExtObjVo> extObjVoList = null;
+        String extObj = grayEnvEntity.getExtObj();
+        if(StringUtils.isBlank(extObj)){
+            throw new ServiceException(FailureEnum.GRAY_ENV_PROJECT_NOT_EXIST);
+        }
+        extObjVoList = JSON.parseArray(extObj,GrayEnvExtObjVo.class);
+        Optional<GrayEnvExtObjVo> extObjOptional = extObjVoList.stream().filter(loopVo -> Objects.equals(loopVo.getName(), projectName)).findFirst();
+        if(!extObjOptional.isPresent()){
+            throw new ServiceException(FailureEnum.GRAY_ENV_PROJECT_NOT_EXIST);
+        }
+        GrayEnvExtObjVo extObjVo = extObjOptional.get();
+        String cloneUrl = extObjVo.getCloneUrl();
+        String name = extObjVo.getName();
+        String branch = extObjVo.getBranch();
+
+        // TODO 子项目 兼容处理
+        String gitClonePath = k8sProjectClonePath + File.separator + name;
+        // 拉取代码
+        githubService.download(cloneUrl,branch,gitClonePath);
+        // 移动部署脚本到指定目录
+        String deploymentFilePath = this.getClass().getResource("k8s/deployment.yaml").getPath();
+        String startFilePath = this.getClass().getResource("k8s/start.sh").getPath();
+        String executePath = gitClonePath + File.separator + "easy-gray-example/easy-gray-gateway-api";
+
+        copy(deploymentFilePath,executePath + File.separator + "deployment.yaml");
+        copy(startFilePath,executePath + File.separator + "start.sh");
+
+        String podEnv = grayEnvEntity.getName().toLowerCase();
+
+        String version = LocalDateTime.now().format(DateTimeFormatter.ofPattern("MMddHHmmss"));
+        // 构建镜像
+        CommandLine commandLine = CommandLine.parse(String.format("sh %s %s %s %S",podEnv,name,executePath,version));
+        CommandUtil.execCmdWithoutResult(commandLine,600);
+
+        // 发布服务
+        try {
+            k8sService.createDeployment(podEnv,deploymentFilePath);
+        } catch (Exception e) {
+            log.error("k8s deployment error ,",e);
+            throw new ServiceException(FailureEnum.K8S_DEPLOY_deployment);
+        }
+    }
+
+    public void copy(String resourcePath,String targetPath){
+        try(
+                FileInputStream fis = new FileInputStream(resourcePath);
+                FileOutputStream fos = new FileOutputStream(targetPath)
+                ){
+            IOUtils.copy(fis,fos);
+        }catch (Exception e){
+            throw new ServiceException(FailureEnum.FILE_COPY_EXCEPTION);
+        }
     }
 }
