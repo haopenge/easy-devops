@@ -130,22 +130,25 @@ public class GrayService {
         // 拉取代码
         githubService.download(cloneUrl,branch,gitClonePath);
         // 移动部署脚本到指定目录
-        String deploymentFilePath = this.getClass().getResource("k8s/deployment.yaml").getPath();
-        String startFilePath = this.getClass().getResource("k8s/start.sh").getPath();
+        String deploymentFilePath = this.getClass().getClassLoader().getResource("k8s/deployment.yaml").getPath();
+        String startFilePath = this.getClass().getClassLoader().getResource("k8s/start.sh").getPath();
         String executePath = gitClonePath + File.separator + "easy-gray-example/easy-gray-gateway-api";
 
         copy(deploymentFilePath,executePath + File.separator + "deployment.yaml");
-        copy(startFilePath,executePath + File.separator + "start.sh");
+
+        String startShPath = executePath + File.separator + "start.sh";
+        copy(startFilePath,startShPath);
 
         String podEnv = grayEnvEntity.getName().toLowerCase();
 
         String version = LocalDateTime.now().format(DateTimeFormatter.ofPattern("MMddHHmmss"));
         // 构建镜像
-        CommandLine commandLine = CommandLine.parse(String.format("sh %s %s %s %S",podEnv,name,executePath,version));
+        CommandLine commandLine = CommandLine.parse(String.format("sh %s %s %s %s %S",startShPath,podEnv,name,executePath,version));
         CommandUtil.execCmdWithoutResult(commandLine,600);
 
         // 发布服务
         try {
+            k8sService.createNamespace(podEnv);
             k8sService.createDeployment(podEnv,deploymentFilePath);
         } catch (Exception e) {
             log.error("k8s deployment error ,",e);
