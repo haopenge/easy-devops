@@ -8,4 +8,3 @@ ENV PROJECT_ROOT /usr/local/${PROJECT_NAME}
 RUN mkdir -p ${PROJECT_ROOT}
 
 COPY ./target/*.jar ${PROJECT_ROOT}/app.jar
-CMD ["sh","-c","java -jar $PROJECT_ROOT/app.jar"]

@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: namespace
+  namespace: pod_env
   name: application_name
   labels:
     app: application_name

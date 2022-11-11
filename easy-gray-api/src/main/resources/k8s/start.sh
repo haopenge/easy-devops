@@ -9,11 +9,18 @@ cd ${exec_dir} || exit
 echo "<<====================== 1. 项目打包 ===================>>"
 mvn clean package -Dmaven.test.skip=true
 
-echo "<<====================== 2. 构建镜像版本号 ===================>>"
+echo "<<====================== 2.1 构建镜像版本号 ===================>>"
 image_suffix=${application_name}:${pod_env}.${version}
 docker build -t registry.cn-hangzhou.aliyuncs.com/ranmo/${image_suffix} -f Dockerfile .
 
-echo "<<====================== 3. 修改 k8s.yaml中的 命名空间、镜像版本号 ===================>>"
-sed -i "" "s/namespace/${pod_env}/g" deployment.yaml
-sed -i "" "s/application_name/${application_name}/g" deployment.yaml
-sed -i "" "s/image_suffix/${image_suffix}/g" deployment.yaml
+echo "<<====================== 2.2 登录docker仓库===================>>"
+docker login --username=16601114926 --password=270698050qQ registry.cn-hangzhou.aliyuncs.com
+
+echo "<<======================2.3 push docker镜像 ===================>>"
+docker push registry.cn-hangzhou.aliyuncs.com/ranmo/shiqi-deploy:${BUILD_NUMBER}
+
+
+echo "<<====================== 3. 修改 deployment.yaml中的 命名空间、镜像版本号 ===================>>"
+sed -i  "s/pod_env/${pod_env}/g" deployment.yaml
+sed -i  "s/application_name/${application_name}/g" deployment.yaml
+sed -i  "s/image_suffix/${image_suffix}/g" deployment.yaml
