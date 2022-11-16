@@ -6,14 +6,14 @@
 
     <parent>
         <groupId>com.easy</groupId>
-        <artifactId>easy-gray</artifactId>
+        <artifactId>easy-gray-example</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>easy-gray-gateway-api</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <name>easy-gray-gateway-api</name>
-    <description>easy-gray-gateway-api</description>
+    <description>the easy-gray-gateway-api</description>
 
     <dependencies>
 

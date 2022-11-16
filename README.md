@@ -90,7 +90,7 @@ spring-boot-web 类服务中引入如下jar:
 <dependency>
     <groupId>com.easy</groupId>
     <artifactId>easy-gray-core</artifactId>
-    <version>0.0.19-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
 </dependency>
 ```
 
