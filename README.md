@@ -195,8 +195,9 @@ feat: 初始化项目
 
 <table>
   <tr>
-    <td align="center"><a href="https://github.com/haopenge"><img src="https://avatars.githubusercontent.com/u/37403993?v=4" width="100px;" alt=""/><br /><sub><b>小雨淅淅淅</b></sub></a><br />🤔📓</td>
-    <td align="center"><a href="https://github.com/RuanRoah"><img src="https://avatars.githubusercontent.com/u/12394571?v=4" width="100px;" alt=""/><br /><sub><b>阮阮酱！</b></sub></a><br />🤔📓</td>
+    <td align="center"><a href="https://github.com/haopenge"><img src="https://avatars.githubusercontent.com/u/37403993?v=4" width="100px;" alt=""/><br /><sub><b>小雨淅淅淅</b></sub></a><br />🤔🚀</td>
+    <td align="center"><a href="https://github.com/RuanRoah"><img src="https://avatars.githubusercontent.com/u/12394571?v=4" width="100px;" alt=""/><br /><sub><b>阮阮酱！</b></sub></a><br />😄✈️</td>
+    <td align="center"><a href="https://github.com/dislazy"><img src="https://avatars.githubusercontent.com/u/30426054?v=4" width="100px;" alt=""/><br /><sub><b>Jack Song</b></sub></a><br />😁🚗</td>
 </tr>
 </table>
 
