@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Secret
+type: kubernetes.io/dockerconfigjson
+metadata:
+  name: ali-docker-auth
+  namespace: easy-12138
+
+data:
+  .dockerconfigjson: >-
+    eyJhdXRocyI6eyJyZWdpc3RyeS5jbi1oYW5nemhvdS5hbGl5dW5jcy5jb20iOnsidXNlcm5hbWUiOiIxNjYwMTExNDkyNiIsInBhc3N3b3JkIjoiMjcwNjk4MDUwcVEiLCJlbWFpbCI6ImFuaHVza3lAMTYzLmNvbSIsImF1dGgiOiJNVFkyTURFeE1UUTVNalk2TWpjd05qazRNRFV3Y1ZFPSJ9fX0=

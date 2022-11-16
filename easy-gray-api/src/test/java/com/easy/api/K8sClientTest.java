@@ -4,8 +4,12 @@ import io.kubernetes.client.ProtoClient;
 import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.ApiException;
 import io.kubernetes.client.openapi.apis.AppsV1Api;
+import io.kubernetes.client.openapi.apis.CoreV1Api;
+import io.kubernetes.client.openapi.apis.ExtensionsV1beta1Api;
+import io.kubernetes.client.openapi.models.ExtensionsV1beta1Ingress;
 import io.kubernetes.client.openapi.models.V1Deployment;
-import io.kubernetes.client.openapi.models.V1Status;
+import io.kubernetes.client.openapi.models.V1Secret;
+import io.kubernetes.client.openapi.models.V1Service;
 import io.kubernetes.client.proto.Meta;
 import io.kubernetes.client.proto.V1;
 import io.kubernetes.client.util.ClientBuilder;
@@ -17,11 +21,32 @@ import java.io.IOException;
 
 public class K8sClientTest {
 
-    public static void main(String[] args) throws IOException, ApiException {
+    static String namespace = "qa";
+
+    public static void main(String[] args) throws IOException, ApiException
+    {
         // 传入deployment的名字，命名空间，就可以删除deployment以及所有的pod了
-        AppsV1Api api = getCoreV1Api();
-        V1Status v1Status = api.deleteNamespacedDeployment("shiqi-deploy","qa",null,null,null,null,null,null);
-        System.out.println(v1Status.getCode()+"删除完毕");
+        //AppsV1Api api = getCoreV1Api();
+        //V1Status v1Status = api.deleteNamespacedDeployment("shiqi-deploy","qa",null,null,null,null,null,null);
+        //System.out.println(v1Status.getCode()+"删除完毕");
+
+        //createSecrets();
+       // deleteNamespace();
+
+        deleteService("qa","easy-gray-gateway-api");
+        deleteIngress("qa","easy-gray-gateway-api");
+        deleteDeployment("qa","easy-gray-gateway-api");
+
+      //  createDeployment();
+      //  createService();
+      //  createIngress();
+
+    }
+
+    public static void deleteDeployment(String namespace,String name) throws ApiException {
+        // 传入deployment的名字，命名空间，就可以删除deployment以及所有的pod了
+        AppsV1Api appsV1Api = new AppsV1Api(getApiClient());
+        appsV1Api.deleteNamespacedDeployment(name,namespace,Boolean.TRUE.toString(),null,null,null,null,null);
     }
 
     private static void deleteNamespace() throws ApiException, IOException {
@@ -29,14 +54,53 @@ public class K8sClientTest {
         protoClient.delete(V1.Namespace.newBuilder(),"/api/v1/namespaces/"+ "easy-12138");
     }
 
+    public static void deleteService(String namespace,String name) throws ApiException, IOException {
+        CoreV1Api coreV1Api = new CoreV1Api(getApiClient());
+        coreV1Api.deleteNamespacedService(name,namespace,"true",null,null,false,null,null);
+    }
+
+
+    public static void deleteIngress(String namespace,String name) throws ApiException, IOException {
+        ExtensionsV1beta1Api extensionsV1beta1Api = new ExtensionsV1beta1Api(getApiClient());
+
+        extensionsV1beta1Api.deleteNamespacedIngress(name,namespace,"true",null,null,false,null,null);
+    }
+
+    private static void createService() throws IOException, ApiException {
+        CoreV1Api coreV1Api = new CoreV1Api(getApiClient());
+        String filePath = K8sClientTest.class.getResource("/k8s/service.yaml").getPath();
+        V1Service body = (V1Service) Yaml.load(new File(filePath));
+        coreV1Api.createNamespacedService(namespace,body,"true",null,null);
+    }
+
+    private static void createIngress() throws IOException, ApiException {
+        String filePath = K8sClientTest.class.getResource("/k8s/ingress.yaml").getPath();
+        ExtensionsV1beta1Ingress body = (ExtensionsV1beta1Ingress) Yaml.load(new File(filePath));
+
+        ExtensionsV1beta1Api extensionsV1beta1Api = new ExtensionsV1beta1Api(getApiClient());
+
+        extensionsV1beta1Api.createNamespacedIngress(namespace,body,"true",null,null);
+    }
+
+    private static void createSecrets() throws IOException, ApiException {
+        String filePath = K8sClientTest.class.getResource("/k8s/ali-docker-auth.yaml").getPath();
+        V1Secret body = (V1Secret) Yaml.load(new File(filePath));
+
+        CoreV1Api coreV1Api = new CoreV1Api(getApiClient());
+
+
+        coreV1Api.createNamespacedSecret(namespace,body,"true",null,null);
+    }
+
+
     private static void createDeployment() throws IOException {
-        AppsV1Api api = getCoreV1Api();
+        AppsV1Api api = getAppsV1Api();
 
         // 2、根据资源对象文件创建deployment，创建多个副本，并指定自定义调度器
         String filePath = K8sClientTest.class.getResource("/k8s/deployment.yaml").getPath();
         V1Deployment body = (V1Deployment) Yaml.load(new File(filePath));
         try {
-            V1Deployment result = api.createNamespacedDeployment("easy-12138",body,null,null,null);
+            V1Deployment result = api.createNamespacedDeployment(namespace,body,null,null,null);
             System.out.println("success,工作负载创建成功");
         }catch (ApiException e){
             if (e.getCode() == 409) {
@@ -67,19 +131,22 @@ public class K8sClientTest {
      * 获取k8s 操作api
      */
     private static ApiClient getApiClient() {
-        AccessTokenAuthentication authentication = new AccessTokenAuthentication("token");
+        AccessTokenAuthentication authentication = new AccessTokenAuthentication(token);
         return new ClientBuilder()
-                .setBasePath("https://192.168.78.128:6443")
+                .setBasePath("https://k8s.rainxx.top:6443")
                 .setAuthentication(authentication)
                 .setVerifyingSsl(false)
                 .build();
     }
 
-    private static AppsV1Api getCoreV1Api() {
+    private static AppsV1Api getAppsV1Api() {
         return new AppsV1Api(getApiClient());
     }
 
     private static ProtoClient getProtoClient() {
         return new ProtoClient(getApiClient());
     }
+
+
+   static String token = "eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLWd2Z2NjIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiI1ZTI2M2YzZC01ZGU5LTExZWQtYjZjNi0wMDBjMjljYjZlOWYiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZXJuZXRlcy1kYXNoYm9hcmQ6YWRtaW4tdXNlciJ9.putawCLnK4oevkmgsiYzqMcBaFUH5GprLu-MAllIRiH_FuVXWM_pTmo7zLNmBUjFHuGZjsHhWEJDLBS5CV3MmvvxGfXunTpqSLmlSov_k3L5bPHLd285AhrKgR_xbcZITNx2jZgbLZdb-3SDEGWXHSazDFJzO7K5kvFwmeUTQachpp_EreCZlLP8PMINcdIVtKm_BU6rbHUGFjFnwyOdMQSHOTqnP6NSVAKTsfvkbeXBo7G9FP4oRa2vcWpHssk75VTJuIj57MTGTYkPApzwb32bk3mqNYJV0NTGGVuOz3UNFJdoadOPGVeBgrjp-MPIDjec8v7HULyJJtL6gJICTQ";
 }

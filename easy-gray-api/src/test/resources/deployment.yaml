@@ -1,12 +1,12 @@
+# deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: pod_env
-  name: application_name
+  namespace: easy-12138
+  name: easy-gray-gateway-api
   labels:
-    app: application_name
-    release: application_name
-
+    app: easy-gray-gateway-api
+    release: easy-gray-gateway-api
 spec:
   replicas: 1
   strategy:
@@ -17,29 +17,29 @@ spec:
 
   selector:
     matchLabels:
-      app: application_name
-      release: application_name
+      app: easy-gray-gateway-api
+      release: easy-gray-gateway-api
   template:
     metadata:
       labels:
-        app: application_name
-        release: application_name
+        app: easy-gray-gateway-api
+        release: easy-gray-gateway-api
     spec:
       imagePullSecrets:
         - name: ali-docker-auth
       containers:
-        - name: application_name
+        - name: easy-gray-gateway-api
           image: registry.cn-hangzhou.aliyuncs.com/ranmo/image_suffix
           command:
             - sh
             - -c
-            - (sh /root/deploy/run.sh)
+            - (sh /usr/local/easy-gray-gateway-api/run.sh)
 
           env:
             - name: JAVA_OPTS
               value: -Xms1024m -Xmx1024m
-            - name: POD_ENV
-              value: namespace
+            - name: env
+              value: easy-12138
             - name: NODE_NAME
               valueFrom:
                 fieldRef:
@@ -49,7 +49,7 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
             - name: APP_NAME
-              value: application_name
+              value: easy-gray-gateway-api
 
           envFrom:
             []

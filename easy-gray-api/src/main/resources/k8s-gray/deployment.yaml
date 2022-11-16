@@ -2,11 +2,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: qa
-  name: easy-gray-gateway-api
+  namespace: pod_env
+  name: application_name
   labels:
-    app: easy-gray-gateway-api
-    release: easy-gray-gateway-api
+    app: application_name
+    release: application_name
 spec:
   replicas: 1
   strategy:
@@ -17,29 +17,29 @@ spec:
 
   selector:
     matchLabels:
-      app: easy-gray-gateway-api
-      release: easy-gray-gateway-api
+      app: application_name
+      release: application_name
   template:
     metadata:
       labels:
-        app: easy-gray-gateway-api
-        release: easy-gray-gateway-api
+        app: application_name
+        release: application_name
     spec:
       imagePullSecrets:
         - name: ali-docker-auth
       containers:
-        - name: easy-gray-gateway-api
-          image: registry.cn-hangzhou.aliyuncs.com/ranmo/easy-gray-gateway-api:7
+        - name: application_name
+          image: registry.cn-hangzhou.aliyuncs.com/ranmo/image_suffix
           command:
             - sh
             - -c
-            - (sh /usr/local/easy-gray-gateway-api/run.sh)
+            - (sh /usr/local/application_name/run.sh)
 
           env:
             - name: JAVA_OPTS
-              value: -Xms2048m -Xmx2048m
+              value: -Xms1024m -Xmx1024m
             - name: env
-              value: qa
+              value: pod_env
             - name: NODE_NAME
               valueFrom:
                 fieldRef:
@@ -49,7 +49,7 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
             - name: APP_NAME
-              value: easy-gray-gateway-api
+              value: application_name
 
           envFrom:
             []
@@ -67,8 +67,8 @@ spec:
 
           resources:
             limits:
-              cpu: 2
-              memory: 2048Mi
+              cpu: 1
+              memory: 1024Mi
             requests:
               cpu: 0.1
               memory: 1024Mi

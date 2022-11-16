@@ -3,6 +3,8 @@ package com.easy.api.config;
 import io.kubernetes.client.ProtoClient;
 import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.apis.AppsV1Api;
+import io.kubernetes.client.openapi.apis.CoreV1Api;
+import io.kubernetes.client.openapi.apis.ExtensionsV1beta1Api;
 import io.kubernetes.client.util.ClientBuilder;
 import io.kubernetes.client.util.credentials.AccessTokenAuthentication;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,5 +40,14 @@ public class K8sClientConfiguration {
         return new ProtoClient(apiClient);
     }
 
+    @Bean
+    public CoreV1Api coreV1Api(ApiClient apiClient) {
+        return new CoreV1Api(apiClient);
+    }
+
+    @Bean
+    public ExtensionsV1beta1Api extensionsV1beta1Api(ApiClient apiClient) {
+        return new ExtensionsV1beta1Api(apiClient);
+    }
 
 }

@@ -45,26 +45,28 @@ public class GrayController extends BaseController {
     public ApiResult<Void> addProjectToGrayEnv(@PathVariable("id") Integer id,
                                                @RequestBody AddProjectToGrayEnvRequestVo addProjectToGrayEnv
                                          ){
-        String projectName = addProjectToGrayEnv.getProjectName();
-        String projectBranch = addProjectToGrayEnv.getProjectBranch();
-        String projectCloneUrl = addProjectToGrayEnv.getProjectCloneUrl();
+        String name = addProjectToGrayEnv.getName();
+        String branch = addProjectToGrayEnv.getBranch();
+        String cloneUrl = addProjectToGrayEnv.getCloneUrl();
+        String packagePath = addProjectToGrayEnv.getPackagePath();
+        String gitName = addProjectToGrayEnv.getGitName();
 
-        if(StringUtils.isAnyBlank(projectName,projectBranch,projectCloneUrl) || Objects.isNull(id) || id <= 0){
+        if(StringUtils.isAnyBlank(name,branch,cloneUrl) || Objects.isNull(id) || id <= 0){
             return failure(FailureEnum.PARAM_ERROR);
         }
-        grayService.addProjectToGrayEnv(id,projectName,projectBranch,projectCloneUrl);
+        grayService.addProjectToGrayEnv(id,name,branch,cloneUrl,packagePath,gitName);
         return success();
     }
 
 
     @PostMapping("/runProjectInGrayEnv/{id}")
     public ApiResult<Void> runProjectInGrayEnv(@PathVariable("id") Integer id,
-                                               @RequestParam("projectName") String projectName){
-        if(id <= 0 || StringUtils.isBlank(projectName)){
+                                               @RequestParam("name") String name){
+        if(id <= 0 || StringUtils.isBlank(name)){
             throw new ServiceException(FailureEnum.PARAM_ERROR);
         }
 
-        grayService.runProjectInGrayEnv(id,projectName);
+        grayService.runProjectInGrayEnv(id,name);
         return success();
     }
 

@@ -54,26 +54,28 @@ public class GrayService {
     /**
      * 添加项目到灰度环境
      */
-    public void addProjectToGrayEnv(Integer id, String projectName, String projectBranch,String projectCloneUrl) {
+    public void addProjectToGrayEnv(Integer id, String name, String branch,String cloneUrl,String packagePath,String gitName) {
         GrayEnvEntity grayEnvEntity = grayEnvMapper.selectByPrimaryKey(id);
         if(Objects.isNull(grayEnvEntity) || !Objects.equals(grayEnvEntity.getState(), StateEnum.NORMAL.getValue())){
-            throw new ServiceException(FailureEnum.GIT_FETCH_EXCEPTION);
+            throw new ServiceException(FailureEnum.GRAY_ENV_NOT_EXIST);
         }
 
         List<GrayEnvExtObjVo> extObjVoList = new ArrayList<>();
         String extObj = grayEnvEntity.getExtObj();
         if(StringUtils.isNotBlank(extObj)){
             extObjVoList = JSON.parseArray(extObj,GrayEnvExtObjVo.class);
-            Optional<GrayEnvExtObjVo> voOptional = extObjVoList.stream().filter(loopVo -> Objects.equals(loopVo.getName(), projectName)).findFirst();
+            Optional<GrayEnvExtObjVo> voOptional = extObjVoList.stream().filter(loopVo -> Objects.equals(loopVo.getName(), name)).findFirst();
             voOptional.ifPresent(extObjVoList::remove);
         }
 
         // 更新 此项目信息
         // 封装 灰度扩展项目Vo
         GrayEnvExtObjVo extObjVo = new GrayEnvExtObjVo();
-        extObjVo.setName(projectName);
-        extObjVo.setBranch(projectBranch);
-        extObjVo.setCloneUrl(projectCloneUrl);
+        extObjVo.setName(name);
+        extObjVo.setBranch(branch);
+        extObjVo.setGitName(gitName);
+        extObjVo.setCloneUrl(cloneUrl);
+        extObjVo.setPackagePath(packagePath);
         extObjVoList.add(extObjVo);
 
         GrayEnvEntity updateEntity = new GrayEnvEntity();
@@ -123,37 +125,51 @@ public class GrayService {
         GrayEnvExtObjVo extObjVo = extObjOptional.get();
         String cloneUrl = extObjVo.getCloneUrl();
         String name = extObjVo.getName();
+        String gitName = extObjVo.getGitName();
         String branch = extObjVo.getBranch();
+        String packagePath = extObjVo.getPackagePath();
 
-        // TODO 子项目 兼容处理
-        String gitClonePath = k8sProjectClonePath + File.separator + name;
-        // 拉取代码
-        githubService.download(cloneUrl,branch,gitClonePath);
-        // 移动部署脚本到指定目录
-        String deploymentFilePath = this.getClass().getClassLoader().getResource("k8s/deployment.yaml").getPath();
-        String startFilePath = this.getClass().getClassLoader().getResource("k8s/start.sh").getPath();
-        String executePath = gitClonePath + File.separator + "easy-gray-example/easy-gray-gateway-api";
+        // 子项目 兼容处理
+        String gitClonePath = k8sProjectClonePath + File.separator + gitName;
+        String executePath = gitClonePath + (StringUtils.isBlank(packagePath) ? "" : File.separator + packagePath);
 
-        copy(deploymentFilePath,executePath + File.separator + "deployment.yaml");
+        // TODO 拉取代码
+        //githubService.download(cloneUrl,branch,gitClonePath);
 
-        String startShPath = executePath + File.separator + "start.sh";
-        copy(startFilePath,startShPath);
+        // 文件复制 处理
+        copyFileToExecutePath(executePath,"deployment.yaml");
+        copyFileToExecutePath(executePath,"ali-docker-auth.yaml");
+        copyFileToExecutePath(executePath, "start.sh");
 
         String podEnv = grayEnvEntity.getName().toLowerCase();
-
         String version = LocalDateTime.now().format(DateTimeFormatter.ofPattern("MMddHHmmss"));
+
         // 构建镜像
-        CommandLine commandLine = CommandLine.parse(String.format("sh %s %s %s %s %S",startShPath,podEnv,name,executePath,version));
+        String startFilePath = executePath + File.separator + "start.sh";
+        String commandLineStr = String.format("sh %s %s %s %s %s",startFilePath,podEnv,name,executePath,version);
+        log.info("runProjectInGrayEnv cmd : {}",commandLineStr);
+        CommandLine commandLine = CommandLine.parse(commandLineStr);
+
         CommandUtil.execCmdWithoutResult(commandLine,600);
 
         // 发布服务
         try {
-            k8sService.createNamespace(podEnv);
+            k8sService.createNamespace(podEnv.toLowerCase());
+
+            String dockerAuthFilePath = executePath + File.separator + "ali-docker-auth.yaml";
+            k8sService.createSecrets(podEnv,dockerAuthFilePath);
+
+            String deploymentFilePath = executePath + File.separator + "deployment.yaml";
             k8sService.createDeployment(podEnv,deploymentFilePath);
         } catch (Exception e) {
             log.error("k8s deployment error ,",e);
             throw new ServiceException(FailureEnum.K8S_DEPLOY_deployment);
         }
+    }
+
+    private void copyFileToExecutePath(String executePath,String fileName) {
+        String filePath = Objects.requireNonNull(this.getClass().getClassLoader().getResource("k8s-gray/" + fileName)).getPath();
+        copy(filePath, executePath + File.separator + fileName);
     }
 
     public void copy(String resourcePath,String targetPath){

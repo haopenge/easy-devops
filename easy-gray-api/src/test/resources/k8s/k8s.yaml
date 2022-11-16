@@ -1,3 +1,4 @@
+---
 # deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -29,7 +30,7 @@ spec:
         - name: ali-docker-auth
       containers:
         - name: easy-gray-gateway-api
-          image: registry.cn-hangzhou.aliyuncs.com/ranmo/easy-gray-gateway-api:7
+          image: registry.cn-hangzhou.aliyuncs.com/ranmo/easy-gray-gateway-api:2
           command:
             - sh
             - -c
@@ -37,8 +38,8 @@ spec:
 
           env:
             - name: JAVA_OPTS
-              value: -Xms2048m -Xmx2048m
-            - name: env
+              value: -Xms1024m -Xmx1024m
+            - name: evn
               value: qa
             - name: NODE_NAME
               valueFrom:
@@ -67,8 +68,52 @@ spec:
 
           resources:
             limits:
-              cpu: 2
-              memory: 2048Mi
+              cpu: 1
+              memory: 1024Mi
             requests:
               cpu: 0.1
               memory: 1024Mi
+
+---
+# Source: service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: qa
+  name: easy-gray-gateway-api
+  labels:
+    app: easy-gray-gateway-api
+    release: easy-gray-gateway-api
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 8080
+      protocol: TCP
+      name: http
+  selector:
+    app: easy-gray-gateway-api
+    release: easy-gray-gateway-api
+
+
+---
+# Source:ingress.yaml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  namespace: qa
+  name: easy-gray-gateway-api
+  labels:
+    app: easy-gray-gateway-api
+    release: easy-gray-gateway-api
+
+spec:
+  rules:
+    - host: easy-gray-gateway-api.rainxx.top
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: easy-gray-gateway-api
+              servicePort: http
+
