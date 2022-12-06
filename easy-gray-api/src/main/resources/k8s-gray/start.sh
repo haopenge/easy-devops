@@ -28,4 +28,4 @@ echo "<<====================== 2.2 登录docker仓库===================>>"
 docker login --username=16601114926 --password=270698050qQ registry.cn-hangzhou.aliyuncs.com
 
 echo "<<======================2.3 push docker镜像 ===================>>"
-docker push registry.cn-hangzhou.aliyuncs.com/ranmo/image_suffix
+docker push registry.cn-hangzhou.aliyuncs.com/ranmo/${image_suffix}

@@ -30,6 +30,6 @@ public class GitTest {
 
     }
     public static void main(String[] args) {
-        download("https://github.com/haopenge/easy-gray.git","main","/Users/liupenghao/Desktop/test/easy-gray/easy-gray");
+        download("https://github.com/haopenge/easy-gray.git","feature/k8s-client-deploy","/Users/liupenghao/Desktop/test/easy-gray/easy-gray");
     }
 }

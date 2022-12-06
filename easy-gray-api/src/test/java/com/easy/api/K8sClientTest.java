@@ -33,9 +33,9 @@ public class K8sClientTest {
         //createSecrets();
        // deleteNamespace();
 
-        deleteService("qa","easy-gray-gateway-api");
-        deleteIngress("qa","easy-gray-gateway-api");
-        deleteDeployment("qa","easy-gray-gateway-api");
+        deleteService("easy-12138","easy-gray-gateway-api");
+        deleteIngress("easy-12138","easy-gray-gateway-api");
+        deleteDeployment("easy-12138","easy-gray-gateway-api");
 
       //  createDeployment();
       //  createService();

@@ -134,7 +134,7 @@ public class GrayService {
         String executePath = gitClonePath + (StringUtils.isBlank(packagePath) ? "" : File.separator + packagePath);
 
         // TODO 拉取代码
-        //githubService.download(cloneUrl,branch,gitClonePath);
+       // githubService.download(cloneUrl,branch,gitClonePath);
 
         // 文件复制 处理
         copyFileToExecutePath(executePath,"deployment.yaml");
