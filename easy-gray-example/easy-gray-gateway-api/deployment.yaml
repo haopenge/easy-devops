@@ -26,7 +26,7 @@ spec:
         release: easy-gray-gateway-api
     spec:
       imagePullSecrets:
-        - name: ali-docker-auth
+        - name: ali-docker-repository
       containers:
         - name: easy-gray-gateway-api
           image: registry.cn-hangzhou.aliyuncs.com/ranmo/easy-gray-gateway-api:6
