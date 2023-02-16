@@ -1,3 +1,8 @@
+
+cd /Users/liupenghao/Desktop/test/easy-gray/easy-gray-example/easy-gray-gateway-api
+
+mvn clean package  -Dmaven.test.skip=true
+
 echo "<<====================== 1.1 构建docker镜像 ===================>>"
 docker build -t registry.cn-hangzhou.aliyuncs.com/ranmo/easy-gray-gateway-api:6 -f Dockerfile .
 
