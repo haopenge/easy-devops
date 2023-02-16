@@ -30,7 +30,7 @@ spec:
         - name: ali-docker-auth
       containers:
         - name: easy-gray-gateway-api
-          image: registry.cn-hangzhou.aliyuncs.com/ranmo/easy-gray-gateway-api:build_number
+          image: registry.cn-hangzhou.aliyuncs.com/ranmo/easy-gray-gateway-api:6
           command:
             - sh
             - -c
@@ -39,7 +39,7 @@ spec:
           env:
             - name: JAVA_OPTS
               value: -Xms1024m -Xmx1024m
-            - name: evn
+            - name: env
               value: qa
             - name: NODE_NAME
               valueFrom:
@@ -68,10 +68,10 @@ spec:
 
           resources:
             limits:
-              cpu: 1
+              cpu: 100m
               memory: 1024Mi
             requests:
-              cpu: 0.1
+              cpu: 100m
               memory: 1024Mi
 
 ---
@@ -94,26 +94,4 @@ spec:
   selector:
     app: easy-gray-gateway-api
     release: easy-gray-gateway-api
-
-
----
-# Source:ingress.yaml
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  namespace: qa
-  name: easy-gray-gateway-api
-  labels:
-    app: easy-gray-gateway-api
-    release: easy-gray-gateway-api
-
-spec:
-  rules:
-    - host: easy-gray-gateway-api.rainxx.top
-      http:
-        paths:
-          - path: /
-            backend:
-              serviceName: easy-gray-gateway-api
-              servicePort: http
 
