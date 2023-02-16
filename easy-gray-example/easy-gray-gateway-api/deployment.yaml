@@ -29,7 +29,7 @@ spec:
         - name: ali-docker-repository
       containers:
         - name: easy-gray-gateway-api
-          image: registry.cn-hangzhou.aliyuncs.com/ranmo/easy-gray-gateway-api:6
+          image: registry.cn-hangzhou.aliyuncs.com/ranmo/easy-gray-gateway-api:7
           command:
             - sh
             - -c
