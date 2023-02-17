@@ -13,10 +13,12 @@ import io.kubernetes.client.openapi.models.V1Service;
 import io.kubernetes.client.proto.Meta;
 import io.kubernetes.client.proto.V1;
 import io.kubernetes.client.util.ClientBuilder;
+import io.kubernetes.client.util.KubeConfig;
 import io.kubernetes.client.util.Yaml;
-import io.kubernetes.client.util.credentials.AccessTokenAuthentication;
+import io.kubernetes.client.util.credentials.KubeconfigAuthentication;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 
 public class K8sClientTest {
@@ -25,17 +27,19 @@ public class K8sClientTest {
 
     public static void main(String[] args) throws IOException, ApiException
     {
+
+        createNamespace("qa");
         // 传入deployment的名字，命名空间，就可以删除deployment以及所有的pod了
         //AppsV1Api api = getCoreV1Api();
         //V1Status v1Status = api.deleteNamespacedDeployment("shiqi-deploy","qa",null,null,null,null,null,null);
         //System.out.println(v1Status.getCode()+"删除完毕");
 
         //createSecrets();
-       // deleteNamespace();
+        deleteNamespace();
 
-        deleteService("easy-12138","easy-gray-gateway-api");
-        deleteIngress("easy-12138","easy-gray-gateway-api");
-        deleteDeployment("easy-12138","easy-gray-gateway-api");
+        //deleteService("easy-12138","easy-gray-gateway-api");
+        //deleteIngress("easy-12138","easy-gray-gateway-api");
+        //deleteDeployment("easy-12138","easy-gray-gateway-api");
 
       //  createDeployment();
       //  createService();
@@ -49,7 +53,7 @@ public class K8sClientTest {
         appsV1Api.deleteNamespacedDeployment(name,namespace,Boolean.TRUE.toString(),null,null,null,null,null);
     }
 
-    private static void deleteNamespace() throws ApiException, IOException {
+    public static void deleteNamespace() throws ApiException, IOException {
         ProtoClient protoClient = getProtoClient();
         protoClient.delete(V1.Namespace.newBuilder(),"/api/v1/namespaces/"+ "easy-12138");
     }
@@ -66,9 +70,10 @@ public class K8sClientTest {
         extensionsV1beta1Api.deleteNamespacedIngress(name,namespace,"true",null,null,false,null,null);
     }
 
-    private static void createService() throws IOException, ApiException {
+    public static void createService() throws IOException, ApiException {
         CoreV1Api coreV1Api = new CoreV1Api(getApiClient());
-        String filePath = K8sClientTest.class.getResource("/k8s/service.yaml").getPath();
+        String filePath = "/Volumes/DATA/Users/liupenghao/work/idea/mime/easy-gray/easy-gray-example/easy-gray-gateway-api" + "/service.yaml";
+
         V1Service body = (V1Service) Yaml.load(new File(filePath));
         coreV1Api.createNamespacedService(namespace,body,"true",null,null);
     }
@@ -93,11 +98,11 @@ public class K8sClientTest {
     }
 
 
-    private static void createDeployment() throws IOException {
+    public static void createDeployment() throws IOException {
         AppsV1Api api = getAppsV1Api();
 
         // 2、根据资源对象文件创建deployment，创建多个副本，并指定自定义调度器
-        String filePath = K8sClientTest.class.getResource("/k8s/deployment.yaml").getPath();
+        String filePath = "/Volumes/DATA/Users/liupenghao/work/idea/mime/easy-gray/easy-gray-example/easy-gray-gateway-api" + "/deployment.yaml";
         V1Deployment body = (V1Deployment) Yaml.load(new File(filePath));
         try {
             V1Deployment result = api.createNamespacedDeployment(namespace,body,null,null,null);
@@ -121,19 +126,27 @@ public class K8sClientTest {
         }
     }
 
-    private static ProtoClient.ObjectOrStatus<V1.Namespace> createNamespace() throws ApiException, IOException {
+    public static ProtoClient.ObjectOrStatus<V1.Namespace> createNamespace(String namespace) throws ApiException, IOException {
         ProtoClient protoClient = getProtoClient();
-        V1.Namespace namespace = V1.Namespace.newBuilder().setMetadata(Meta.ObjectMeta.newBuilder().setName("easy-12138").build()).build();
-        return protoClient.create(namespace, "/api/v1/namespaces", "v1", "Namespace");
+        V1.Namespace namespaceObj = V1.Namespace.newBuilder().setMetadata(Meta.ObjectMeta.newBuilder().setName(namespace).build()).build();
+        return protoClient.create(namespaceObj, "/api/v1/namespaces", "v1", "Namespace");
     }
 
     /**
      * 获取k8s 操作api
      */
     private static ApiClient getApiClient() {
-        AccessTokenAuthentication authentication = new AccessTokenAuthentication(token);
+        KubeconfigAuthentication authentication;
+        String path = K8sClientTest.class.getResource("/kube.yaml").getPath();
+        try (FileReader fr = new FileReader(path);){
+            KubeConfig kubeConfig = KubeConfig.loadKubeConfig(fr);
+            authentication = new KubeconfigAuthentication(kubeConfig);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return new ClientBuilder()
-                .setBasePath("https://k8s.rainxx.top:6443")
+                .setBasePath("https://lb.kubesphere.local:6443")
                 .setAuthentication(authentication)
                 .setVerifyingSsl(false)
                 .build();

@@ -1,15 +1,22 @@
 package com.easy.api.config;
 
+import com.easy.api.exception.ServiceException;
 import io.kubernetes.client.ProtoClient;
 import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.apis.AppsV1Api;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.openapi.apis.ExtensionsV1beta1Api;
 import io.kubernetes.client.util.ClientBuilder;
-import io.kubernetes.client.util.credentials.AccessTokenAuthentication;
+import io.kubernetes.client.util.KubeConfig;
+import io.kubernetes.client.util.credentials.Authentication;
+import io.kubernetes.client.util.credentials.KubeconfigAuthentication;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.io.FileReader;
+
+import static com.easy.api.domain.enumx.FailureEnum.K8S_DEPLOY_DEPLOYMENT;
 
 @Configuration
 public class K8sClientConfiguration {
@@ -17,17 +24,27 @@ public class K8sClientConfiguration {
     @Value("${k8s.base_path:}")
     private String basePath;
 
-    @Value("${k8s.token:}")
-    private String token;
+    @Value("${k8s.kube-config:}")
+    private String kubeConfig;
 
     @Bean
-    public ApiClient getApiClient() {
-        AccessTokenAuthentication authentication = new AccessTokenAuthentication(token);
+    public ApiClient getApiClient(Authentication kubeConfigAuthentication) {
         return new ClientBuilder()
                 .setBasePath(basePath)
-                .setAuthentication(authentication)
+                .setAuthentication(kubeConfigAuthentication)
                 .setVerifyingSsl(false)
                 .build();
+    }
+
+    @Bean
+    public Authentication kubeConfigAuthentication(){
+        String path = this.getClass().getResource("/kube.yaml").getPath();
+        try (FileReader fr = new FileReader(path);){
+            KubeConfig config = KubeConfig.loadKubeConfig(fr);
+            return new KubeconfigAuthentication(config);
+        } catch (Exception e) {
+            throw new ServiceException(K8S_DEPLOY_DEPLOYMENT);
+        }
     }
 
     @Bean

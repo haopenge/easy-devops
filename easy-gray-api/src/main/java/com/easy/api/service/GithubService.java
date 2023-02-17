@@ -6,6 +6,7 @@ import com.easy.api.domain.vo.response.GitProjectResponseVo;
 import com.easy.api.exception.ServiceException;
 import com.easy.api.util.EasyHttp;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Ref;
@@ -23,7 +24,8 @@ import java.util.*;
 
 
 @Data
-public class GithubService {
+@Slf4j
+public class GithubService implements IGitService{
 
     public static final String BRANCH_PREFIX = "refs/heads/";
 
@@ -39,6 +41,7 @@ public class GithubService {
         this.githubRepositoryProjectFindUrl = githubRepositoryProjectFindUrl;
     }
 
+    @Override
     public List<GitProjectResponseVo> findRepositoryProject() {
         List<GitProjectResponseVo> returnVoList = new ArrayList<>();
         Map<String, String> headerMap = new HashMap<>();
@@ -54,9 +57,7 @@ public class GithubService {
         return returnVoList;
     }
 
-    /**
-     * 下载指定版本的分支到本地
-     */
+    @Override
     public void download(String uri, String branch, String projectPath){
         try {
             Git.cloneRepository()
@@ -73,6 +74,7 @@ public class GithubService {
     /**
      * 获取git项目远程分支列表
      */
+    @Override
     public List<String> getRemoteBranches(String url) {
         Collection<Ref> refList = null;
         try {
@@ -103,25 +105,35 @@ public class GithubService {
     /**
      * 获取提交日志
      */
-    public List<String> getCommitLog(Repository repository, String branch, String commit) throws IOException {
+    @Override
+    public List<String> getCommitLog(Repository repository, String branch, String commit) {
         if (branch == null) {
-            branch = repository.getBranch();
-        }
-        Ref head = repository.findRef(BRANCH_PREFIX + branch);
-        List<String> commits = new ArrayList<>();
-        if (head != null) {
-            try (RevWalk revWalk = new RevWalk(repository)) {
-                revWalk.markStart(revWalk.parseCommit(head.getObjectId()));
-                for (RevCommit revCommit : revWalk) {
-                    if (revCommit.getId().getName().equals(commit)) {
-                        break;
-                    }
-                    commits.add(revCommit.getFullMessage());
-                }
-                revWalk.dispose();
+            try {
+                branch = repository.getBranch();
+            } catch (IOException e) {
+               return Collections.emptyList();
             }
         }
-        return commits;
+        Ref head = null;
+        try {
+            head = repository.findRef(BRANCH_PREFIX + branch);
+            List<String> commits = new ArrayList<>();
+            if (head != null) {
+                try (RevWalk revWalk = new RevWalk(repository)) {
+                    revWalk.markStart(revWalk.parseCommit(head.getObjectId()));
+                    for (RevCommit revCommit : revWalk) {
+                        if (revCommit.getId().getName().equals(commit)) {
+                            break;
+                        }
+                        commits.add(revCommit.getFullMessage());
+                    }
+                    revWalk.dispose();
+                }
+            }
+        } catch (IOException e) {
+            log.warn("获取日志信息失败, name : {} , branch : {} ,commit : {}",repository.getRemoteNames(),branch,commit,e);
+        }
+        return Collections.emptyList();
     }
 
 }

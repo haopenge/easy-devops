@@ -87,6 +87,12 @@
             <artifactId>spring-cloud-starter-openfeign</artifactId>
             <version>${spring-cloud.version}</version>
         </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.8.10</version>
+            <scope>compile</scope>
+        </dependency>
 
         <!-- =========================== my end =========================== -->
     </dependencies>

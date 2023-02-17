@@ -29,7 +29,7 @@ spec:
         - name: ali-docker-repository
       containers:
         - name: easy-gray-gateway-api
-          image: registry.cn-hangzhou.aliyuncs.com/ranmo/easy-gray-gateway-api:7
+          image: registry.cn-hangzhou.aliyuncs.com/ranmo/easy-gray-gateway-api:12
           command:
             - sh
             - -c
@@ -57,7 +57,7 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
-              containerPort: 8080
+              containerPort: 10080
               protocol: TCP
           #          livenessProbe:
           #            httpGet:

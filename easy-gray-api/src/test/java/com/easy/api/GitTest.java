@@ -16,7 +16,7 @@ import java.io.File;
 public class GitTest {
 
     public static void download(String uri, String branch, String projectPath){
-        UsernamePasswordCredentialsProvider credentialsProvider = new UsernamePasswordCredentialsProvider("anhusky@163.com", "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");
+        UsernamePasswordCredentialsProvider credentialsProvider = new UsernamePasswordCredentialsProvider("xiaoyuxxx", "7f6746302ae118a3002cc3679f83329d");
         try {
             Git.cloneRepository()
                     .setURI(uri)
@@ -30,6 +30,6 @@ public class GitTest {
 
     }
     public static void main(String[] args) {
-        download("https://github.com/haopenge/easy-gray.git","feature/k8s-client-deploy","/Users/liupenghao/Desktop/test/easy-gray/easy-gray");
+        download("https://gitee.com/xiaoyuxxx/easy-gray.git","feature/k8s-client-deploy","/Users/liupenghao/Desktop/test/easy-gray");
     }
 }

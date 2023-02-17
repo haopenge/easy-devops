@@ -20,6 +20,11 @@
     </properties>
     <dependencies>
         <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.8.10</version>
+        </dependency>
+        <dependency>
             <groupId>com.easy</groupId>
             <artifactId>easy-gray-core</artifactId>
             <version>${easy-gray-core.version}</version>

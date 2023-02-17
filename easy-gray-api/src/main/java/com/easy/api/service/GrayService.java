@@ -8,9 +8,8 @@ import com.easy.api.domain.vo.GrayEnvExtObjVo;
 import com.easy.api.domain.vo.response.GrayEnvResponseVo;
 import com.easy.api.exception.ServiceException;
 import com.easy.api.mapper.GrayEnvMapper;
-import com.easy.api.util.CommandUtil;
+import com.easy.core.util.CmdUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.exec.CommandLine;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -24,7 +23,12 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
@@ -148,9 +152,7 @@ public class GrayService {
         String startFilePath = executePath + File.separator + "start.sh";
         String commandLineStr = String.format("sh %s %s %s %s %s",startFilePath,podEnv,name,executePath,version);
         log.info("runProjectInGrayEnv cmd : {}",commandLineStr);
-        CommandLine commandLine = CommandLine.parse(commandLineStr);
-
-        CommandUtil.execCmdWithoutResult(commandLine,600);
+        CmdUtil.exec(10, TimeUnit.SECONDS,commandLineStr);
 
         // 发布服务
         try {
@@ -163,7 +165,7 @@ public class GrayService {
             k8sService.createDeployment(podEnv,deploymentFilePath);
         } catch (Exception e) {
             log.error("k8s deployment error ,",e);
-            throw new ServiceException(FailureEnum.K8S_DEPLOY_deployment);
+            throw new ServiceException(FailureEnum.K8S_DEPLOY_DEPLOYMENT);
         }
     }
 
