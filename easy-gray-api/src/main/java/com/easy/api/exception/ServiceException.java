@@ -1,6 +1,6 @@
 package com.easy.api.exception;
 
-import com.easy.core.enumx.FailureEnum;
+import com.easy.api.domain.enumx.FailureEnum;
 import lombok.Getter;
 
 /**
@@ -13,7 +13,7 @@ public class ServiceException extends RuntimeException {
 
     public ServiceException(FailureEnum failureEnum) {
 
-        super(failureEnum.getMsg());
+        super(failureEnum.getMessage());
         this.failureEnum = failureEnum;
 
     }

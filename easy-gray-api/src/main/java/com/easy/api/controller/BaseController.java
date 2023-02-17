@@ -1,7 +1,7 @@
-package com.easy.core.controller;
+package com.easy.api.controller;
 
+import com.easy.api.domain.enumx.FailureEnum;
 import com.easy.core.domain.ApiResult;
-import com.easy.core.enumx.FailureEnum;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController

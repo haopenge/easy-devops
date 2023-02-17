@@ -31,7 +31,7 @@
 
 
 	<modules>
-
+		<module>easy-gray-example/easy-gray-gateway-api</module>
   </modules>
 
 	<dependencies>

@@ -17,7 +17,7 @@ import java.util.TimeZone;
  * 统一日期格式配置
  */
 @Configuration
-public class DateFormatConfig {
+public class DateFormatConfiguration {
     @Value("${spring.jackson.date-format:yyyy-MM-dd HH:mm:ss}")
     private String pattern;
 

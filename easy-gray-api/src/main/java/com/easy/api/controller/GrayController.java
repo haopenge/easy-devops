@@ -1,13 +1,14 @@
 package com.easy.api.controller;
 
+import com.easy.api.domain.enumx.FailureEnum;
 import com.easy.api.domain.vo.request.AddProjectToGrayEnvRequestVo;
 import com.easy.api.domain.vo.request.GrayAddRequestVo;
 import com.easy.api.domain.vo.response.GitProjectResponseVo;
 import com.easy.api.domain.vo.response.GrayEnvResponseVo;
+import com.easy.api.exception.ServiceException;
+import com.easy.api.service.GithubService;
 import com.easy.api.service.GrayService;
-import com.easy.core.controller.BaseController;
 import com.easy.core.domain.ApiResult;
-import com.easy.core.enumx.FailureEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,9 @@ public class GrayController extends BaseController {
 
     @Autowired
     private GrayService grayService;
+
+    @Autowired
+    private GithubService githubService;
 
     /**
      * 新增灰度环境
@@ -41,14 +45,28 @@ public class GrayController extends BaseController {
     public ApiResult<Void> addProjectToGrayEnv(@PathVariable("id") Integer id,
                                                @RequestBody AddProjectToGrayEnvRequestVo addProjectToGrayEnv
                                          ){
-        String projectName = addProjectToGrayEnv.getProjectName();
-        String projectBranch = addProjectToGrayEnv.getProjectBranch();
-        String projectCloneUrl = addProjectToGrayEnv.getProjectCloneUrl();
+        String name = addProjectToGrayEnv.getName();
+        String branch = addProjectToGrayEnv.getBranch();
+        String cloneUrl = addProjectToGrayEnv.getCloneUrl();
+        String packagePath = addProjectToGrayEnv.getPackagePath();
+        String gitName = addProjectToGrayEnv.getGitName();
 
-        if(StringUtils.isAnyBlank(projectName,projectBranch,projectCloneUrl) || Objects.isNull(id) || id <= 0){
+        if(StringUtils.isAnyBlank(name,branch,cloneUrl) || Objects.isNull(id) || id <= 0){
             return failure(FailureEnum.PARAM_ERROR);
         }
-        grayService.addProjectToGrayEnv(id,projectName,projectBranch,projectCloneUrl);
+        grayService.addProjectToGrayEnv(id,name,branch,cloneUrl,packagePath,gitName);
+        return success();
+    }
+
+
+    @PostMapping("/runProjectInGrayEnv/{id}")
+    public ApiResult<Void> runProjectInGrayEnv(@PathVariable("id") Integer id,
+                                               @RequestParam("name") String name){
+        if(id <= 0 || StringUtils.isBlank(name)){
+            throw new ServiceException(FailureEnum.PARAM_ERROR);
+        }
+
+        grayService.runProjectInGrayEnv(id,name);
         return success();
     }
 
@@ -67,8 +85,8 @@ public class GrayController extends BaseController {
      * 获取github项目列表
      */
     @GetMapping("/find_project")
-    public ApiResult<List<GitProjectResponseVo>> findProject(@RequestParam(name = "gitType",defaultValue = "1",required = false) Integer gitType){
-        List<GitProjectResponseVo> voList = grayService.findRepositoryProject(gitType);
+    public ApiResult<List<GitProjectResponseVo>> findProject(){
+        List<GitProjectResponseVo> voList = githubService.findRepositoryProject();
         return success(voList);
     }
 
@@ -76,9 +94,8 @@ public class GrayController extends BaseController {
      * 获取分支列表
      */
     @GetMapping("/find_project_branch")
-    public ApiResult<List<String>> findProjectBranch(@RequestParam(name = "gitType",defaultValue = "1",required = false) Integer gitType,
-                                                     String projectUrl){
-        List<String> remoteBranches = grayService.findProjectBranch(gitType,projectUrl);
+    public ApiResult<List<String>> findProjectBranch(String projectUrl){
+        List<String> remoteBranches = githubService.getRemoteBranches(projectUrl);
         return success(remoteBranches);
     }
 }

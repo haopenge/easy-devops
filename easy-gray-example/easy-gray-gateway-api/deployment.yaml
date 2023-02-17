@@ -1,0 +1,76 @@
+# deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: qa
+  name: easy-gray-gateway-api
+  labels:
+    app: easy-gray-gateway-api
+    release: easy-gray-gateway-api
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+
+  selector:
+    matchLabels:
+      app: easy-gray-gateway-api
+      release: easy-gray-gateway-api
+  template:
+    metadata:
+      labels:
+        app: easy-gray-gateway-api
+        release: easy-gray-gateway-api
+    spec:
+      imagePullSecrets:
+        - name: ali-docker-repository
+      containers:
+        - name: easy-gray-gateway-api
+          image: registry.cn-hangzhou.aliyuncs.com/ranmo/easy-gray-gateway-api:12
+          command:
+            - sh
+            - -c
+            - (sh /usr/local/easy-gray-gateway-api/run.sh)
+
+          env:
+            - name: JAVA_OPTS
+              value: -Xms1024m -Xmx1024m
+            - name: env
+              value: qa
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: APP_NAME
+              value: easy-gray-gateway-api
+
+          envFrom:
+            []
+
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 10080
+              protocol: TCP
+          #          livenessProbe:
+          #            httpGet:
+          #              path: /healthz
+          #              port: http
+          #            initialDelaySeconds: 5
+
+          resources:
+            limits:
+              cpu: 100m
+              memory: 1024Mi
+            requests:
+              cpu: 100m
+              memory: 1024Mi
+
+

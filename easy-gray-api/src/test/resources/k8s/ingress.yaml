@@ -1,0 +1,19 @@
+# Source:ingress.yaml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  namespace: qa
+  name: easy-gray-gateway-api
+  labels:
+    app: easy-gray-gateway-api
+    release: easy-gray-gateway-api
+
+spec:
+  rules:
+    - host: easy-gray-gateway-api.rainxx.top
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: easy-gray-gateway-api
+              servicePort: http
