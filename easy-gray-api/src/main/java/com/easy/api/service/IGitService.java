@@ -1,7 +1,6 @@
 package com.easy.api.service;
 
 import com.easy.api.domain.vo.response.GitProjectResponseVo;
-import org.eclipse.jgit.lib.Repository;
 
 import java.util.List;
 
@@ -15,6 +14,12 @@ public interface IGitService {
      * @return 项目信息
      */
     List<GitProjectResponseVo> findRepositoryProject();
+
+    /**
+     * 获取git 单个项目
+     * @return 项目信息
+     */
+    GitProjectResponseVo findRepositoryByFullName(String fullName);
 
     /**
      * 获取git项目远程分支列表
@@ -33,10 +38,10 @@ public interface IGitService {
 
     /**
      * 获取提交日志
-     * @param repository    仓库
-     * @param branch        分支
-     * @param commit        上次日志commit
-     * @return 提交日志
+     * @param projectDirPath    本地仓库地址
+     * @param branch            分支
+     * @param commit            上次日志commit
+     * @return                  提交日志
      */
-    List<String> getCommitLog(Repository repository, String branch, String commit);
+    List<String> getCommitLog(String projectDirPath, String branch, String commit);
 }

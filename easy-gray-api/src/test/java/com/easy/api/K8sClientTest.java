@@ -146,7 +146,7 @@ public class K8sClientTest {
             throw new RuntimeException(e);
         }
         return new ClientBuilder()
-                .setBasePath("https://lb.kubesphere.local:6443")
+                .setBasePath("https://10.8.0.1:6443")
                 .setAuthentication(authentication)
                 .setVerifyingSsl(false)
                 .build();

@@ -5,6 +5,7 @@ import com.easy.api.domain.entity.GrayEnvEntity;
 import com.easy.api.domain.enumx.FailureEnum;
 import com.easy.api.domain.enumx.StateEnum;
 import com.easy.api.domain.vo.GrayEnvExtObjVo;
+import com.easy.api.domain.vo.response.GitProjectResponseVo;
 import com.easy.api.domain.vo.response.GrayEnvResponseVo;
 import com.easy.api.exception.ServiceException;
 import com.easy.api.mapper.GrayEnvMapper;
@@ -22,7 +23,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -34,17 +34,20 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class GrayService {
 
-    @Value("${k8s.project_clone_path:/root/easy-gray}")
+    @Value("${k8s.project_clone_path:}")
     private String k8sProjectClonePath;
 
     @Autowired
     private GrayEnvMapper grayEnvMapper;
 
     @Autowired
-    private GithubService githubService;
+    private K8sService k8sService;
 
     @Autowired
-    private K8sService k8sService;
+    private IGitService gitService;
+
+    @Value("${docker.repository_pwd:}")
+    private String repositoryPwd;
 
     public Integer addGrayEnv(String name, LocalDateTime expireTime) {
         GrayEnvEntity saveEntity = new GrayEnvEntity();
@@ -52,36 +55,91 @@ public class GrayService {
         saveEntity.setExpireTime(expireTime);
 
         grayEnvMapper.insertSelective(saveEntity);
+
+        try {
+            k8sService.createNamespace(name);
+        } catch (Exception e) {
+            throw new ServiceException(FailureEnum.K8S_NAMESPACE_CREATE_ERROR);
+        }
+
         return saveEntity.getId();
+    }
+
+    public void deleteById(Integer id) {
+        GrayEnvEntity grayEnvEntity = grayEnvMapper.selectByPrimaryKey(id);
+        if(Objects.isNull(grayEnvEntity)){
+            return;
+        }
+        grayEnvMapper.deleteByPrimaryKey(id);
+        try {
+            k8sService.createNamespace(grayEnvEntity.getName());
+        } catch (Exception e) {
+            throw new ServiceException(FailureEnum.K8S_NAMESPACE_CREATE_ERROR);
+        }
     }
 
     /**
      * 添加项目到灰度环境
      */
-    public void addProjectToGrayEnv(Integer id, String name, String branch,String cloneUrl,String packagePath,String gitName) {
+    public void addProjectToGrayEnv(Integer id,String fullName,String subProjectPath,String branchName) {
         GrayEnvEntity grayEnvEntity = grayEnvMapper.selectByPrimaryKey(id);
         if(Objects.isNull(grayEnvEntity) || !Objects.equals(grayEnvEntity.getState(), StateEnum.NORMAL.getValue())){
             throw new ServiceException(FailureEnum.GRAY_ENV_NOT_EXIST);
+        }
+
+        GitProjectResponseVo gitProjectResponseVo = gitService.findRepositoryByFullName(fullName);
+        if(Objects.isNull(gitProjectResponseVo)){
+            throw new ServiceException(FailureEnum.GIT_FETCH_EXCEPTION);
+        }
+
+        String projectId = gitProjectResponseVo.getName();
+        if(StringUtils.isNotBlank(subProjectPath)){
+            int i = subProjectPath.lastIndexOf("/");
+            projectId = (i == -1? subProjectPath : subProjectPath.substring(i + 1));
         }
 
         List<GrayEnvExtObjVo> extObjVoList = new ArrayList<>();
         String extObj = grayEnvEntity.getExtObj();
         if(StringUtils.isNotBlank(extObj)){
             extObjVoList = JSON.parseArray(extObj,GrayEnvExtObjVo.class);
-            Optional<GrayEnvExtObjVo> voOptional = extObjVoList.stream().filter(loopVo -> Objects.equals(loopVo.getName(), name)).findFirst();
+            String finalProjectId = projectId;
+            Optional<GrayEnvExtObjVo> voOptional = extObjVoList.stream().filter(loopVo -> Objects.equals(loopVo.getId(), finalProjectId)).findFirst();
             voOptional.ifPresent(extObjVoList::remove);
         }
 
         // 更新 此项目信息
         // 封装 灰度扩展项目Vo
         GrayEnvExtObjVo extObjVo = new GrayEnvExtObjVo();
-        extObjVo.setName(name);
-        extObjVo.setBranch(branch);
-        extObjVo.setGitName(gitName);
-        extObjVo.setCloneUrl(cloneUrl);
-        extObjVo.setPackagePath(packagePath);
+        extObjVo.setId(projectId);
+        extObjVo.setGitName(gitProjectResponseVo.getName());
+        extObjVo.setSubProjectPath(subProjectPath);
+        extObjVo.setBranch(branchName);
+        extObjVo.setCloneUrl(gitProjectResponseVo.getCloneUrl());
         extObjVoList.add(extObjVo);
 
+        GrayEnvEntity updateEntity = new GrayEnvEntity();
+        updateEntity.setId(id);
+        updateEntity.setExtObj(JSON.toJSONString(extObjVoList));
+
+        grayEnvMapper.updateByPrimaryKeySelective(updateEntity);
+    }
+
+    public void deleteProjectInGrayEnv(Integer id, String projectId) {
+        GrayEnvEntity grayEnvEntity = grayEnvMapper.selectByPrimaryKey(id);
+        if(Objects.isNull(grayEnvEntity) || !Objects.equals(grayEnvEntity.getState(), StateEnum.NORMAL.getValue())){
+            throw new ServiceException(FailureEnum.GRAY_ENV_NOT_EXIST);
+        }
+        List<GrayEnvExtObjVo> extObjVoList = new ArrayList<>();
+        String extObj = grayEnvEntity.getExtObj();
+        if(StringUtils.isNotBlank(extObj)){
+            extObjVoList = JSON.parseArray(extObj,GrayEnvExtObjVo.class);
+            Optional<GrayEnvExtObjVo> voOptional = extObjVoList.stream()
+                    .filter(loopVo -> Objects.equals(loopVo.getId(), projectId))
+                    .findFirst();
+            voOptional.ifPresent(extObjVoList::remove);
+        }
+
+        // 更新 此项目信息
         GrayEnvEntity updateEntity = new GrayEnvEntity();
         updateEntity.setId(id);
         updateEntity.setExtObj(JSON.toJSONString(extObjVoList));
@@ -109,7 +167,7 @@ public class GrayService {
         return returnList;
     }
 
-    public void runProjectInGrayEnv(Integer id, String projectName) {
+    public void runProjectInGrayEnv(Integer id, String projectId) {
         // 获取灰度环境项目
         GrayEnvEntity grayEnvEntity = grayEnvMapper.selectByPrimaryKey(id);
         if(Objects.isNull(grayEnvEntity) || !Objects.equals(grayEnvEntity.getState(), StateEnum.NORMAL.getValue())){
@@ -122,42 +180,33 @@ public class GrayService {
             throw new ServiceException(FailureEnum.GRAY_ENV_PROJECT_NOT_EXIST);
         }
         extObjVoList = JSON.parseArray(extObj,GrayEnvExtObjVo.class);
-        Optional<GrayEnvExtObjVo> extObjOptional = extObjVoList.stream().filter(loopVo -> Objects.equals(loopVo.getName(), projectName)).findFirst();
+        Optional<GrayEnvExtObjVo> extObjOptional = extObjVoList.stream().filter(loopVo -> Objects.equals(loopVo.getId(), projectId)).findFirst();
         if(!extObjOptional.isPresent()){
             throw new ServiceException(FailureEnum.GRAY_ENV_PROJECT_NOT_EXIST);
         }
         GrayEnvExtObjVo extObjVo = extObjOptional.get();
-        String cloneUrl = extObjVo.getCloneUrl();
-        String name = extObjVo.getName();
         String gitName = extObjVo.getGitName();
+        String subProjectPath = extObjVo.getSubProjectPath();
         String branch = extObjVo.getBranch();
-        String packagePath = extObjVo.getPackagePath();
+        String cloneUrl = extObjVo.getCloneUrl();
 
         // 子项目 兼容处理
-        String gitClonePath = k8sProjectClonePath + File.separator + gitName;
-        String executePath = gitClonePath + (StringUtils.isBlank(packagePath) ? "" : File.separator + packagePath);
+        String gitClonePath = k8sProjectClonePath + gitName;
+        String executePath = gitClonePath + (StringUtils.isBlank(subProjectPath) ? "" : File.separator + subProjectPath);
 
-        // TODO 拉取代码
-       // githubService.download(cloneUrl,branch,gitClonePath);
+        // 拉取代码
+        gitService.download(cloneUrl,branch,gitClonePath);
 
         // 文件复制 处理
-        copyFileToExecutePath(executePath,"deployment.yaml");
-        copyFileToExecutePath(executePath,"ali-docker-auth.yaml");
-        copyFileToExecutePath(executePath, "start.sh");
-
         String podEnv = grayEnvEntity.getName().toLowerCase();
-        String version = LocalDateTime.now().format(DateTimeFormatter.ofPattern("MMddHHmmss"));
-
+        String startShPath = executePath + File.separator + "deploy.sh";
         // 构建镜像
-        String startFilePath = executePath + File.separator + "start.sh";
-        String commandLineStr = String.format("sh %s %s %s %s %s",startFilePath,podEnv,name,executePath,version);
+        String commandLineStr = String.format("sh %s %s",startShPath,repositoryPwd);
         log.info("runProjectInGrayEnv cmd : {}",commandLineStr);
         CmdUtil.exec(10, TimeUnit.SECONDS,commandLineStr);
 
         // 发布服务
         try {
-            k8sService.createNamespace(podEnv.toLowerCase());
-
             String dockerAuthFilePath = executePath + File.separator + "ali-docker-auth.yaml";
             k8sService.createSecrets(podEnv,dockerAuthFilePath);
 

@@ -83,7 +83,7 @@ public class K8sService {
         coreV1Api.createNamespacedSecret(namespace,body,"true",null,null);
     }
 
-    public void deleteSecrets(String namespace,String name) throws IOException, ApiException {
+    public void deleteSecrets(String namespace,String name) throws ApiException {
         coreV1Api.deleteNamespacedSecret(name,namespace,"true",null,null,false,null,null);
     }
 }

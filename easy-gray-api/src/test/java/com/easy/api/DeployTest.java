@@ -12,8 +12,8 @@ import java.util.concurrent.TimeUnit;
 public class DeployTest {
     
     public static void main(String[] args) throws IOException, ApiException {
-       create();
-       //delete();
+       //create();
+       delete();
     }
 
     private static void create() throws IOException, ApiException {

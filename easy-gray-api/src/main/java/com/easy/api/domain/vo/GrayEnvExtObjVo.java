@@ -9,19 +9,19 @@ import lombok.Data;
 public class GrayEnvExtObjVo {
 
     /**
-     * 灰度环境名称
+     * 项目id
      */
-    private String name;
+    private String id;
 
     /**
-     * git 项目名称
+     * git项目名
      */
     private String gitName;
 
     /**
-     * 项目包路径，项目为子项目时填写
+     * 子项目包路径，项目为子项目时填写
      */
-    private String packagePath;
+    private String subProjectPath;
 
     /**
      * git 项目分支

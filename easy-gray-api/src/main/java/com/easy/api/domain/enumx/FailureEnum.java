@@ -43,7 +43,11 @@ public enum FailureEnum {
 
 
     // ****************************************** 业务问题-灰度发布 100400 ~ 100499 *************************************************************
-    K8S_DEPLOY_DEPLOYMENT(100400,"k8s 发布服务异常")
+
+    K8S_DEPLOY_DEPLOYMENT(100400,"k8s 发布服务异常"),
+
+    K8S_NAMESPACE_CREATE_ERROR(100401,"k8s 创建命名空间异常"),
+
     ;
     private int code;
 

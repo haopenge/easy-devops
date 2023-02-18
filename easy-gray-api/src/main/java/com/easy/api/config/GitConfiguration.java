@@ -1,8 +1,6 @@
 package com.easy.api.config;
 
-import com.easy.api.service.GithubService;
-import org.eclipse.jgit.transport.CredentialsProvider;
-import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
+import com.easy.api.service.GiteeService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,23 +8,21 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class GitConfiguration {
 
-    @Value("${git.github.username:}")
-    private String githubUsername;
+    @Value("${git.gitee.username:}")
+    private String username;
 
-    @Value("${git.github.password:}")
-    private String githubPassword;
+    @Value("${git.gitee.password:}")
+    private String password;
 
-    @Value("${git.github.repository_project_find_url:https://api.github.com/user/repos?sort=updated&direction=desc}")
-    private String githubRepositoryProjectFindUrl;
+    @Value("${git.gitee.repository_project_find_url:}")
+    private String repositoryProjectFindUrl;
 
-    @Bean
-    public CredentialsProvider credentialsProvider() {
-       return new UsernamePasswordCredentialsProvider(githubUsername, githubPassword);
-    }
+    @Value("${git.gitee.single_project_find_url:}")
+    private String singleProjectFindUrl;
 
     @Bean
-    public GithubService githubService(CredentialsProvider credentialsProvider) {
-        return new GithubService(credentialsProvider, githubPassword,githubRepositoryProjectFindUrl);
+    public GiteeService IGitService(){
+        return new GiteeService(username,password,repositoryProjectFindUrl,singleProjectFindUrl);
     }
 
 }
