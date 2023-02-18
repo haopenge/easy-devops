@@ -1,6 +1,6 @@
 #!/bin/bash
-DEPLOY_DIR=$0
-ALI_DOCKER_PWD=$1
+DEPLOY_DIR=$1
+ALI_DOCKER_PWD=$2
 if test -z "$DEPLOY_DIR"
     then
     echo "未输入发布目录"
@@ -10,6 +10,7 @@ else
   echo "输入发布目录: ${DEPLOY_DIR} "
 fi
 
+echo "当前脚本执行目录: ${pwd} "
 echo "<<====================== 1.1 开始打包 ===================>>"
 mvn clean package  -Dmaven.test.skip=true
 
