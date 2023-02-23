@@ -1,5 +1,6 @@
 package com.easy.api.service;
 
+import cn.hutool.core.io.FileUtil;
 import com.alibaba.fastjson.JSON;
 import com.easy.api.domain.entity.GrayEnvEntity;
 import com.easy.api.domain.enumx.FailureEnum;
@@ -195,23 +196,23 @@ public class GrayService {
         String executePath = gitClonePath + (StringUtils.isBlank(subProjectPath) ? "" : File.separator + subProjectPath);
 
         // 拉取代码
+        FileUtil.del(gitClonePath);
         gitService.download(cloneUrl,branch,gitClonePath);
 
         // 文件复制 处理
-        String podEnv = grayEnvEntity.getName().toLowerCase();
         String startShPath = executePath + File.separator + "deploy.sh";
         // 构建镜像
-        String commandLineStr = String.format("sh %s %s",startShPath,repositoryPwd);
+        String commandLineStr = String.format("sh %s %s",startShPath,executePath, repositoryPwd);
         log.info("runProjectInGrayEnv cmd : {}",commandLineStr);
-        CmdUtil.exec(10, TimeUnit.SECONDS,commandLineStr);
-
+        String returnLogStr = CmdUtil.exec(10, TimeUnit.SECONDS, commandLineStr);
+        System.out.println(returnLogStr);
         // 发布服务
         try {
-            String dockerAuthFilePath = executePath + File.separator + "ali-docker-auth.yaml";
+            /*String dockerAuthFilePath = executePath + File.separator + "ali-docker-auth.yaml";
             k8sService.createSecrets(podEnv,dockerAuthFilePath);
 
             String deploymentFilePath = executePath + File.separator + "deployment.yaml";
-            k8sService.createDeployment(podEnv,deploymentFilePath);
+            k8sService.createDeployment(podEnv,deploymentFilePath);*/
         } catch (Exception e) {
             log.error("k8s deployment error ,",e);
             throw new ServiceException(FailureEnum.K8S_DEPLOY_DEPLOYMENT);
