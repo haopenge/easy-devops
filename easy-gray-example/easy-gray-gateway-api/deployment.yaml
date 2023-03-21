@@ -7,6 +7,7 @@ metadata:
   labels:
     app: easy-gray-gateway-api
     release: easy-gray-gateway-api
+    grayEnv: qa-12138
 spec:
   replicas: 1
   strategy:
@@ -29,7 +30,7 @@ spec:
         - name: ali-docker-repository
       containers:
         - name: easy-gray-gateway-api
-          image: registry.cn-hangzhou.aliyuncs.com/ranmo/easy-gray-gateway-api:build_number
+          image: registry.cn-hangzhou.aliyuncs.com/ranmo/easy-gray-gateway-api:666
           command:
             - sh
             - -c

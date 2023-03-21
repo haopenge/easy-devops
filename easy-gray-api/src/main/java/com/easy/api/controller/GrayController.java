@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Objects;
 
@@ -54,6 +55,19 @@ public class GrayController extends BaseController {
     }
 
     /**
+     * 删除灰度环境的项目
+     */
+    @DeleteMapping ("/deleteProjectInGrayEnv")
+    public ApiResult<Void> deleteProjectInGrayEnv(@RequestParam Integer id,
+                                                  @RequestParam String projectId){
+        if(Objects.isNull(id) || StringUtils.isBlank(projectId)){
+            throw new ServiceException(FailureEnum.PARAM_ERROR);
+        }
+        grayService.deleteProjectInGrayEnv(id, projectId);
+        return success();
+    }
+
+    /**
      * 添加项目灰度环境
      */
     @PostMapping("/addProjectToGrayEnv")
@@ -65,19 +79,6 @@ public class GrayController extends BaseController {
         String branchName = addProjectToGrayEnv.getBranchName();
 
         grayService.addProjectToGrayEnv(id, fullName, subProjectPath,branchName);
-        return success();
-    }
-
-    /**
-     * 删除灰度环境的项目
-     */
-    @DeleteMapping ("/deleteProjectInGrayEnv")
-    public ApiResult<Void> deleteProjectInGrayEnv(@RequestParam Integer id,
-                                                  @RequestParam String projectId){
-        if(Objects.isNull(id) || StringUtils.isBlank(projectId)){
-            throw new ServiceException(FailureEnum.PARAM_ERROR);
-        }
-        grayService.deleteProjectInGrayEnv(id, projectId);
         return success();
     }
 
@@ -96,7 +97,7 @@ public class GrayController extends BaseController {
      * 获取灰度环境
      */
     @GetMapping("/findAll")
-    public ApiResult<List<GrayEnvResponseVo>> findAllGrayEnv() {
+    public ApiResult<List<GrayEnvResponseVo>> findAllGrayEnv(HttpServletRequest request) {
         List<GrayEnvResponseVo> grayEnvVoList = grayService.findAllGrayEnv();
         return success(grayEnvVoList);
     }

@@ -1,11 +1,9 @@
 package com.easy.api;
 
-import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.util.RuntimeUtil;
-
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
+import java.io.File;
 import java.util.concurrent.TimeUnit;
+
+import static java.lang.String.format;
 
 /**
  * @author liuph
@@ -14,15 +12,13 @@ import java.util.concurrent.TimeUnit;
  */
 public class CmdUtil {
     public static void main(String[] args) throws Exception {
+        String executePath = "/Volumes/DATA/Users/liupenghao/work/idea/mime/easy-gray/easy-gray-example/easy-gray-gateway-api";
 
-        Process process = RuntimeUtil.exec("sh /Volumes/DATA/Users/liupenghao/work/idea/mime/easy-gray/easy-gray-api/src/test/resources/start.sh");
-        process.waitFor(10, TimeUnit.SECONDS);
-
-        try(InputStream is = process.getInputStream();){
-            String read = IoUtil.read(is, StandardCharsets.UTF_8);
-            System.out.println(read);
-        }catch (Exception e){
-
-        }
+        // 文件复制 处理
+        String startShPath = executePath + File.separator + "deploy.sh";
+        // 构建镜像
+        String commandLineStr = format("sh %s %s %s %s %s",startShPath,executePath, "","qa-12138","666");
+        String returnLogStr = com.easy.core.util.CmdUtil.exec(10, TimeUnit.SECONDS, commandLineStr);
+        System.out.println(returnLogStr);
     }
 }
