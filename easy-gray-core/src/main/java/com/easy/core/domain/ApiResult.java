@@ -1,5 +1,6 @@
 package com.easy.core.domain;
 
+import cn.hutool.http.HttpStatus;
 import com.easy.core.enumx.FailureEnum;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,11 +22,13 @@ public class ApiResult<T> {
     public static ApiResult<Void> ok() {
         ApiVoidResult result = new ApiVoidResult();
         result.setSuccess(true);
+        result.setCode(HttpStatus.HTTP_OK);
         return result;
     }
 
     public static <T> ApiResult<T> ok(T t) {
         ApiObjectResult result = new ApiObjectResult();
+        result.setCode(HttpStatus.HTTP_OK);
         result.setSuccess(true);
         result.setData(t);
         return (ApiResult<T>) result;

@@ -1,14 +1,16 @@
 package com.easy.api.service;
 
+import cn.hutool.core.io.FileUtil;
 import com.alibaba.fastjson.JSON;
 import com.easy.api.domain.entity.GrayEnvEntity;
+import com.easy.api.domain.entity.GrayEnvEntityExample;
 import com.easy.api.domain.enumx.FailureEnum;
 import com.easy.api.domain.enumx.StateEnum;
 import com.easy.api.domain.vo.GrayEnvExtObjVo;
 import com.easy.api.domain.vo.response.GitProjectResponseVo;
 import com.easy.api.domain.vo.response.GrayEnvResponseVo;
 import com.easy.api.exception.ServiceException;
-import com.easy.api.mapper.GrayEnvMapper;
+import com.easy.api.mapper.GrayEnvEntityMapper;
 import com.easy.core.util.CmdUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
@@ -26,6 +28,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -41,7 +44,7 @@ public class GrayService {
     private String k8sProjectClonePath;
 
     @Autowired
-    private GrayEnvMapper grayEnvMapper;
+    private GrayEnvEntityMapper grayEnvMapper;
 
     @Autowired
     private K8sService k8sService;
@@ -52,7 +55,7 @@ public class GrayService {
     @Value("${docker.repository_pwd:}")
     private String dockerRepositoryPwd;
 
-    public Integer addGrayEnv(String name, LocalDateTime expireTime) {
+    public Integer addGrayEnv(String name, Date expireTime) {
         GrayEnvEntity saveEntity = new GrayEnvEntity();
         saveEntity.setName(name);
         saveEntity.setExpireTime(expireTime);
@@ -149,7 +152,9 @@ public class GrayService {
     }
 
     public List<GrayEnvResponseVo> findAllGrayEnv() {
-        List<GrayEnvEntity> grayEnvEntityList = grayEnvMapper.selectByState(StateEnum.NORMAL.getValue());
+        GrayEnvEntityExample example = new GrayEnvEntityExample();
+        example.createCriteria().andStateEqualTo(StateEnum.NORMAL.getValue());
+        List<GrayEnvEntity> grayEnvEntityList = grayEnvMapper.selectByExample(example);
         if (CollectionUtils.isEmpty(grayEnvEntityList)) {
             return Collections.emptyList();
         }
@@ -193,13 +198,11 @@ public class GrayService {
 
         // 子项目 兼容处理
         String gitClonePath = k8sProjectClonePath + gitName;
-        //String executePath = gitClonePath + (StringUtils.isBlank(subProjectPath) ? "" : File.separator + subProjectPath);
+        String executePath = gitClonePath + (StringUtils.isBlank(subProjectPath) ? "" : File.separator + subProjectPath);
 
         // 拉取代码
-        //FileUtil.del(gitClonePath);
-        // gitService.download(cloneUrl,branch,gitClonePath);
-
-        String executePath = "/Volumes/DATA/Users/liupenghao/work/idea/mime/easy-gray/easy-gray-example/easy-gray-gateway-api";
+        FileUtil.del(gitClonePath);
+        gitService.download(cloneUrl,branch,gitClonePath);
 
         // 文件复制 处理
         String startShPath = executePath + File.separator + "deploy.sh";
@@ -212,11 +215,11 @@ public class GrayService {
 
         // 发布服务
         try {
-            /*String dockerAuthFilePath = executePath + File.separator + "ali-docker-auth.yaml";
-            k8sService.createSecrets(podEnv,dockerAuthFilePath);
+            String dockerAuthFilePath = executePath + File.separator + "ali-docker-auth.yaml";
+            //k8sService.createSecrets(podEnv,dockerAuthFilePath);
 
             String deploymentFilePath = executePath + File.separator + "deployment.yaml";
-            k8sService.createDeployment(podEnv,deploymentFilePath);*/
+           // k8sService.createDeployment(podEnv,deploymentFilePath);
         } catch (Exception e) {
             log.error("k8s deployment error ,", e);
             throw new ServiceException(FailureEnum.K8S_DEPLOY_DEPLOYMENT);

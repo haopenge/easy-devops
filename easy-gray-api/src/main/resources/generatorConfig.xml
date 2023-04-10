@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+    <context id="plugin-generator" defaultModelType="flat" targetRuntime="MyBatis3">
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+        <property name="autoDelimitKeywords" value="true"/>
+
+        <plugin type="com.easy.core.generate.LombokPlugin"/>
+        <plugin type="com.easy.core.generate.MapperPlugin"/>
+
+        <jdbcConnection
+                driverClass="${plugin.driver-class-name}"
+                connectionURL="${plugin.datasource.url}"
+                userId="${plugin.datasource.username}"
+                password="${plugin.datasource.password}">
+        </jdbcConnection>
+
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="true"/>
+            <!-- 此属性用于指定MyBatis生成器是否应强制对日期、时间和和时间戳字段，生成JDK8的时间类型，而不是使用java.util.date -->
+            <property name="useJSR310Types" value="true"/>
+        </javaTypeResolver>
+
+
+        <javaModelGenerator targetPackage="${basePackage}.domain.entity" targetProject="${javaBaseProject}"/>
+        <sqlMapGenerator targetPackage="mapper" targetProject="${resourcesBaseProject}"/>
+        <javaClientGenerator targetPackage="${basePackage}.mapper" targetProject="${javaBaseProject}"
+                             type="ANNOTATEDMAPPER">
+        </javaClientGenerator>
+
+        <!--  <table schema="PUBLIC" tableName="%"/>-->
+        <table schema="" tableName="gray_env" domainObjectName="GrayEnvEntity"></table>
+
+
+    </context>
+
+
+</generatorConfiguration>
