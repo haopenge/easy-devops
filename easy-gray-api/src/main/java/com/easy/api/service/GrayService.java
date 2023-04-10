@@ -215,11 +215,8 @@ public class GrayService {
 
         // 发布服务
         try {
-            String dockerAuthFilePath = executePath + File.separator + "ali-docker-auth.yaml";
-            //k8sService.createSecrets(podEnv,dockerAuthFilePath);
-
             String deploymentFilePath = executePath + File.separator + "deployment.yaml";
-           // k8sService.createDeployment(podEnv,deploymentFilePath);
+            k8sService.createDeployment(grayEnvEntity.getName(),deploymentFilePath);
         } catch (Exception e) {
             log.error("k8s deployment error ,", e);
             throw new ServiceException(FailureEnum.K8S_DEPLOY_DEPLOYMENT);
