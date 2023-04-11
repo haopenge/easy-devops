@@ -7,7 +7,7 @@ metadata:
   labels:
     app: easy-gray-api
     release: easy-gray-api
-    podEnv: pod-env
+    podEnv: qa
 spec:
   replicas: 1
   strategy:
@@ -30,7 +30,7 @@ spec:
         - name: ali-docker-repository
       containers:
         - name: easy-gray-api
-          image: registry.cn-hangzhou.aliyuncs.com/ranmo/easy-gray-api:build_number
+          image: registry.cn-hangzhou.aliyuncs.com/ranmo/easy-gray-api:14
           imagePullPolicy: IfNotPresent
           ports:
             - name: http

@@ -23,5 +23,5 @@ sed -i "" "s/pod-env/${GRAY_ENV}/g" deployment.yaml
 
 echo "<<====================== 2.2 发布服务 ===================>>"
 kubectl apply -f deployment.yaml
-
-
+kubectl apply -f service.yaml
+kubectl apply -f ingress.yaml

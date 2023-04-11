@@ -18,4 +18,4 @@ spec:
               service:
                 name: easy-gray-api
                 port:
-                  number: 10081
+                  number: 80
