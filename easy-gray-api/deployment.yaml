@@ -27,35 +27,15 @@ spec:
         release: easy-gray-api
     spec:
       imagePullSecrets:
-        - name: ali-docker-auth
+        - name: ali-docker-repository
       containers:
         - name: easy-gray-api
           image: registry.cn-hangzhou.aliyuncs.com/ranmo/easy-gray-api:build_number
-          env:
-            - name: JAVA_OPTS
-              value: -Xms1024m -Xmx1024m
-            - name: env
-              value: easy-12138
-            - name: NODE_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: spec.nodeName
-            - name: NODE_IP
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.hostIP
-            - name: APP_NAME
-              value: easy-gray-api
-
-          envFrom:
-            []
-
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
               containerPort: 10081
               protocol: TCP
-
           resources:
             limits:
               cpu: 200m

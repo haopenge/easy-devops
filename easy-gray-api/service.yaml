@@ -1,0 +1,20 @@
+# Source: service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: qa
+  name: easy-gray-api
+  labels:
+    app: easy-gray-api
+    release: easy-gray-api
+spec:
+  type: ClusterIP
+  ports:
+    - port: 10081
+      targetPort: 10081
+      protocol: TCP
+      name: http
+  selector:
+    app: easy-gray-api
+    release: easy-gray-api
+

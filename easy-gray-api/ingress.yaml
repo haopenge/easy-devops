@@ -1,0 +1,21 @@
+# Source: service.yaml
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: easy-gray-api
+  namespace: qa
+  annotations:
+    kubesphere.io/alias-name: 灰度后端管理api
+    kubesphere.io/creator: admin
+spec:
+  rules:
+    - host: easy-gray-api.rainxx.top
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: easy-gray-api
+                port:
+                  number: 10081
