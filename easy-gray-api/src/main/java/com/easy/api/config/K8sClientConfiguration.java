@@ -10,22 +10,23 @@ import io.kubernetes.client.util.ClientBuilder;
 import io.kubernetes.client.util.KubeConfig;
 import io.kubernetes.client.util.credentials.Authentication;
 import io.kubernetes.client.util.credentials.KubeconfigAuthentication;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 
 import static com.easy.api.domain.enumx.FailureEnum.K8S_DEPLOY_DEPLOYMENT;
 
+@Slf4j
 @Configuration
 public class K8sClientConfiguration {
 
-    @Value("${k8s.base_path:}")
+    @Value("${k8s.base_path:https://10.8.0.1:6443}")
     private String basePath;
-
-    @Value("${k8s.kube-config:}")
-    private String kubeConfig;
 
     @Bean
     public ApiClient getApiClient(Authentication kubeConfigAuthentication) {
@@ -38,11 +39,16 @@ public class K8sClientConfiguration {
 
     @Bean
     public Authentication kubeConfigAuthentication(){
-        String path = this.getClass().getResource("/kube.yaml").getPath();
-        try (FileReader fr = new FileReader(path);){
-            KubeConfig config = KubeConfig.loadKubeConfig(fr);
-            return new KubeconfigAuthentication(config);
+        try (        InputStream is = this.getClass().getClassLoader().getResourceAsStream("/kube.yaml")
+        ) {
+            assert is != null;
+            try (Reader fr = new InputStreamReader(is)
+            ){
+                KubeConfig config = KubeConfig.loadKubeConfig(fr);
+                return new KubeconfigAuthentication(config);
+            }
         } catch (Exception e) {
+            log.error("kubeConfigAuthentication error: " , e);
             throw new ServiceException(K8S_DEPLOY_DEPLOYMENT);
         }
     }

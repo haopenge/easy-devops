@@ -7,6 +7,7 @@ metadata:
   labels:
     app: easy-gray-api
     release: easy-gray-api
+    podEnv: pod-env
 spec:
   replicas: 1
   strategy:
@@ -29,12 +30,7 @@ spec:
         - name: ali-docker-auth
       containers:
         - name: easy-gray-api
-          image: registry.cn-hangzhou.aliyuncs.com/ranmo/image_suffix
-          command:
-            - sh
-            - -c
-            - (sh /usr/local/easy-gray-api/run.sh)
-
+          image: registry.cn-hangzhou.aliyuncs.com/ranmo/easy-gray-api:build_number
           env:
             - name: JAVA_OPTS
               value: -Xms1024m -Xmx1024m
@@ -67,8 +63,8 @@ spec:
 
           resources:
             limits:
-              cpu: 1
+              cpu: 200m
               memory: 1024Mi
             requests:
-              cpu: 0.1
+              cpu: 200m
               memory: 1024Mi
