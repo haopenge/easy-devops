@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>io.github.tudouyay</groupId>
+        <groupId>io.github.haopenge</groupId>
         <artifactId>easy-gray</artifactId>
         <version>1.0.0</version>
     </parent>
@@ -21,7 +21,7 @@
     <dependencies>
 
         <dependency>
-            <groupId>io.github.tudouyay</groupId>
+            <groupId>io.github.haopenge</groupId>
             <artifactId>easy-gray-core</artifactId>
             <version>${easy-gray-core.version}</version>
             <exclusions>

@@ -18,13 +18,13 @@
     <dependencies>
 
         <dependency>
-            <groupId>io.github.tudouyay</groupId>
+            <groupId>io.github.haopenge</groupId>
             <artifactId>easy-gray-core</artifactId>
             <version>1.0.0</version>
         </dependency>
 
         <dependency>
-            <groupId>io.github.tudouyay</groupId>
+            <groupId>io.github.haopenge</groupId>
             <artifactId>easy-gray-intf</artifactId>
             <version>0.0.2-SNAPSHOT</version>
         </dependency>
