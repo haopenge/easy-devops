@@ -18,15 +18,15 @@
     <dependencies>
 
         <dependency>
-            <groupId>com.easy</groupId>
+            <groupId>io.github.tudouyay</groupId>
             <artifactId>easy-gray-core</artifactId>
-            <version>${easy-gray-core.version}</version>
+            <version>1.0.0</version>
         </dependency>
 
         <dependency>
-            <groupId>com.husky</groupId>
+            <groupId>io.github.tudouyay</groupId>
             <artifactId>easy-gray-intf</artifactId>
-            <version>${easy-gray-intf.version}</version>
+            <version>0.0.2-SNAPSHOT</version>
         </dependency>
 
     </dependencies>
