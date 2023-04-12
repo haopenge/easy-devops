@@ -39,7 +39,7 @@ public class K8sClientConfiguration {
 
     @Bean
     public Authentication kubeConfigAuthentication(){
-        try (        InputStream is = this.getClass().getClassLoader().getResourceAsStream("/kube.yaml")
+        try (        InputStream is = this.getClass().getClassLoader().getResourceAsStream("kube.yaml")
         ) {
             assert is != null;
             try (Reader fr = new InputStreamReader(is)

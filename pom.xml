@@ -8,9 +8,9 @@
 		<version>2.6.3</version>
 	</parent>
 
-	<groupId>com.easy</groupId>
+	<groupId>io.github.tudouyay</groupId>
 	<artifactId>easy-gray</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>pom</packaging>
 
 
@@ -22,21 +22,154 @@
 		<commons-lang3.version>3.12.0</commons-lang3.version>
 		<fastjson.version>2.0.5</fastjson.version>
 		<lombok.version>1.18.24</lombok.version>
-		<easy-gray-core.version>0.0.19-SNAPSHOT</easy-gray-core.version>
-		<easy-gray-intf.version>0.0.2-SNAPSHOT</easy-gray-intf.version>
-		<easy-gray-gateway.version>0.0.3-SNAPSHOT</easy-gray-gateway.version>
+		<easy-gray-core.version>1.0.0</easy-gray-core.version>
+		<easy-gray-intf.version>1.0.0</easy-gray-intf.version>
+		<easy-gray-gateway.version>1.0.0</easy-gray-gateway.version>
 		<org.eclipse.jgit.version>5.2.0.201812061821-r</org.eclipse.jgit.version>
 		<okhttp.version>3.12.0</okhttp.version>
+		<jakarta.persistence-api.version>3.1.0</jakarta.persistence-api.version>
+		<hutool-all.version>5.8.15</hutool-all.version>
+		<mybatis-generator-core.version>1.3.2</mybatis-generator-core.version>
+		<mybatis-spring-boot-starter.version>2.2.2</mybatis-spring-boot-starter.version>
+		<client-java.version>9.0.2</client-java.version>
+		<commons-exec.version>1.3</commons-exec.version>
 	</properties>
 
 
 	<modules>
-		<module>easy-gray-example/easy-gray-gateway-api</module>
-  </modules>
+		<module>easy-gray-api</module>
+		<module>easy-gray-core</module>
+		<module>easy-gray-gateway</module>
+	</modules>
+	<dependencyManagement>
+		<dependencies>
+			<!-- =========================== spring start =========================== -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-web</artifactId>
+				<version>${spring-boot.version}</version>
+			</dependency>
 
-	<dependencies>
+			<dependency>
+				<groupId>com.alibaba.cloud</groupId>
+				<artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+				<version>${spring-cloud-nacos.version}</version>
+			</dependency>
 
-	</dependencies>
+			<dependency>
+				<groupId>com.alibaba.cloud</groupId>
+				<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+				<version>${spring-cloud-nacos.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-starter-loadbalancer</artifactId>
+				<version>${spring-cloud.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-starter-bootstrap</artifactId>
+				<version>${spring-cloud.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-starter-gateway</artifactId>
+				<version>${spring-cloud.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.mybatis.spring.boot</groupId>
+				<artifactId>mybatis-spring-boot-starter</artifactId>
+				<version>${mybatis-spring-boot-starter.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-starter-openfeign</artifactId>
+				<version>${spring-cloud.version}</version>
+			</dependency>
+
+			<!-- =========================== spring end =========================== -->
+
+			<!-- =========================== other start =========================== -->
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>${lombok.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>${commons-lang3.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>fastjson</artifactId>
+				<version>${fastjson.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.squareup.okhttp3</groupId>
+				<artifactId>okhttp</artifactId>
+				<version>${okhttp.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>jakarta.persistence</groupId>
+				<artifactId>jakarta.persistence-api</artifactId>
+				<version>${jakarta.persistence-api.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>cn.hutool</groupId>
+				<artifactId>hutool-all</artifactId>
+				<version>${hutool-all.version}</version>
+				<scope>compile</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.mybatis.generator</groupId>
+				<artifactId>mybatis-generator-core</artifactId>
+				<version>${mybatis-generator-core.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>io.kubernetes</groupId>
+				<artifactId>client-java</artifactId>
+				<version>${client-java.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-exec</artifactId>
+				<version>${commons-exec.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.eclipse.jgit</groupId>
+				<artifactId>org.eclipse.jgit</artifactId>
+				<version>${org.eclipse.jgit.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<!-- =========================== other end =========================== -->
+		</dependencies>
+	</dependencyManagement>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
 
 	<build>
 		<plugins>
@@ -48,6 +181,62 @@
 					<source>${java.version}</source>
 					<target>${java.version}</target>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.7</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9.1</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<additionalparam>
+								-Xdoclint:none
+							</additionalparam>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
