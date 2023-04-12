@@ -8,9 +8,8 @@
         <version>1.0.0</version>
     </parent>
 
-    <groupId>com.example</groupId>
     <artifactId>easy-gray-api</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>easy-gray-api</name>
     <description>easy-gray-api</description>
     <properties>
@@ -102,9 +101,9 @@
                         <version>8.0.32</version>
                     </dependency>
                     <dependency>
-                        <groupId>com.easy</groupId>
+                        <groupId>io.github.haopenge</groupId>
                         <artifactId>easy-gray-core</artifactId>
-                        <version>0.0.19-SNAPSHOT</version>
+                        <version>${easy-gray-core.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>
