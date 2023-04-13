@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>easy-gray-gateway</artifactId>
-    <version>${easy-gray-gateway.version}</version>
+    <version>1.0.0</version>
     <name>easy-gray-gateway</name>
     <description>easy-gray-gateway</description>
 

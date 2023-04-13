@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>easy-gray-core</artifactId>
-    <version>${easy-gray-core.version}</version>
+    <version>1.0.0</version>
     <name>easy-gray-core</name>
     <description>easy-gray-core</description>
     <properties>

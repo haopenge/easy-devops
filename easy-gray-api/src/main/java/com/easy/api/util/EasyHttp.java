@@ -47,7 +47,6 @@ public class EasyHttp {
 
     /**
      * get 请求
-     * @author liupenghao
      * @param url   请求url
      * @param headerMap 请求header
      * @param clazz     响应结果类型  not null
