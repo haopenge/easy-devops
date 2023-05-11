@@ -1,25 +1,21 @@
 package com.easy.api.domain.vo.response;
 
-import com.easy.api.domain.vo.GrayEnvExtObjVo;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Date;
 
 @Data
 public class GrayEnvResponseVo {
 
     private Integer id;
 
-    private LocalDateTime createTime;
+    private Date createTime;
 
-    private LocalDateTime updateTime;
+    private Date updateTime;
 
     private String description;
 
     private String name;
 
-    private LocalDateTime expireTime;
-
-    private List<GrayEnvExtObjVo> extObjList;
+    private Date expireTime;
 }

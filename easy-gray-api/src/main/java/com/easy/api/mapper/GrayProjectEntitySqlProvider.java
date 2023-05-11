@@ -13,33 +13,33 @@ import static org.apache.ibatis.jdbc.SqlBuilder.UPDATE;
 import static org.apache.ibatis.jdbc.SqlBuilder.VALUES;
 import static org.apache.ibatis.jdbc.SqlBuilder.WHERE;
 
-import com.easy.api.domain.entity.GrayEnvEntity;
-import com.easy.api.domain.entity.GrayEnvEntityExample.Criteria;
-import com.easy.api.domain.entity.GrayEnvEntityExample.Criterion;
-import com.easy.api.domain.entity.GrayEnvEntityExample;
+import com.easy.api.domain.entity.GrayProjectEntity;
+import com.easy.api.domain.entity.GrayProjectEntityExample.Criteria;
+import com.easy.api.domain.entity.GrayProjectEntityExample.Criterion;
+import com.easy.api.domain.entity.GrayProjectEntityExample;
 import java.util.List;
 import java.util.Map;
 
-public class GrayEnvEntitySqlProvider {
+public class GrayProjectEntitySqlProvider {
 
-    public String countByExample(GrayEnvEntityExample example) {
+    public String countByExample(GrayProjectEntityExample example) {
         BEGIN();
         SELECT("count(*)");
-        FROM("gray_env");
+        FROM("gray_project");
         applyWhere(example, false);
         return SQL();
     }
 
-    public String deleteByExample(GrayEnvEntityExample example) {
+    public String deleteByExample(GrayProjectEntityExample example) {
         BEGIN();
-        DELETE_FROM("gray_env");
+        DELETE_FROM("gray_project");
         applyWhere(example, false);
         return SQL();
     }
 
-    public String insertSelective(GrayEnvEntity record) {
+    public String insertSelective(GrayProjectEntity record) {
         BEGIN();
-        INSERT_INTO("gray_env");
+        INSERT_INTO("gray_project");
         
         if (record.getId() != null) {
             VALUES("id", "#{id,jdbcType=INTEGER}");
@@ -53,6 +53,10 @@ public class GrayEnvEntitySqlProvider {
             VALUES("update_time", "#{updateTime,jdbcType=TIMESTAMP}");
         }
         
+        if (record.getGrayEnvId() != null) {
+            VALUES("gray_env_id", "#{grayEnvId,jdbcType=INTEGER}");
+        }
+        
         if (record.getDescription() != null) {
             VALUES("description", "#{description,jdbcType=VARCHAR}");
         }
@@ -61,14 +65,26 @@ public class GrayEnvEntitySqlProvider {
             VALUES("`name`", "#{name,jdbcType=VARCHAR}");
         }
         
-        if (record.getExpireTime() != null) {
-            VALUES("expire_time", "#{expireTime,jdbcType=TIMESTAMP}");
+        if (record.getSubProjectPath() != null) {
+            VALUES("sub_project_path", "#{subProjectPath,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getBranch() != null) {
+            VALUES("branch", "#{branch,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getCloneUrl() != null) {
+            VALUES("clone_url", "#{cloneUrl,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getStatus() != null) {
+            VALUES("`status`", "#{status,jdbcType=INTEGER}");
         }
         
         return SQL();
     }
 
-    public String selectByExample(GrayEnvEntityExample example) {
+    public String selectByExample(GrayProjectEntityExample example) {
         BEGIN();
         if (example != null && example.isDistinct()) {
             SELECT_DISTINCT("id");
@@ -77,10 +93,14 @@ public class GrayEnvEntitySqlProvider {
         }
         SELECT("create_time");
         SELECT("update_time");
+        SELECT("gray_env_id");
         SELECT("description");
         SELECT("`name`");
-        SELECT("expire_time");
-        FROM("gray_env");
+        SELECT("sub_project_path");
+        SELECT("branch");
+        SELECT("clone_url");
+        SELECT("`status`");
+        FROM("gray_project");
         applyWhere(example, false);
         
         if (example != null && example.getOrderByClause() != null) {
@@ -91,11 +111,11 @@ public class GrayEnvEntitySqlProvider {
     }
 
     public String updateByExampleSelective(Map<String, Object> parameter) {
-        GrayEnvEntity record = (GrayEnvEntity) parameter.get("record");
-        GrayEnvEntityExample example = (GrayEnvEntityExample) parameter.get("example");
+        GrayProjectEntity record = (GrayProjectEntity) parameter.get("record");
+        GrayProjectEntityExample example = (GrayProjectEntityExample) parameter.get("example");
         
         BEGIN();
-        UPDATE("gray_env");
+        UPDATE("gray_project");
         
         if (record.getId() != null) {
             SET("id = #{record.id,jdbcType=INTEGER}");
@@ -109,6 +129,10 @@ public class GrayEnvEntitySqlProvider {
             SET("update_time = #{record.updateTime,jdbcType=TIMESTAMP}");
         }
         
+        if (record.getGrayEnvId() != null) {
+            SET("gray_env_id = #{record.grayEnvId,jdbcType=INTEGER}");
+        }
+        
         if (record.getDescription() != null) {
             SET("description = #{record.description,jdbcType=VARCHAR}");
         }
@@ -117,8 +141,20 @@ public class GrayEnvEntitySqlProvider {
             SET("`name` = #{record.name,jdbcType=VARCHAR}");
         }
         
-        if (record.getExpireTime() != null) {
-            SET("expire_time = #{record.expireTime,jdbcType=TIMESTAMP}");
+        if (record.getSubProjectPath() != null) {
+            SET("sub_project_path = #{record.subProjectPath,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getBranch() != null) {
+            SET("branch = #{record.branch,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getCloneUrl() != null) {
+            SET("clone_url = #{record.cloneUrl,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getStatus() != null) {
+            SET("`status` = #{record.status,jdbcType=INTEGER}");
         }
         
         applyWhere(example, true);
@@ -127,23 +163,27 @@ public class GrayEnvEntitySqlProvider {
 
     public String updateByExample(Map<String, Object> parameter) {
         BEGIN();
-        UPDATE("gray_env");
+        UPDATE("gray_project");
         
         SET("id = #{record.id,jdbcType=INTEGER}");
         SET("create_time = #{record.createTime,jdbcType=TIMESTAMP}");
         SET("update_time = #{record.updateTime,jdbcType=TIMESTAMP}");
+        SET("gray_env_id = #{record.grayEnvId,jdbcType=INTEGER}");
         SET("description = #{record.description,jdbcType=VARCHAR}");
         SET("`name` = #{record.name,jdbcType=VARCHAR}");
-        SET("expire_time = #{record.expireTime,jdbcType=TIMESTAMP}");
+        SET("sub_project_path = #{record.subProjectPath,jdbcType=VARCHAR}");
+        SET("branch = #{record.branch,jdbcType=VARCHAR}");
+        SET("clone_url = #{record.cloneUrl,jdbcType=VARCHAR}");
+        SET("`status` = #{record.status,jdbcType=INTEGER}");
         
-        GrayEnvEntityExample example = (GrayEnvEntityExample) parameter.get("example");
+        GrayProjectEntityExample example = (GrayProjectEntityExample) parameter.get("example");
         applyWhere(example, true);
         return SQL();
     }
 
-    public String updateByPrimaryKeySelective(GrayEnvEntity record) {
+    public String updateByPrimaryKeySelective(GrayProjectEntity record) {
         BEGIN();
-        UPDATE("gray_env");
+        UPDATE("gray_project");
         
         if (record.getCreateTime() != null) {
             SET("create_time = #{createTime,jdbcType=TIMESTAMP}");
@@ -151,6 +191,10 @@ public class GrayEnvEntitySqlProvider {
         
         if (record.getUpdateTime() != null) {
             SET("update_time = #{updateTime,jdbcType=TIMESTAMP}");
+        }
+        
+        if (record.getGrayEnvId() != null) {
+            SET("gray_env_id = #{grayEnvId,jdbcType=INTEGER}");
         }
         
         if (record.getDescription() != null) {
@@ -161,8 +205,20 @@ public class GrayEnvEntitySqlProvider {
             SET("`name` = #{name,jdbcType=VARCHAR}");
         }
         
-        if (record.getExpireTime() != null) {
-            SET("expire_time = #{expireTime,jdbcType=TIMESTAMP}");
+        if (record.getSubProjectPath() != null) {
+            SET("sub_project_path = #{subProjectPath,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getBranch() != null) {
+            SET("branch = #{branch,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getCloneUrl() != null) {
+            SET("clone_url = #{cloneUrl,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getStatus() != null) {
+            SET("`status` = #{status,jdbcType=INTEGER}");
         }
         
         WHERE("id = #{id,jdbcType=INTEGER}");
@@ -170,7 +226,7 @@ public class GrayEnvEntitySqlProvider {
         return SQL();
     }
 
-    protected void applyWhere(GrayEnvEntityExample example, boolean includeExamplePhrase) {
+    protected void applyWhere(GrayProjectEntityExample example, boolean includeExamplePhrase) {
         if (example == null) {
             return;
         }

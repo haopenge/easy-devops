@@ -35,6 +35,8 @@
 
         <!--  <table schema="PUBLIC" tableName="%"/>-->
         <table schema="" tableName="gray_env" domainObjectName="GrayEnvEntity"></table>
+        <table schema="" tableName="gray_project" domainObjectName="GrayProjectEntity"></table>
+
 
 
     </context>

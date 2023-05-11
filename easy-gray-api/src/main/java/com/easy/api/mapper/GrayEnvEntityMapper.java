@@ -2,11 +2,11 @@ package com.easy.api.mapper;
 
 import com.easy.api.domain.entity.GrayEnvEntity;
 import com.easy.api.domain.entity.GrayEnvEntityExample;
+import java.util.List;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.DeleteProvider;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
@@ -16,9 +16,6 @@ import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.type.JdbcType;
 
-import java.util.List;
-
-@Mapper
 public interface GrayEnvEntityMapper {
     @SelectProvider(type=GrayEnvEntitySqlProvider.class, method="countByExample")
     int countByExample(GrayEnvEntityExample example);
@@ -34,13 +31,11 @@ public interface GrayEnvEntityMapper {
 
     @Insert({
         "insert into gray_env (id, create_time, ",
-        "update_time, `state`, ",
-        "description, `name`, ",
-        "expire_time, ext_obj)",
+        "update_time, description, ",
+        "`name`, expire_time)",
         "values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, ",
-        "#{updateTime,jdbcType=TIMESTAMP}, #{state,jdbcType=INTEGER}, ",
-        "#{description,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, ",
-        "#{expireTime,jdbcType=TIMESTAMP}, #{extObj,jdbcType=VARCHAR})"
+        "#{updateTime,jdbcType=TIMESTAMP}, #{description,jdbcType=VARCHAR}, ",
+        "#{name,jdbcType=VARCHAR}, #{expireTime,jdbcType=TIMESTAMP})"
     })
     int insert(GrayEnvEntity record);
 
@@ -52,17 +47,15 @@ public interface GrayEnvEntityMapper {
         @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
         @Result(column="create_time", property="createTime", jdbcType=JdbcType.TIMESTAMP),
         @Result(column="update_time", property="updateTime", jdbcType=JdbcType.TIMESTAMP),
-        @Result(column="state", property="state", jdbcType=JdbcType.INTEGER),
         @Result(column="description", property="description", jdbcType=JdbcType.VARCHAR),
         @Result(column="name", property="name", jdbcType=JdbcType.VARCHAR),
-        @Result(column="expire_time", property="expireTime", jdbcType=JdbcType.TIMESTAMP),
-        @Result(column="ext_obj", property="extObj", jdbcType=JdbcType.VARCHAR)
+        @Result(column="expire_time", property="expireTime", jdbcType=JdbcType.TIMESTAMP)
     })
     List<GrayEnvEntity> selectByExample(GrayEnvEntityExample example);
 
     @Select({
         "select",
-        "id, create_time, update_time, `state`, description, `name`, expire_time, ext_obj",
+        "id, create_time, update_time, description, `name`, expire_time",
         "from gray_env",
         "where id = #{id,jdbcType=INTEGER}"
     })
@@ -70,11 +63,9 @@ public interface GrayEnvEntityMapper {
         @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
         @Result(column="create_time", property="createTime", jdbcType=JdbcType.TIMESTAMP),
         @Result(column="update_time", property="updateTime", jdbcType=JdbcType.TIMESTAMP),
-        @Result(column="state", property="state", jdbcType=JdbcType.INTEGER),
         @Result(column="description", property="description", jdbcType=JdbcType.VARCHAR),
         @Result(column="name", property="name", jdbcType=JdbcType.VARCHAR),
-        @Result(column="expire_time", property="expireTime", jdbcType=JdbcType.TIMESTAMP),
-        @Result(column="ext_obj", property="extObj", jdbcType=JdbcType.VARCHAR)
+        @Result(column="expire_time", property="expireTime", jdbcType=JdbcType.TIMESTAMP)
     })
     GrayEnvEntity selectByPrimaryKey(Integer id);
 
@@ -91,11 +82,9 @@ public interface GrayEnvEntityMapper {
         "update gray_env",
         "set create_time = #{createTime,jdbcType=TIMESTAMP},",
           "update_time = #{updateTime,jdbcType=TIMESTAMP},",
-          "`state` = #{state,jdbcType=INTEGER},",
           "description = #{description,jdbcType=VARCHAR},",
           "`name` = #{name,jdbcType=VARCHAR},",
-          "expire_time = #{expireTime,jdbcType=TIMESTAMP},",
-          "ext_obj = #{extObj,jdbcType=VARCHAR}",
+          "expire_time = #{expireTime,jdbcType=TIMESTAMP}",
         "where id = #{id,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(GrayEnvEntity record);
