@@ -6,6 +6,7 @@ import com.easy.api.domain.entity.GrayEnvEntityExample;
 import com.easy.api.domain.entity.GrayProjectEntity;
 import com.easy.api.domain.entity.GrayProjectEntityExample;
 import com.easy.api.domain.enumx.FailureEnum;
+import com.easy.api.domain.vo.request.GrayEditRequestVo;
 import com.easy.api.domain.vo.response.GitProjectResponseVo;
 import com.easy.api.domain.vo.response.GrayEnvResponseVo;
 import com.easy.api.exception.ServiceException;
@@ -73,6 +74,23 @@ public class GrayService {
         }
 
         return saveEntity.getId();
+    }
+
+    /**
+     * 更新环境信息
+     *
+     * @param requestVo 请求Vo
+     */
+    public void editGrayEnv(GrayEditRequestVo requestVo) {
+        GrayEnvEntity grayEnvEntity = grayEnvMapper.selectByPrimaryKey(requestVo.getId());
+        if (Objects.isNull(grayEnvEntity)) {
+            return;
+        }
+        GrayEnvEntity updateEntity = new GrayEnvEntity();
+        updateEntity.setId(requestVo.getId());
+        updateEntity.setExpireTime(requestVo.getExpireTime());
+        updateEntity.setDescription(requestVo.getDescription());
+        grayEnvMapper.updateByPrimaryKeySelective(updateEntity);
     }
 
     public void deleteById(Integer id) {

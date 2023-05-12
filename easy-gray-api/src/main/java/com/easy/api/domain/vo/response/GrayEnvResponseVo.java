@@ -1,5 +1,6 @@
 package com.easy.api.domain.vo.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.util.Date;
@@ -17,5 +18,6 @@ public class GrayEnvResponseVo {
 
     private String name;
 
+    @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private Date expireTime;
 }

@@ -6,12 +6,17 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class GrayAddRequestVo {
+public class GrayEditRequestVo {
 
     /**
-     * 独立环境名称
+     * 环境id
      */
-    private String name;
+    private Integer id;
+
+    /**
+     * 描述
+     */
+    private String description;
 
     @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private Date expireTime;

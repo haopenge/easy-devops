@@ -2,6 +2,7 @@ package com.easy.api.controller;
 
 import com.easy.api.domain.enumx.FailureEnum;
 import com.easy.api.domain.vo.request.GrayAddRequestVo;
+import com.easy.api.domain.vo.request.GrayEditRequestVo;
 import com.easy.api.domain.vo.response.GrayEnvResponseVo;
 import com.easy.api.service.GrayService;
 import com.easy.api.service.IGitService;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Objects;
 
 @RequestMapping("/env")
 @RestController
@@ -39,6 +41,18 @@ public class EnvController extends BaseController {
         }
         Integer grayEnvId = grayService.addGrayEnv(requestVo.getName(), requestVo.getExpireTime());
         return success(grayEnvId);
+    }
+
+    /**
+     * 更新灰度环境
+     */
+    @PostMapping("/edit")
+    public ApiResult<Void> editGrayEnv(@RequestBody GrayEditRequestVo requestVo) {
+        if (Objects.isNull(requestVo.getId())) {
+            return failure(FailureEnum.PARAM_ERROR);
+        }
+        grayService.editGrayEnv(requestVo);
+        return success();
     }
 
     /**
