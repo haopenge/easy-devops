@@ -39,7 +39,7 @@ public class EnvController extends BaseController {
         if (StringUtils.isBlank(requestVo.getName())) {
             return failure(FailureEnum.PARAM_ERROR);
         }
-        Integer grayEnvId = grayService.addGrayEnv(requestVo.getName(), requestVo.getExpireTime());
+        Integer grayEnvId = grayService.addGrayEnv(requestVo);
         return success(grayEnvId);
     }
 

@@ -50,11 +50,11 @@ public class GrayProjectEntity {
     private String name;
 
     /**
-     * 子项目包路径，项目为子项目时填写
+     * git全路径
      */
-    @Column(name = "sub_project_path")
-    @ApiModelProperty("子项目包路径，项目为子项目时填写")
-    private String subProjectPath;
+    @Column(name = "full_name")
+    @ApiModelProperty("git全路径")
+    private String fullName;
 
     /**
      * git项目分支

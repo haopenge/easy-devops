@@ -485,73 +485,73 @@ public class GrayProjectEntityExample {
             return (Criteria) this;
         }
 
-        public Criteria andSubProjectPathIsNull() {
-            addCriterion("sub_project_path is null");
+        public Criteria andFullNameIsNull() {
+            addCriterion("full_name is null");
             return (Criteria) this;
         }
 
-        public Criteria andSubProjectPathIsNotNull() {
-            addCriterion("sub_project_path is not null");
+        public Criteria andFullNameIsNotNull() {
+            addCriterion("full_name is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSubProjectPathEqualTo(String value) {
-            addCriterion("sub_project_path =", value, "subProjectPath");
+        public Criteria andFullNameEqualTo(String value) {
+            addCriterion("full_name =", value, "fullName");
             return (Criteria) this;
         }
 
-        public Criteria andSubProjectPathNotEqualTo(String value) {
-            addCriterion("sub_project_path <>", value, "subProjectPath");
+        public Criteria andFullNameNotEqualTo(String value) {
+            addCriterion("full_name <>", value, "fullName");
             return (Criteria) this;
         }
 
-        public Criteria andSubProjectPathGreaterThan(String value) {
-            addCriterion("sub_project_path >", value, "subProjectPath");
+        public Criteria andFullNameGreaterThan(String value) {
+            addCriterion("full_name >", value, "fullName");
             return (Criteria) this;
         }
 
-        public Criteria andSubProjectPathGreaterThanOrEqualTo(String value) {
-            addCriterion("sub_project_path >=", value, "subProjectPath");
+        public Criteria andFullNameGreaterThanOrEqualTo(String value) {
+            addCriterion("full_name >=", value, "fullName");
             return (Criteria) this;
         }
 
-        public Criteria andSubProjectPathLessThan(String value) {
-            addCriterion("sub_project_path <", value, "subProjectPath");
+        public Criteria andFullNameLessThan(String value) {
+            addCriterion("full_name <", value, "fullName");
             return (Criteria) this;
         }
 
-        public Criteria andSubProjectPathLessThanOrEqualTo(String value) {
-            addCriterion("sub_project_path <=", value, "subProjectPath");
+        public Criteria andFullNameLessThanOrEqualTo(String value) {
+            addCriterion("full_name <=", value, "fullName");
             return (Criteria) this;
         }
 
-        public Criteria andSubProjectPathLike(String value) {
-            addCriterion("sub_project_path like", value, "subProjectPath");
+        public Criteria andFullNameLike(String value) {
+            addCriterion("full_name like", value, "fullName");
             return (Criteria) this;
         }
 
-        public Criteria andSubProjectPathNotLike(String value) {
-            addCriterion("sub_project_path not like", value, "subProjectPath");
+        public Criteria andFullNameNotLike(String value) {
+            addCriterion("full_name not like", value, "fullName");
             return (Criteria) this;
         }
 
-        public Criteria andSubProjectPathIn(List<String> values) {
-            addCriterion("sub_project_path in", values, "subProjectPath");
+        public Criteria andFullNameIn(List<String> values) {
+            addCriterion("full_name in", values, "fullName");
             return (Criteria) this;
         }
 
-        public Criteria andSubProjectPathNotIn(List<String> values) {
-            addCriterion("sub_project_path not in", values, "subProjectPath");
+        public Criteria andFullNameNotIn(List<String> values) {
+            addCriterion("full_name not in", values, "fullName");
             return (Criteria) this;
         }
 
-        public Criteria andSubProjectPathBetween(String value1, String value2) {
-            addCriterion("sub_project_path between", value1, value2, "subProjectPath");
+        public Criteria andFullNameBetween(String value1, String value2) {
+            addCriterion("full_name between", value1, value2, "fullName");
             return (Criteria) this;
         }
 
-        public Criteria andSubProjectPathNotBetween(String value1, String value2) {
-            addCriterion("sub_project_path not between", value1, value2, "subProjectPath");
+        public Criteria andFullNameNotBetween(String value1, String value2) {
+            addCriterion("full_name not between", value1, value2, "fullName");
             return (Criteria) this;
         }
 

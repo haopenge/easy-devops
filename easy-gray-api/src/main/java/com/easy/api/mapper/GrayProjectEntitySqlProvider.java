@@ -65,8 +65,8 @@ public class GrayProjectEntitySqlProvider {
             VALUES("`name`", "#{name,jdbcType=VARCHAR}");
         }
         
-        if (record.getSubProjectPath() != null) {
-            VALUES("sub_project_path", "#{subProjectPath,jdbcType=VARCHAR}");
+        if (record.getFullName() != null) {
+            VALUES("full_name", "#{fullName,jdbcType=VARCHAR}");
         }
         
         if (record.getBranch() != null) {
@@ -96,7 +96,7 @@ public class GrayProjectEntitySqlProvider {
         SELECT("gray_env_id");
         SELECT("description");
         SELECT("`name`");
-        SELECT("sub_project_path");
+        SELECT("full_name");
         SELECT("branch");
         SELECT("clone_url");
         SELECT("`status`");
@@ -141,8 +141,8 @@ public class GrayProjectEntitySqlProvider {
             SET("`name` = #{record.name,jdbcType=VARCHAR}");
         }
         
-        if (record.getSubProjectPath() != null) {
-            SET("sub_project_path = #{record.subProjectPath,jdbcType=VARCHAR}");
+        if (record.getFullName() != null) {
+            SET("full_name = #{record.fullName,jdbcType=VARCHAR}");
         }
         
         if (record.getBranch() != null) {
@@ -171,7 +171,7 @@ public class GrayProjectEntitySqlProvider {
         SET("gray_env_id = #{record.grayEnvId,jdbcType=INTEGER}");
         SET("description = #{record.description,jdbcType=VARCHAR}");
         SET("`name` = #{record.name,jdbcType=VARCHAR}");
-        SET("sub_project_path = #{record.subProjectPath,jdbcType=VARCHAR}");
+        SET("full_name = #{record.fullName,jdbcType=VARCHAR}");
         SET("branch = #{record.branch,jdbcType=VARCHAR}");
         SET("clone_url = #{record.cloneUrl,jdbcType=VARCHAR}");
         SET("`status` = #{record.status,jdbcType=INTEGER}");
@@ -205,8 +205,8 @@ public class GrayProjectEntitySqlProvider {
             SET("`name` = #{name,jdbcType=VARCHAR}");
         }
         
-        if (record.getSubProjectPath() != null) {
-            SET("sub_project_path = #{subProjectPath,jdbcType=VARCHAR}");
+        if (record.getFullName() != null) {
+            SET("full_name = #{fullName,jdbcType=VARCHAR}");
         }
         
         if (record.getBranch() != null) {

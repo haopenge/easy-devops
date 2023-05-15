@@ -40,6 +40,10 @@
 		<module>easy-gray-api</module>
 		<module>easy-gray-core</module>
 		<module>easy-gray-gateway</module>
+		<module>easy-gray-example/easy-gray-intf</module>
+		<module>easy-gray-example/easy-gray-gateway-api</module>
+		<module>easy-gray-example/easy-gray-provider-one</module>
+		<module>easy-gray-example/easy-gray-provider-two</module>
 	</modules>
 	<dependencyManagement>
 		<dependencies>

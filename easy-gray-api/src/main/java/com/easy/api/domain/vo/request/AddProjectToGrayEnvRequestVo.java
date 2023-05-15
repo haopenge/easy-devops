@@ -1,6 +1,9 @@
 package com.easy.api.domain.vo.request;
 
+import com.sun.istack.internal.NotNull;
 import lombok.Data;
+
+import javax.validation.constraints.NotBlank;
 
 @Data
 public class AddProjectToGrayEnvRequestVo {
@@ -8,21 +11,19 @@ public class AddProjectToGrayEnvRequestVo {
    /**
     * 灰度环境id
     */
-   private Integer id;
+   @NotNull
+   private Integer envId;
 
    /**
     * 项目
     */
+   @NotNull
    private String fullName;
-
-   /**
-    * 项目包路径，项目为子项目时填写
-    */
-   private String subProjectPath;
 
    /**
     * 分支名
     */
+   @NotBlank
    private String branchName;
 
 }

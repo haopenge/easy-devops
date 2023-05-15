@@ -13,6 +13,11 @@ public class GrayAddRequestVo {
      */
     private String name;
 
+    /**
+     * 描述
+     */
+    private String description;
+
     @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private Date expireTime;
 }

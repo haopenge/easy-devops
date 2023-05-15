@@ -35,8 +35,8 @@ public class GitController extends BaseController {
     /**
      * 获取分支列表
      */
-    @GetMapping("/findProjectBranch")
-    public ApiResult<List<String>> findProjectBranch(String projectUrl) {
+    @GetMapping("/findBranches")
+    public ApiResult<List<String>> findProjectBranches(String projectUrl) {
         List<String> remoteBranches = gitService.getRemoteBranches(projectUrl);
         return success(remoteBranches);
     }

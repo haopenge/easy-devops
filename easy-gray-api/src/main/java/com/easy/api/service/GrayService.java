@@ -6,6 +6,9 @@ import com.easy.api.domain.entity.GrayEnvEntityExample;
 import com.easy.api.domain.entity.GrayProjectEntity;
 import com.easy.api.domain.entity.GrayProjectEntityExample;
 import com.easy.api.domain.enumx.FailureEnum;
+import com.easy.api.domain.vo.request.AddProjectToGrayEnvRequestVo;
+import com.easy.api.domain.vo.request.EditProjectRequestVo;
+import com.easy.api.domain.vo.request.GrayAddRequestVo;
 import com.easy.api.domain.vo.request.GrayEditRequestVo;
 import com.easy.api.domain.vo.response.GitProjectResponseVo;
 import com.easy.api.domain.vo.response.GrayEnvResponseVo;
@@ -31,7 +34,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -60,15 +62,19 @@ public class GrayService {
     @Value("${docker.repository_pwd:}")
     private String dockerRepositoryPwd;
 
-    public Integer addGrayEnv(String name, Date expireTime) {
+    @Value("${git.name:xiaoyuxxx}")
+    private String gitName;
+
+    public Integer addGrayEnv(GrayAddRequestVo requestVo) {
         GrayEnvEntity saveEntity = new GrayEnvEntity();
-        saveEntity.setName(name);
-        saveEntity.setExpireTime(expireTime);
+        saveEntity.setName(requestVo.getName());
+        saveEntity.setDescription(requestVo.getDescription());
+        saveEntity.setExpireTime(requestVo.getExpireTime());
 
         grayEnvMapper.insertSelective(saveEntity);
 
         try {
-            k8sService.createNamespace(name);
+            k8sService.createNamespace(requestVo.getName());
         } catch (Exception e) {
             throw new ServiceException(FailureEnum.K8S_NAMESPACE_CREATE_ERROR);
         }
@@ -109,33 +115,55 @@ public class GrayService {
     /**
      * 添加项目到灰度环境
      */
-    public void addProjectToGrayEnv(Integer id, String fullName, String subProjectPath, String branchName) {
-        GrayEnvEntity grayEnvEntity = grayEnvMapper.selectByPrimaryKey(id);
+    public void addProjectToGrayEnv(AddProjectToGrayEnvRequestVo requestVo) {
+        Integer envId = requestVo.getEnvId();
+        GrayEnvEntity grayEnvEntity = grayEnvMapper.selectByPrimaryKey(envId);
         if (Objects.isNull(grayEnvEntity)) {
             throw new ServiceException(FailureEnum.GRAY_ENV_NOT_EXIST);
         }
 
-        GitProjectResponseVo gitProjectResponseVo = gitService.findRepositoryByFullName(fullName);
+        String fullName = requestVo.getFullName();
+        GitProjectResponseVo gitProjectResponseVo = gitService.findRepositoryByFullName(gitName + "/" + "easy-gray");
         if (Objects.isNull(gitProjectResponseVo)) {
             throw new ServiceException(FailureEnum.GIT_FETCH_EXCEPTION);
         }
 
-        String projectId = gitProjectResponseVo.getName();
-        if (StringUtils.isNotBlank(subProjectPath)) {
-            int i = subProjectPath.lastIndexOf("/");
-            projectId = (i == -1 ? subProjectPath : subProjectPath.substring(i + 1));
+        int i = fullName.lastIndexOf("/");
+        String name = (i == -1 ? fullName : fullName.substring(i + 1));
+
+        GrayProjectEntityExample example = new GrayProjectEntityExample();
+        example.createCriteria().andGrayEnvIdEqualTo(envId).andNameEqualTo(name);
+        List<GrayProjectEntity> grayProjectEntities = grayProjectEntityMapper.selectByExample(example);
+        if (!CollectionUtils.isEmpty(grayProjectEntities)) {
+            throw new ServiceException(FailureEnum.GRAY_ENV_PROJECT_EXIST);
         }
 
-        // 更新 此项目信息
+        // 新增项目
         GrayProjectEntity projectEntity = new GrayProjectEntity();
-        projectEntity.setName(projectId);
-        projectEntity.setSubProjectPath(subProjectPath);
-        projectEntity.setBranch(branchName);
+        projectEntity.setName(name);
+        projectEntity.setFullName(fullName);
+        projectEntity.setBranch(requestVo.getBranchName());
         projectEntity.setCloneUrl(gitProjectResponseVo.getCloneUrl());
         projectEntity.setDescription(gitProjectResponseVo.getDescription());
-        projectEntity.setGrayEnvId(id);
-
+        projectEntity.setGrayEnvId(envId);
         grayProjectEntityMapper.insertSelective(projectEntity);
+    }
+
+    /**
+     * 编辑项目
+     *
+     * @param editProjectRequestVo 请求vo
+     */
+    public void editProject(EditProjectRequestVo editProjectRequestVo) {
+        GrayProjectEntity projectEntity = grayProjectEntityMapper.selectByPrimaryKey(editProjectRequestVo.getId());
+        if (Objects.isNull(projectEntity)) {
+            throw new ServiceException(FailureEnum.GRAY_ENV_PROJECT_NOT_EXIST);
+        }
+        // 更新项目
+        GrayProjectEntity updateEntity = new GrayProjectEntity();
+        updateEntity.setId(editProjectRequestVo.getId());
+        updateEntity.setBranch(editProjectRequestVo.getBranchName());
+        grayProjectEntityMapper.updateByPrimaryKeySelective(updateEntity);
     }
 
     public void deleteProjectInGrayEnv(Integer projectId) {
@@ -169,7 +197,7 @@ public class GrayService {
         }
 
         String gitName = projectEntity.getName();
-        String subProjectPath = projectEntity.getSubProjectPath();
+        String subProjectPath = projectEntity.getFullName();
         String branch = projectEntity.getBranch();
         String cloneUrl = projectEntity.getCloneUrl();
 

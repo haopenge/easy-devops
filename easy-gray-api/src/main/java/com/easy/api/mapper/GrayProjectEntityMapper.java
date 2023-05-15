@@ -33,12 +33,12 @@ public interface GrayProjectEntityMapper {
         "insert into gray_project (id, create_time, ",
         "update_time, gray_env_id, ",
         "description, `name`, ",
-        "sub_project_path, branch, ",
+        "full_name, branch, ",
         "clone_url, `status`)",
         "values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, ",
         "#{updateTime,jdbcType=TIMESTAMP}, #{grayEnvId,jdbcType=INTEGER}, ",
         "#{description,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, ",
-        "#{subProjectPath,jdbcType=VARCHAR}, #{branch,jdbcType=VARCHAR}, ",
+        "#{fullName,jdbcType=VARCHAR}, #{branch,jdbcType=VARCHAR}, ",
         "#{cloneUrl,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER})"
     })
     int insert(GrayProjectEntity record);
@@ -54,7 +54,7 @@ public interface GrayProjectEntityMapper {
         @Result(column="gray_env_id", property="grayEnvId", jdbcType=JdbcType.INTEGER),
         @Result(column="description", property="description", jdbcType=JdbcType.VARCHAR),
         @Result(column="name", property="name", jdbcType=JdbcType.VARCHAR),
-        @Result(column="sub_project_path", property="subProjectPath", jdbcType=JdbcType.VARCHAR),
+        @Result(column="full_name", property="fullName", jdbcType=JdbcType.VARCHAR),
         @Result(column="branch", property="branch", jdbcType=JdbcType.VARCHAR),
         @Result(column="clone_url", property="cloneUrl", jdbcType=JdbcType.VARCHAR),
         @Result(column="status", property="status", jdbcType=JdbcType.INTEGER)
@@ -63,8 +63,8 @@ public interface GrayProjectEntityMapper {
 
     @Select({
         "select",
-        "id, create_time, update_time, gray_env_id, description, `name`, sub_project_path, ",
-        "branch, clone_url, `status`",
+        "id, create_time, update_time, gray_env_id, description, `name`, full_name, branch, ",
+        "clone_url, `status`",
         "from gray_project",
         "where id = #{id,jdbcType=INTEGER}"
     })
@@ -75,7 +75,7 @@ public interface GrayProjectEntityMapper {
         @Result(column="gray_env_id", property="grayEnvId", jdbcType=JdbcType.INTEGER),
         @Result(column="description", property="description", jdbcType=JdbcType.VARCHAR),
         @Result(column="name", property="name", jdbcType=JdbcType.VARCHAR),
-        @Result(column="sub_project_path", property="subProjectPath", jdbcType=JdbcType.VARCHAR),
+        @Result(column="full_name", property="fullName", jdbcType=JdbcType.VARCHAR),
         @Result(column="branch", property="branch", jdbcType=JdbcType.VARCHAR),
         @Result(column="clone_url", property="cloneUrl", jdbcType=JdbcType.VARCHAR),
         @Result(column="status", property="status", jdbcType=JdbcType.INTEGER)
@@ -98,7 +98,7 @@ public interface GrayProjectEntityMapper {
           "gray_env_id = #{grayEnvId,jdbcType=INTEGER},",
           "description = #{description,jdbcType=VARCHAR},",
           "`name` = #{name,jdbcType=VARCHAR},",
-          "sub_project_path = #{subProjectPath,jdbcType=VARCHAR},",
+          "full_name = #{fullName,jdbcType=VARCHAR},",
           "branch = #{branch,jdbcType=VARCHAR},",
           "clone_url = #{cloneUrl,jdbcType=VARCHAR},",
           "`status` = #{status,jdbcType=INTEGER}",
