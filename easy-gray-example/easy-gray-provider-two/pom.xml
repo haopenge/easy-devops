@@ -24,7 +24,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.husky</groupId>
+            <groupId>io.github.haopenge</groupId>
             <artifactId>easy-gray-intf</artifactId>
             <version>0.0.2-SNAPSHOT</version>
         </dependency>
