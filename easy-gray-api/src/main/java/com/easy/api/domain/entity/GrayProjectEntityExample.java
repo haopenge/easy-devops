@@ -754,6 +754,76 @@ public class GrayProjectEntityExample {
             addCriterion("`status` not between", value1, value2, "status");
             return (Criteria) this;
         }
+
+        public Criteria andGitNameIsNull() {
+            addCriterion("git_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGitNameIsNotNull() {
+            addCriterion("git_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGitNameEqualTo(String value) {
+            addCriterion("git_name =", value, "gitName");
+            return (Criteria) this;
+        }
+
+        public Criteria andGitNameNotEqualTo(String value) {
+            addCriterion("git_name <>", value, "gitName");
+            return (Criteria) this;
+        }
+
+        public Criteria andGitNameGreaterThan(String value) {
+            addCriterion("git_name >", value, "gitName");
+            return (Criteria) this;
+        }
+
+        public Criteria andGitNameGreaterThanOrEqualTo(String value) {
+            addCriterion("git_name >=", value, "gitName");
+            return (Criteria) this;
+        }
+
+        public Criteria andGitNameLessThan(String value) {
+            addCriterion("git_name <", value, "gitName");
+            return (Criteria) this;
+        }
+
+        public Criteria andGitNameLessThanOrEqualTo(String value) {
+            addCriterion("git_name <=", value, "gitName");
+            return (Criteria) this;
+        }
+
+        public Criteria andGitNameLike(String value) {
+            addCriterion("git_name like", value, "gitName");
+            return (Criteria) this;
+        }
+
+        public Criteria andGitNameNotLike(String value) {
+            addCriterion("git_name not like", value, "gitName");
+            return (Criteria) this;
+        }
+
+        public Criteria andGitNameIn(List<String> values) {
+            addCriterion("git_name in", values, "gitName");
+            return (Criteria) this;
+        }
+
+        public Criteria andGitNameNotIn(List<String> values) {
+            addCriterion("git_name not in", values, "gitName");
+            return (Criteria) this;
+        }
+
+        public Criteria andGitNameBetween(String value1, String value2) {
+            addCriterion("git_name between", value1, value2, "gitName");
+            return (Criteria) this;
+        }
+
+        public Criteria andGitNameNotBetween(String value1, String value2) {
+            addCriterion("git_name not between", value1, value2, "gitName");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

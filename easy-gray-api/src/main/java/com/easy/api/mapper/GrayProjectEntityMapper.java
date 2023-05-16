@@ -2,7 +2,6 @@ package com.easy.api.mapper;
 
 import com.easy.api.domain.entity.GrayProjectEntity;
 import com.easy.api.domain.entity.GrayProjectEntityExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.DeleteProvider;
 import org.apache.ibatis.annotations.Insert;
@@ -15,6 +14,8 @@ import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.type.JdbcType;
+
+import java.util.List;
 
 public interface GrayProjectEntityMapper {
     @SelectProvider(type=GrayProjectEntitySqlProvider.class, method="countByExample")
@@ -34,12 +35,14 @@ public interface GrayProjectEntityMapper {
         "update_time, gray_env_id, ",
         "description, `name`, ",
         "full_name, branch, ",
-        "clone_url, `status`)",
+        "clone_url, `status`, ",
+        "git_name)",
         "values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, ",
         "#{updateTime,jdbcType=TIMESTAMP}, #{grayEnvId,jdbcType=INTEGER}, ",
         "#{description,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, ",
         "#{fullName,jdbcType=VARCHAR}, #{branch,jdbcType=VARCHAR}, ",
-        "#{cloneUrl,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER})"
+        "#{cloneUrl,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, ",
+        "#{gitName,jdbcType=VARCHAR})"
     })
     int insert(GrayProjectEntity record);
 
@@ -57,14 +60,15 @@ public interface GrayProjectEntityMapper {
         @Result(column="full_name", property="fullName", jdbcType=JdbcType.VARCHAR),
         @Result(column="branch", property="branch", jdbcType=JdbcType.VARCHAR),
         @Result(column="clone_url", property="cloneUrl", jdbcType=JdbcType.VARCHAR),
-        @Result(column="status", property="status", jdbcType=JdbcType.INTEGER)
+        @Result(column="status", property="status", jdbcType=JdbcType.INTEGER),
+        @Result(column="git_name", property="gitName", jdbcType=JdbcType.VARCHAR)
     })
     List<GrayProjectEntity> selectByExample(GrayProjectEntityExample example);
 
     @Select({
         "select",
         "id, create_time, update_time, gray_env_id, description, `name`, full_name, branch, ",
-        "clone_url, `status`",
+        "clone_url, `status`, git_name",
         "from gray_project",
         "where id = #{id,jdbcType=INTEGER}"
     })
@@ -78,7 +82,8 @@ public interface GrayProjectEntityMapper {
         @Result(column="full_name", property="fullName", jdbcType=JdbcType.VARCHAR),
         @Result(column="branch", property="branch", jdbcType=JdbcType.VARCHAR),
         @Result(column="clone_url", property="cloneUrl", jdbcType=JdbcType.VARCHAR),
-        @Result(column="status", property="status", jdbcType=JdbcType.INTEGER)
+        @Result(column="status", property="status", jdbcType=JdbcType.INTEGER),
+        @Result(column="git_name", property="gitName", jdbcType=JdbcType.VARCHAR)
     })
     GrayProjectEntity selectByPrimaryKey(Integer id);
 
@@ -101,7 +106,8 @@ public interface GrayProjectEntityMapper {
           "full_name = #{fullName,jdbcType=VARCHAR},",
           "branch = #{branch,jdbcType=VARCHAR},",
           "clone_url = #{cloneUrl,jdbcType=VARCHAR},",
-          "`status` = #{status,jdbcType=INTEGER}",
+          "`status` = #{status,jdbcType=INTEGER},",
+          "git_name = #{gitName,jdbcType=VARCHAR}",
         "where id = #{id,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(GrayProjectEntity record);

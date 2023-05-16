@@ -74,4 +74,11 @@ public class GrayProjectEntity {
     @Column(name = "`status`")
     @ApiModelProperty("运行状态")
     private Integer status;
+
+    /**
+     * git项目名
+     */
+    @Column(name = "git_name")
+    @ApiModelProperty("git项目名")
+    private String gitName;
 }

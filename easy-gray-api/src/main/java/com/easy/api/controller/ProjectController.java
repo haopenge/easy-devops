@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.List;
 
+/**
+ * @author liupenghao
+ */
 @RequestMapping("/project")
 @RestController
 public class ProjectController extends BaseController {
@@ -33,7 +36,7 @@ public class ProjectController extends BaseController {
     }
 
     /**
-     * 添加项目灰度环境
+     * 添加项目
      */
     @PostMapping("/add")
     public ApiResult<Void> addProject(@RequestBody @Validated AddProjectToGrayEnvRequestVo addProjectToGrayEnv) {
@@ -50,6 +53,12 @@ public class ProjectController extends BaseController {
         return success();
     }
 
+    /**
+     * 运行项目
+     *
+     * @param projectId 项目id
+     * @return Void
+     */
     @RequestMapping("/run")
     public ApiResult<Void> runProjectInGrayEnv(Integer projectId) {
         grayService.runProjectInGrayEnv(projectId);

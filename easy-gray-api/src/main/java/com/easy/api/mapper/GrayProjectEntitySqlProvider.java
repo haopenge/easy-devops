@@ -81,6 +81,10 @@ public class GrayProjectEntitySqlProvider {
             VALUES("`status`", "#{status,jdbcType=INTEGER}");
         }
         
+        if (record.getGitName() != null) {
+            VALUES("git_name", "#{gitName,jdbcType=VARCHAR}");
+        }
+        
         return SQL();
     }
 
@@ -100,6 +104,7 @@ public class GrayProjectEntitySqlProvider {
         SELECT("branch");
         SELECT("clone_url");
         SELECT("`status`");
+        SELECT("git_name");
         FROM("gray_project");
         applyWhere(example, false);
         
@@ -157,6 +162,10 @@ public class GrayProjectEntitySqlProvider {
             SET("`status` = #{record.status,jdbcType=INTEGER}");
         }
         
+        if (record.getGitName() != null) {
+            SET("git_name = #{record.gitName,jdbcType=VARCHAR}");
+        }
+        
         applyWhere(example, true);
         return SQL();
     }
@@ -175,6 +184,7 @@ public class GrayProjectEntitySqlProvider {
         SET("branch = #{record.branch,jdbcType=VARCHAR}");
         SET("clone_url = #{record.cloneUrl,jdbcType=VARCHAR}");
         SET("`status` = #{record.status,jdbcType=INTEGER}");
+        SET("git_name = #{record.gitName,jdbcType=VARCHAR}");
         
         GrayProjectEntityExample example = (GrayProjectEntityExample) parameter.get("example");
         applyWhere(example, true);
@@ -219,6 +229,10 @@ public class GrayProjectEntitySqlProvider {
         
         if (record.getStatus() != null) {
             SET("`status` = #{status,jdbcType=INTEGER}");
+        }
+        
+        if (record.getGitName() != null) {
+            SET("git_name = #{gitName,jdbcType=VARCHAR}");
         }
         
         WHERE("id = #{id,jdbcType=INTEGER}");

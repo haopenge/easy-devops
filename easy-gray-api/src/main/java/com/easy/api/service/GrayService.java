@@ -19,9 +19,7 @@ import com.easy.api.util.ObjectUtil;
 import com.easy.core.util.CmdUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -53,17 +51,20 @@ public class GrayService {
     @Resource
     private GrayProjectEntityMapper grayProjectEntityMapper;
 
-    @Autowired
+    @Resource
     private K8sService k8sService;
 
-    @Autowired
+    @Resource
     private IGitService gitService;
+
+    @Value("${docker.repository_username}")
+    private String dockerRepositoryUsername;
 
     @Value("${docker.repository_pwd:}")
     private String dockerRepositoryPwd;
 
     @Value("${git.name:xiaoyuxxx}")
-    private String gitName;
+    private String gitUserName;
 
     public Integer addGrayEnv(GrayAddRequestVo requestVo) {
         GrayEnvEntity saveEntity = new GrayEnvEntity();
@@ -123,7 +124,7 @@ public class GrayService {
         }
 
         String fullName = requestVo.getFullName();
-        GitProjectResponseVo gitProjectResponseVo = gitService.findRepositoryByFullName(gitName + "/" + "easy-gray");
+        GitProjectResponseVo gitProjectResponseVo = gitService.findRepositoryByFullName(gitUserName + "/" + "easy-gray");
         if (Objects.isNull(gitProjectResponseVo)) {
             throw new ServiceException(FailureEnum.GIT_FETCH_EXCEPTION);
         }
@@ -141,6 +142,7 @@ public class GrayService {
         // 新增项目
         GrayProjectEntity projectEntity = new GrayProjectEntity();
         projectEntity.setName(name);
+        projectEntity.setGitName(fullName.substring(0, fullName.indexOf("/")));
         projectEntity.setFullName(fullName);
         projectEntity.setBranch(requestVo.getBranchName());
         projectEntity.setCloneUrl(gitProjectResponseVo.getCloneUrl());
@@ -196,25 +198,25 @@ public class GrayService {
             throw new ServiceException(FailureEnum.GRAY_ENV_PROJECT_NOT_EXIST);
         }
 
-        String gitName = projectEntity.getName();
-        String subProjectPath = projectEntity.getFullName();
+        String fullName = projectEntity.getFullName();
+        String gitName = projectEntity.getGitName();
         String branch = projectEntity.getBranch();
         String cloneUrl = projectEntity.getCloneUrl();
 
         // 子项目 兼容处理
-        String gitClonePath = k8sProjectClonePath + gitName;
-        String executePath = gitClonePath + (StringUtils.isBlank(subProjectPath) ? "" : File.separator + subProjectPath);
+        String gitClonePath = k8sProjectClonePath + File.separator + gitName;
+        String executePath = k8sProjectClonePath + File.separator + fullName;
 
         // 拉取代码
         FileUtil.del(gitClonePath);
         gitService.download(cloneUrl, branch, gitClonePath);
 
         // 文件复制 处理
-        String startShPath = executePath + File.separator + "deploy.sh";
+        String startShPath = executePath + File.separator + "build.sh";
 
         // 构建镜像
         String version = LocalDateTime.now().format(DateTimeFormatter.ofPattern("ddHHmmss"));
-        String commandLineStr = format("sh %s %s %s %s %s", startShPath, executePath, dockerRepositoryPwd, gitName, version);
+        String commandLineStr = format("sh %s %s %s %s %s", startShPath, dockerRepositoryUsername, dockerRepositoryPwd, gitName, version);
         String returnLogStr = CmdUtil.exec(10, TimeUnit.SECONDS, commandLineStr);
         log.info("runProjectInGrayEnv execute log \n : {}", returnLogStr);
 
@@ -226,11 +228,6 @@ public class GrayService {
             log.error("k8s deployment error ,", e);
             throw new ServiceException(FailureEnum.K8S_DEPLOY_DEPLOYMENT);
         }
-    }
-
-    private void copyFileToExecutePath(String executePath, String fileName) {
-        String filePath = Objects.requireNonNull(this.getClass().getClassLoader().getResource("k8s-gray/" + fileName)).getPath();
-        copy(filePath, executePath + File.separator + fileName);
     }
 
     public void copy(String resourcePath, String targetPath) {

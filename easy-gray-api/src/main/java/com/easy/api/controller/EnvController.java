@@ -5,7 +5,6 @@ import com.easy.api.domain.vo.request.GrayAddRequestVo;
 import com.easy.api.domain.vo.request.GrayEditRequestVo;
 import com.easy.api.domain.vo.response.GrayEnvResponseVo;
 import com.easy.api.service.GrayService;
-import com.easy.api.service.IGitService;
 import com.easy.core.domain.ApiResult;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +26,6 @@ public class EnvController extends BaseController {
 
     @Autowired
     private GrayService grayService;
-
-    @Autowired
-    private IGitService gitService;
 
     /**
      * 新增灰度环境
