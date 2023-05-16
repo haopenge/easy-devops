@@ -1,9 +1,5 @@
 package com.easy.api.domain.vo.request;
 
-import com.sun.istack.internal.NotNull;
-
-import javax.validation.constraints.NotBlank;
-
 /**
  * @author liupenghao
  */
@@ -13,13 +9,11 @@ public class EditProjectRequestVo {
    /**
     * 项目id
     */
-   @NotNull
    private Integer id;
 
    /**
     * 分支名
     */
-   @NotBlank
    private String branchName;
 
 
