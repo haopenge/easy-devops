@@ -1,7 +1,8 @@
 #!/bin/bash
-ALI_DOCKER_PWD=$1
-GRAY_ENV=$2
-BUILD_NUMBER=$3
+ALI_DOCKER_USER=$1
+ALI_DOCKER_PWD=$2
+GRAY_ENV=$3
+BUILD_NUMBER=$4
 
 SCRIPT=$(readlink -f "$0")
 # bin dir
@@ -19,7 +20,7 @@ echo "<<====================== 1.2 构建docker镜像 ===================>>"
 docker build -t registry.cn-hangzhou.aliyuncs.com/ranmo/easy-gray-gateway-api:${BUILD_NUMBER} -f Dockerfile .
 
 echo "<<====================== 1.3 登录docker仓库===================>>"
-docker login --username=16601114926 --password=${ALI_DOCKER_PWD} registry.cn-hangzhou.aliyuncs.com
+docker login --username=${ALI_DOCKER_USER} --password=${ALI_DOCKER_PWD} registry.cn-hangzhou.aliyuncs.com
 
 echo "<<====================== 1.4 docker镜像 ===================>>"
 docker push registry.cn-hangzhou.aliyuncs.com/ranmo/easy-gray-gateway-api:${BUILD_NUMBER}
