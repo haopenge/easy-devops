@@ -7,7 +7,7 @@ metadata:
   labels:
     app: easy-gray-gateway-api
     release: easy-gray-gateway-api
-    podEnv: qa
+    podEnv: pod-env
 spec:
   replicas: 1
   strategy:
@@ -30,7 +30,7 @@ spec:
         - name: ali-docker-repository
       containers:
         - name: easy-gray-gateway-api
-          image: registry.cn-hangzhou.aliyuncs.com/ranmo/easy-gray-gateway-api:22
+          image: registry.cn-hangzhou.aliyuncs.com/ranmo/easy-gray-gateway-api:build_number
           command:
             - sh
             - -c
@@ -40,7 +40,7 @@ spec:
             - name: JAVA_OPTS
               value: -Xms1024m -Xmx1024m
             - name: env
-              value: qa
+              value: pod-env
             - name: NODE_NAME
               valueFrom:
                 fieldRef:

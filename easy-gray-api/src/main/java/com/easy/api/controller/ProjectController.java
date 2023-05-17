@@ -7,6 +7,7 @@ import com.easy.api.service.GrayService;
 import com.easy.core.domain.ApiResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -59,9 +60,9 @@ public class ProjectController extends BaseController {
      * @param projectId 项目id
      * @return Void
      */
-    @RequestMapping("/run")
-    public ApiResult<Void> runProjectInGrayEnv(Integer projectId) {
-        grayService.runProjectInGrayEnv(projectId);
+    @PostMapping("/run")
+    public ApiResult<Void> runProjectInGrayEnv(Integer id) {
+        grayService.runProjectInGrayEnv(id);
         return success();
     }
 
@@ -71,7 +72,7 @@ public class ProjectController extends BaseController {
      * @param envId 环境id
      * @return 项目
      */
-    @RequestMapping("/findByEnvId")
+    @GetMapping("/findByEnvId")
     public ApiResult<List<GitProjectResponseVo>> findProject(Integer envId) {
         return success(grayService.findProject(envId));
     }

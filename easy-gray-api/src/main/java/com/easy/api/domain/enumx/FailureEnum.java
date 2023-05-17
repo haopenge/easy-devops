@@ -48,7 +48,7 @@ public enum FailureEnum {
     K8S_INIT_ERROR(100410,"k8s init error"),
 
 
-    K8S_DEPLOY_DEPLOYMENT(10020,"k8s deploy error"),
+    K8S_DEPLOY_DEPLOY_ERROR(10020,"k8s deploy error"),
 
     K8S_NAMESPACE_CREATE_ERROR(100430,"k8s create error"),
 

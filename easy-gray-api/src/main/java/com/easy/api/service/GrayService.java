@@ -197,6 +197,10 @@ public class GrayService {
         if (Objects.isNull(projectEntity)) {
             throw new ServiceException(FailureEnum.GRAY_ENV_PROJECT_NOT_EXIST);
         }
+        GrayEnvEntity grayEnvEntity = grayEnvMapper.selectByPrimaryKey(projectEntity.getGrayEnvId());
+        if (Objects.isNull(grayEnvEntity)) {
+            throw new ServiceException(FailureEnum.GRAY_ENV_NOT_EXIST);
+        }
 
         String fullName = projectEntity.getFullName();
         String gitName = projectEntity.getGitName();
@@ -216,17 +220,19 @@ public class GrayService {
 
         // 构建镜像
         String version = LocalDateTime.now().format(DateTimeFormatter.ofPattern("ddHHmmss"));
-        String commandLineStr = format("sh %s %s %s %s %s", startShPath, dockerRepositoryUsername, dockerRepositoryPwd, gitName, version);
+        String grayEnvName = grayEnvEntity.getName();
+
+        String commandLineStr = format("sh %s %s %s %s %s", startShPath, dockerRepositoryUsername, dockerRepositoryPwd, grayEnvName, version);
         String returnLogStr = CmdUtil.exec(10, TimeUnit.SECONDS, commandLineStr);
         log.info("runProjectInGrayEnv execute log \n : {}", returnLogStr);
 
         // 发布服务
         try {
             String deploymentFilePath = executePath + File.separator + "deployment.yaml";
-            k8sService.createDeployment(gitName, deploymentFilePath);
+            k8sService.createDeployment(grayEnvName, deploymentFilePath);
         } catch (Exception e) {
             log.error("k8s deployment error ,", e);
-            throw new ServiceException(FailureEnum.K8S_DEPLOY_DEPLOYMENT);
+            throw new ServiceException(FailureEnum.K8S_DEPLOY_DEPLOY_ERROR);
         }
     }
 

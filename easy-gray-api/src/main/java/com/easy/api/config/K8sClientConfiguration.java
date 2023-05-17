@@ -1,5 +1,6 @@
 package com.easy.api.config;
 
+import com.easy.api.domain.enumx.FailureEnum;
 import com.easy.api.exception.ServiceException;
 import io.kubernetes.client.ProtoClient;
 import io.kubernetes.client.openapi.ApiClient;
@@ -19,7 +20,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
-import static com.easy.api.domain.enumx.FailureEnum.K8S_DEPLOY_DEPLOYMENT;
 
 @Slf4j
 @Configuration
@@ -49,7 +49,7 @@ public class K8sClientConfiguration {
             }
         } catch (Exception e) {
             log.error("kubeConfigAuthentication error: " , e);
-            throw new ServiceException(K8S_DEPLOY_DEPLOYMENT);
+            throw new ServiceException(FailureEnum.K8S_DEPLOY_DEPLOY_ERROR);
         }
     }
 
