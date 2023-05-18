@@ -1,4 +1,4 @@
-FROM registry.cn-hangzhou.aliyuncs.com/ranmo/centos-mvn-kubcel:1.0.0
+FROM registry.cn-hangzhou.aliyuncs.com/ranmo/centos-mvn-kubcel:1.0.6
 
 EXPOSE 10080
 RUN mkdir -p /usr/local/app
