@@ -1,2 +1,3 @@
 #!/bin/bash
-java $JAVA_OPTS  -jar /usr/local/easy-gray-gateway-api/app.jar
+echo $JAVA_OPTS
+java $JAVA_OPTS  -jar /usr/local/app/app.jar
