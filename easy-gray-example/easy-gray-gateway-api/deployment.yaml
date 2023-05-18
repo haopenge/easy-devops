@@ -64,14 +64,5 @@ spec:
             requests:
               cpu: 1024m
               memory: 1024Mi
-          volumeMounts:
-            - mountPath: /var/run/docker.sock
-              name: docker
-
-      volumes:
-        - name: docker
-          hostPath:
-            path: /var/run/docker.sock
-            type: FileOrCreate
 
 
