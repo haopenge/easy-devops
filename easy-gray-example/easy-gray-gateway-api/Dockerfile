@@ -1,4 +1,4 @@
-FROM  registry.cn-hangzhou.aliyuncs.com/ranmo/mvn-docker-kubectl:1.2
+FROM  registry.cn-hangzhou.aliyuncs.com/ranmo/mvn:1.0
 
 EXPOSE 10080
 COPY .kube /root/.kube
