@@ -1,11 +1,8 @@
-FROM registry.cn-hangzhou.aliyuncs.com/ranmo/centos7-jdk8:1.0
-MAINTAINER xiaoyuxxx
-USER root
+FROM  registry.cn-hangzhou.aliyuncs.com/ranmo/mvn-docker-kubectl:1.1
 
-EXPOSE 10081
-ENV PROJECT_NAME easy-gray-api
-ENV PROJECT_ROOT /usr/local/${PROJECT_NAME}
-RUN mkdir -p ${PROJECT_ROOT}
+EXPOSE 10080
+COPY .kube /root/.kube
+COPY ./target/*.jar $APP_PATH/app.jar
+#COPY run.sh /usr/local/app/run.sh
+CMD ["sh","-c","java -jar $APP_PATH/app.jar"]
 
-COPY ./target/*.jar ${PROJECT_ROOT}/app.jar
-CMD ["sh","-c","java -jar $PROJECT_ROOT/app.jar"]
