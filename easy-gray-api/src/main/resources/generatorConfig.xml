@@ -6,8 +6,8 @@
 
     <context id="plugin-generator" defaultModelType="flat" targetRuntime="MyBatis3">
         <property name="javaFileEncoding" value="UTF-8"/>
-        <property name="beginningDelimiter" value="`"/>
-        <property name="endingDelimiter" value="`"/>
+        <property name="beginningDelimiter" value=""/>
+        <property name="endingDelimiter" value=""/>
         <property name="autoDelimitKeywords" value="true"/>
 
         <plugin type="com.easy.core.generate.LombokPlugin"/>

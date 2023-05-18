@@ -34,7 +34,7 @@ spec:
           command:
             - sh
             - -c
-            - (sh /usr/local/easy-gray-gateway-api/run.sh)
+            - (sh /usr/local/app/run.sh)
 
           env:
             - name: JAVA_OPTS
