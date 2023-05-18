@@ -35,7 +35,6 @@ spec:
             - sh
             - -c
             - (sh /usr/local/app/run.sh)
-
           env:
             - name: JAVA_OPTS
               value: -Xms1024m -Xmx1024m
@@ -51,21 +50,13 @@ spec:
                   fieldPath: status.hostIP
             - name: APP_NAME
               value: easy-gray-gateway-api
-
           envFrom:
             []
-
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
               containerPort: 10080
               protocol: TCP
-          #          livenessProbe:
-          #            httpGet:
-          #              path: /healthz
-          #              port: http
-          #            initialDelaySeconds: 5
-
           resources:
             limits:
               cpu: 1024m
@@ -73,5 +64,14 @@ spec:
             requests:
               cpu: 1024m
               memory: 1024Mi
+          volumeMounts:
+            - mountPath: /var/run/docker.sock
+              name: docker
+
+      volumes:
+        - name: docker
+          hostPath:
+            path: /var/run/docker.sock
+            type: FileOrCreate
 
 
