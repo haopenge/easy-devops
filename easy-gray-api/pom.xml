@@ -85,10 +85,10 @@
 
     <build>
         <plugins>
-           <!-- <plugin>
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>-->
+            </plugin>
 
             <!--            mybatis逆向工程插件-->
             <plugin>
