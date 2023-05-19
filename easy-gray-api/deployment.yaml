@@ -28,9 +28,13 @@ spec:
     spec:
       imagePullSecrets:
         - name: ali-docker-repository
+      volumes:
+        - name: maven
+          persistentVolumeClaim:
+            claimName: maven
       containers:
         - name: easy-gray-api
-          image: registry.cn-hangzhou.aliyuncs.com/ranmo/easy-gray-api:1.0
+          image: registry.cn-hangzhou.aliyuncs.com/ranmo/easy-gray-api:1.5
           imagePullPolicy: IfNotPresent
           securityContext:
             privileged: true
@@ -38,10 +42,15 @@ spec:
             - name: http
               containerPort: 10081
               protocol: TCP
+          volumeMounts:
+            - mountPath: /root/.m2/repository
+              name: maven
           resources:
             limits:
-              cpu: 200m
-              memory: 1024Mi
+              cpu: 1024m
+              memory: 2048Mi
             requests:
-              cpu: 200m
-              memory: 1024Mi
+              cpu: 1024m
+              memory: 2048Mi
+
+

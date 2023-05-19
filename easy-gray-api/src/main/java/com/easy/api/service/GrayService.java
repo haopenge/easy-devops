@@ -214,9 +214,13 @@ public class GrayService {
         String gitClonePath = PROJECT_CLONE_PATH + File.separator + gitName;
         String executePath = PROJECT_CLONE_PATH + File.separator + fullName;
 
+        log.info("runProjectInGrayEnv project download start , path = " + PROJECT_CLONE_PATH);
+
         // 拉取代码
         FileUtil.del(gitClonePath);
         gitService.download(cloneUrl, branch, gitClonePath);
+
+        log.info("runProjectInGrayEnv project download ok , path = " + PROJECT_CLONE_PATH);
 
         // 文件复制 处理
         String startShPath = executePath + File.separator + "build.sh";

@@ -6,7 +6,7 @@ BUILD_NUMBER=$4
 # shellcheck disable=SC2006
 echo "当前脚本执行目录: `pwd` "
 echo "<<====================== 1.1 开始打包 ===================>>"
-mvn clean package  -Dmaven.test.skip=true
+mvn clean package  -Dmaven.test.skip=true -s /root/.m2/settings.xml
 
 echo "<<====================== 1.2 构建docker镜像 ===================>>"
 docker build -t registry.cn-hangzhou.aliyuncs.com/ranmo/easy-gray-api:"${BUILD_NUMBER}" -f Dockerfile .
