@@ -34,7 +34,9 @@ spec:
             claimName: maven
       containers:
         - name: easy-gray-api
-          image: registry.cn-hangzhou.aliyuncs.com/ranmo/easy-gray-api:1.5
+          image: registry.cn-hangzhou.aliyuncs.com/ranmo/easy-gray-api:1.6
+
+
           imagePullPolicy: IfNotPresent
           securityContext:
             privileged: true
