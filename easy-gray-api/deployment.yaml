@@ -30,8 +30,10 @@ spec:
         - name: ali-docker-repository
       containers:
         - name: easy-gray-api
-          image: registry.cn-hangzhou.aliyuncs.com/ranmo/easy-gray-api:14
+          image: registry.cn-hangzhou.aliyuncs.com/ranmo/easy-gray-api:1.0
           imagePullPolicy: IfNotPresent
+          securityContext:
+            privileged: true
           ports:
             - name: http
               containerPort: 10081

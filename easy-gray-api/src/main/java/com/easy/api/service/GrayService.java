@@ -42,9 +42,6 @@ import static java.lang.String.format;
 @Service
 public class GrayService {
 
-    @Value("${k8s.project_clone_path:}")
-    private String k8sProjectClonePath;
-
     @Resource
     private GrayEnvEntityMapper grayEnvMapper;
 
@@ -65,6 +62,12 @@ public class GrayService {
 
     @Value("${git.name:xiaoyuxxx}")
     private String gitUserName;
+
+    /**
+     * 项目克隆地址
+     */
+    public static final String PROJECT_CLONE_PATH = System.getProperty("user.dir") + File.separator + "git";
+
 
     public Integer addGrayEnv(GrayAddRequestVo requestVo) {
         GrayEnvEntity saveEntity = new GrayEnvEntity();
@@ -208,8 +211,8 @@ public class GrayService {
         String cloneUrl = projectEntity.getCloneUrl();
 
         // 子项目 兼容处理
-        String gitClonePath = k8sProjectClonePath + File.separator + gitName;
-        String executePath = k8sProjectClonePath + File.separator + fullName;
+        String gitClonePath = PROJECT_CLONE_PATH + File.separator + gitName;
+        String executePath = PROJECT_CLONE_PATH + File.separator + fullName;
 
         // 拉取代码
         FileUtil.del(gitClonePath);
