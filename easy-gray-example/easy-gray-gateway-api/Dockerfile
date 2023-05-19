@@ -1,5 +1,4 @@
-FROM  registry.cn-hangzhou.aliyuncs.com/ranmo/mvn:1.6
-
+FROM registry.cn-hangzhou.aliyuncs.com/ranmo/mvn:1.6
 EXPOSE 10080
 COPY ./target/*.jar $APP_PATH/app.jar
 CMD ["sh","-c","java -jar $APP_PATH/app.jar"]
