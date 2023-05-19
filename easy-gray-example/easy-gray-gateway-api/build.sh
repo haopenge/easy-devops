@@ -29,6 +29,10 @@ docker build -t registry.cn-hangzhou.aliyuncs.com/ranmo/easy-gray-gateway-api:${
 echo "<<====================== 1.4 docker镜像 ===================>>"
 docker push registry.cn-hangzhou.aliyuncs.com/ranmo/easy-gray-gateway-api:${BUILD_NUMBER}
 
-echo "<<====================== 2. k8s.yaml中的镜像版本号 ===================>>"
+echo "<<====================== 2.1 修改镜像版本号 ===================>>"
 sed -i "s/build_number/${BUILD_NUMBER}/g" deployment.yaml
 sed -i "s/pod-env/${GRAY_ENV}/g" deployment.yaml
+
+echo "<<====================== 2.2 发布服务 ===================>>"
+kubectl apply -f deployment.yaml
+
