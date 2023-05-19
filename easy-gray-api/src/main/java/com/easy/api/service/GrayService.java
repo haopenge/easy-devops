@@ -222,19 +222,10 @@ public class GrayService {
         // 文件复制 处理
         String startShPath = executePath + File.separator + "build.sh";
 
-        // 构建镜像
+        // 执行运行服务脚本
         String version = LocalDateTime.now().format(DateTimeFormatter.ofPattern("ddHHmmss"));
         String grayEnvName = grayEnvEntity.getName();
         CmdUtil.exec("sh",startShPath, dockerRepositoryUsername, dockerRepositoryPwd, grayEnvName, version);
-
-        // 发布服务
-        try {
-            String deploymentFilePath = executePath + File.separator + "deployment.yaml";
-            k8sService.createDeployment(grayEnvName, deploymentFilePath);
-        } catch (Exception e) {
-            log.error("k8s deployment error ,", e);
-            throw new ServiceException(FailureEnum.K8S_DEPLOY_DEPLOY_ERROR);
-        }
     }
 
     public void copy(String resourcePath, String targetPath) {
