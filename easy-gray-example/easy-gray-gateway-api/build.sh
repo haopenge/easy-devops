@@ -14,7 +14,7 @@ cd "${DEPLOY_DIR}"
 echo "发布目录: ${DEPLOY_DIR} "
 
 echo "<<====================== 1.1 开始打包 ===================>>"
-mvn clean package  -Dmaven.test.skip=true -s /root/.m2/settings.xml
+mvn clean package  -Dmaven.test.skip=true -Dmaven.javadoc.skip=true -s /root/.m2/settings.xml
 
 echo "<<====================== 1.2 构建docker镜像 ===================>>"
 docker build -t registry.cn-hangzhou.aliyuncs.com/ranmo/easy-gray-gateway-api:5192541 -f Dockerfile .
