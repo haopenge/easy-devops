@@ -31,27 +31,6 @@ spec:
       containers:
         - name: easy-gray-gateway-api
           image: registry.cn-hangzhou.aliyuncs.com/ranmo/easy-gray-gateway-api:build_number
-          command:
-            - sh
-            - -c
-            - (sh /usr/local/app/run.sh)
-          env:
-            - name: JAVA_OPTS
-              value: -Xms1024m -Xmx1024m
-            - name: env
-              value: pod-env
-            - name: NODE_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: spec.nodeName
-            - name: NODE_IP
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.hostIP
-            - name: APP_NAME
-              value: easy-gray-gateway-api
-          envFrom:
-            []
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
