@@ -1,7 +1,6 @@
 package com.easy.api;
 
 import java.io.File;
-import java.util.concurrent.TimeUnit;
 
 import static java.lang.String.format;
 
@@ -18,7 +17,6 @@ public class CmdUtil {
         String startShPath = executePath + File.separator + "deploy.sh";
         // 构建镜像
         String commandLineStr = format("sh %s %s %s %s %s",startShPath,executePath, "","qa-12138","666");
-        String returnLogStr = com.easy.core.util.CmdUtil.exec(10, TimeUnit.SECONDS, commandLineStr);
-        System.out.println(returnLogStr);
+        com.easy.core.util.CmdUtil.exec(commandLineStr);
     }
 }

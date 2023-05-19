@@ -34,9 +34,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
-
-import static java.lang.String.format;
 
 @Slf4j
 @Service
@@ -228,10 +225,7 @@ public class GrayService {
         // 构建镜像
         String version = LocalDateTime.now().format(DateTimeFormatter.ofPattern("ddHHmmss"));
         String grayEnvName = grayEnvEntity.getName();
-
-        String commandLineStr = format("sh %s %s %s %s %s", startShPath, dockerRepositoryUsername, dockerRepositoryPwd, grayEnvName, version);
-        String returnLogStr = CmdUtil.exec(10, TimeUnit.SECONDS, commandLineStr);
-        log.info("runProjectInGrayEnv execute log \n : {}", returnLogStr);
+        CmdUtil.exec("sh",startShPath, dockerRepositoryUsername, dockerRepositoryPwd, grayEnvName, version);
 
         // 发布服务
         try {
