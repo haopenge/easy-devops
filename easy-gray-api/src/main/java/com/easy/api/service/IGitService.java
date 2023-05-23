@@ -1,5 +1,6 @@
 package com.easy.api.service;
 
+import com.easy.api.domain.vo.GitCommitVo;
 import com.easy.api.domain.vo.response.GitProjectResponseVo;
 
 import java.util.List;
@@ -40,12 +41,11 @@ public interface IGitService {
     void download(String uri, String branch, String projectPath);
 
     /**
-     * 获取提交日志
+     * 获取最新的提交日志
      *
      * @param projectDirPath 本地仓库地址
      * @param branch         分支
-     * @param commit         上次日志commit
      * @return 提交日志
      */
-    List<String> getCommitLog(String projectDirPath, String branch, String commit);
+    GitCommitVo getCommitLog(String projectDirPath, String branch);
 }

@@ -57,12 +57,24 @@ public class ProjectController extends BaseController {
     /**
      * 运行项目
      *
-     * @param projectId 项目id
+     * @param id 项目id
      * @return Void
      */
     @PostMapping("/run")
     public ApiResult<Void> runProjectInGrayEnv(Integer id) {
         grayService.runProjectInGrayEnv(id);
+        return success();
+    }
+
+    /**
+     * 停止项目
+     *
+     * @param id 项目id
+     * @return Void
+     */
+    @PostMapping("/stop")
+    public ApiResult<Void> stopProjectInGrayEnv(Integer id) {
+        grayService.stopProjectInGrayEnv(id);
         return success();
     }
 

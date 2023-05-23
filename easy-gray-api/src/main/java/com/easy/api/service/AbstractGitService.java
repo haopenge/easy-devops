@@ -1,6 +1,7 @@
 package com.easy.api.service;
 
 import com.easy.api.domain.enumx.FailureEnum;
+import com.easy.api.domain.vo.GitCommitVo;
 import com.easy.api.exception.ServiceException;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +19,6 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -81,43 +81,75 @@ public abstract class AbstractGitService implements IGitService{
      * 获取提交日志
      */
     @Override
-    public List<String> getCommitLog(String projectDirPath, String branch, String commit) {
-
+    public GitCommitVo getCommitLog(String projectDirPath, String branch) {
         Repository repository = null;
         try {
             repository = new FileRepositoryBuilder()
                     .setGitDir(Paths.get(projectDirPath, ".git").toFile())
                     .build();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            return null;
         }
 
         if (branch == null) {
             try {
                 branch = repository.getBranch();
             } catch (IOException e) {
-                return Collections.emptyList();
+                return null;
             }
         }
         Ref head = null;
+        GitCommitVo gitCommitVo = null;
         try {
             head = repository.findRef(BRANCH_PREFIX + branch);
-            List<String> commits = new ArrayList<>();
             if (head != null) {
                 try (RevWalk revWalk = new RevWalk(repository)) {
                     revWalk.markStart(revWalk.parseCommit(head.getObjectId()));
                     for (RevCommit revCommit : revWalk) {
-                        if (revCommit.getId().getName().equals(commit)) {
-                            break;
-                        }
-                        commits.add(revCommit.getFullMessage());
+                        gitCommitVo = new GitCommitVo(revCommit.getId().getName(),revCommit.getFullMessage());
+                        break;
                     }
-                    revWalk.dispose();
                 }
             }
         } catch (IOException e) {
-            log.warn("获取日志信息失败, name : {} , branch : {} ,commit : {}",repository.getRemoteNames(),branch,commit,e);
+            log.warn("获取日志信息失败, name : {} , branch : {}",repository.getRemoteNames(),branch,e);
         }
-        return Collections.emptyList();
+        return gitCommitVo;
+    }
+
+    public static GitCommitVo getCommitLog1(String projectDirPath, String branch) {
+        Repository repository = null;
+        try {
+            repository = new FileRepositoryBuilder()
+                    .setGitDir(Paths.get(projectDirPath, ".git").toFile())
+                    .build();
+        } catch (IOException e) {
+            return null;
+        }
+
+        if (branch == null) {
+            try {
+                branch = repository.getBranch();
+            } catch (IOException e) {
+                return null;
+            }
+        }
+        Ref head = null;
+        GitCommitVo gitCommitVo = null;
+        try {
+            head = repository.findRef(BRANCH_PREFIX + branch);
+            if (head != null) {
+                try (RevWalk revWalk = new RevWalk(repository)) {
+                    revWalk.markStart(revWalk.parseCommit(head.getObjectId()));
+                    for (RevCommit revCommit : revWalk) {
+                        gitCommitVo = new GitCommitVo(revCommit.getId().getName(),revCommit.getFullMessage());
+                        break;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            log.warn("获取日志信息失败, name : {} , branch : {}",repository.getRemoteNames(),branch,e);
+        }
+        return gitCommitVo;
     }
 }

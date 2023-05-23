@@ -208,8 +208,8 @@ public class GrayService {
         String cloneUrl = projectEntity.getCloneUrl();
 
         // 子项目 兼容处理
-        String gitClonePath = PROJECT_CLONE_PATH + File.separator + gitName;
-        String executePath = PROJECT_CLONE_PATH + File.separator + fullName;
+        String gitClonePath = PROJECT_CLONE_PATH + File.separator + grayEnvEntity.getName() + File.separator + gitName;
+        String executePath = PROJECT_CLONE_PATH + File.separator + grayEnvEntity.getName() + File.separator + fullName;
 
         log.info("runProjectInGrayEnv project download start , path = " + PROJECT_CLONE_PATH);
 
@@ -226,6 +226,26 @@ public class GrayService {
         String version = LocalDateTime.now().format(DateTimeFormatter.ofPattern("ddHHmmss"));
         String grayEnvName = grayEnvEntity.getName();
         CmdUtil.exec("sh",startShPath, dockerRepositoryUsername, dockerRepositoryPwd, grayEnvName, version);
+    }
+
+    /**
+     * 停止运行
+     * @param id 项目id
+     */
+    public void stopProjectInGrayEnv(Integer id) {
+        GrayProjectEntity projectEntity = grayProjectEntityMapper.selectByPrimaryKey(id);
+        if (Objects.isNull(projectEntity)) {
+            throw new ServiceException(FailureEnum.GRAY_ENV_PROJECT_NOT_EXIST);
+        }
+        GrayEnvEntity grayEnvEntity = grayEnvMapper.selectByPrimaryKey(projectEntity.getGrayEnvId());
+        if (Objects.isNull(grayEnvEntity)) {
+            throw new ServiceException(FailureEnum.GRAY_ENV_NOT_EXIST);
+        }
+        String fullName = projectEntity.getFullName();
+        String executePath = PROJECT_CLONE_PATH + File.separator + grayEnvEntity.getName() + File.separator + fullName;
+
+        String deploymentYamlPath = executePath + File.separator + "deployment.yaml";
+        CmdUtil.exec("kubectl","delete", "-f", deploymentYamlPath);
     }
 
     public void copy(String resourcePath, String targetPath) {
