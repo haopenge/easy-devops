@@ -2,7 +2,7 @@ package com.easy.gateway.filter;
 
 import com.alibaba.fastjson.JSON;
 import com.easy.core.domain.ApiResult;
-import com.easy.core.enumx.FailureEnum;
+import com.easy.core.enumx.BaseFailureEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -71,7 +71,7 @@ public class AuthGatewayFilterFactory extends AbstractGatewayFilterFactory<Abstr
                 response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
                 response.setStatusCode(HttpStatus.UNAUTHORIZED);
 
-                byte[] responseByteArray = JSON.toJSONBytes(ApiResult.error(FailureEnum.AUTH_TOKEN_EXPIRED.getCode(), FailureEnum.AUTH_TOKEN_EXPIRED.getMessage()));
+                byte[] responseByteArray = JSON.toJSONBytes(ApiResult.error(BaseFailureEnum.AUTH_TOKEN_EXPIRED.getCode(), BaseFailureEnum.AUTH_TOKEN_EXPIRED.getMessage()));
                 DataBuffer responseBuffer = response.bufferFactory().allocateBuffer(responseByteArray.length).write(responseByteArray);
                 return response.writeWith(Mono.just(responseBuffer));
             }

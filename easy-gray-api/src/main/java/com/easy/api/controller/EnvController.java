@@ -1,10 +1,10 @@
 package com.easy.api.controller;
 
-import com.easy.api.domain.enumx.FailureEnum;
+import com.easy.api.domain.enumx.AdminApiFailureEnum;
 import com.easy.api.domain.vo.request.GrayAddRequestVo;
 import com.easy.api.domain.vo.request.GrayEditRequestVo;
 import com.easy.api.domain.vo.response.GrayEnvResponseVo;
-import com.easy.api.exception.BaseEasyException;
+import com.easy.api.exception.AdminApiException;
 import com.easy.api.service.impl.GrayService;
 import com.easy.core.domain.ApiResult;
 import org.apache.commons.lang3.StringUtils;
@@ -34,7 +34,7 @@ public class EnvController extends BaseController {
     @PostMapping("/add")
     public ApiResult<Integer> addGrayEnv(@RequestBody GrayAddRequestVo requestVo) {
         if (StringUtils.isBlank(requestVo.getName())) {
-            throw new BaseEasyException(FailureEnum.PARAM_ERROR);
+            throw new AdminApiException(AdminApiFailureEnum.PARAM_ERROR);
         }
         Integer grayEnvId = grayService.addGrayEnv(requestVo);
         return success(grayEnvId);
@@ -46,7 +46,7 @@ public class EnvController extends BaseController {
     @PostMapping("/edit")
     public ApiResult<Void> editGrayEnv(@RequestBody GrayEditRequestVo requestVo) {
         if (Objects.isNull(requestVo.getId())) {
-            throw new BaseEasyException(FailureEnum.PARAM_ERROR);
+            throw new AdminApiException(AdminApiFailureEnum.PARAM_ERROR);
         }
         grayService.editGrayEnv(requestVo);
         return success();

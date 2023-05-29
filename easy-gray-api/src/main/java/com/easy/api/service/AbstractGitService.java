@@ -1,8 +1,8 @@
 package com.easy.api.service;
 
-import com.easy.api.domain.enumx.FailureEnum;
+import com.easy.api.domain.enumx.AdminApiFailureEnum;
 import com.easy.api.domain.vo.GitCommitVo;
-import com.easy.api.exception.BaseEasyException;
+import com.easy.api.exception.AdminApiException;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jgit.api.Git;
@@ -49,7 +49,7 @@ public abstract class AbstractGitService implements IGitService{
         try {
             refList = Git.lsRemoteRepository().setRemote(url).setCredentialsProvider(credentialsProvider).call();
         } catch (GitAPIException e) {
-            throw new BaseEasyException(FailureEnum.GIT_FETCH_EXCEPTION);
+            throw new AdminApiException(AdminApiFailureEnum.GIT_FETCH_EXCEPTION);
         }
         List<String> branchList = new ArrayList<>();
         for (Ref ref : refList) {
@@ -73,7 +73,7 @@ public abstract class AbstractGitService implements IGitService{
                     .setCredentialsProvider(credentialsProvider)
                     .call();
         } catch (GitAPIException e) {
-            throw new BaseEasyException(FailureEnum.GIT_FETCH_EXCEPTION);
+            throw new AdminApiException(AdminApiFailureEnum.GIT_FETCH_EXCEPTION);
         }
     }
 

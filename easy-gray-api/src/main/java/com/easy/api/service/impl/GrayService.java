@@ -8,14 +8,14 @@ import com.easy.api.domain.entity.GrayEnvEntity;
 import com.easy.api.domain.entity.GrayEnvEntityExample;
 import com.easy.api.domain.entity.GrayProjectEntity;
 import com.easy.api.domain.entity.GrayProjectEntityExample;
-import com.easy.api.domain.enumx.FailureEnum;
+import com.easy.api.domain.enumx.AdminApiFailureEnum;
 import com.easy.api.domain.vo.request.AddProjectToGrayEnvRequestVo;
 import com.easy.api.domain.vo.request.EditProjectRequestVo;
 import com.easy.api.domain.vo.request.GrayAddRequestVo;
 import com.easy.api.domain.vo.request.GrayEditRequestVo;
 import com.easy.api.domain.vo.response.GitProjectResponseVo;
 import com.easy.api.domain.vo.response.GrayEnvResponseVo;
-import com.easy.api.exception.BaseEasyException;
+import com.easy.api.exception.AdminApiException;
 import com.easy.api.mapper.GrayEnvEntityMapper;
 import com.easy.api.mapper.GrayProjectEntityMapper;
 import com.easy.api.service.IGitService;
@@ -74,7 +74,7 @@ public class GrayService {
         try {
             k8sService.createNamespace(requestVo.getName());
         } catch (Exception e) {
-            throw new BaseEasyException(FailureEnum.K8S_NAMESPACE_CREATE_ERROR);
+            throw new AdminApiException(AdminApiFailureEnum.K8S_NAMESPACE_CREATE_ERROR);
         }
 
         return saveEntity.getId();
@@ -106,7 +106,7 @@ public class GrayService {
         try {
             k8sService.createNamespace(grayEnvEntity.getName());
         } catch (Exception e) {
-            throw new BaseEasyException(FailureEnum.K8S_NAMESPACE_CREATE_ERROR);
+            throw new AdminApiException(AdminApiFailureEnum.K8S_NAMESPACE_CREATE_ERROR);
         }
     }
 
@@ -117,13 +117,13 @@ public class GrayService {
         Integer envId = requestVo.getEnvId();
         GrayEnvEntity grayEnvEntity = grayEnvMapper.selectByPrimaryKey(envId);
         if (Objects.isNull(grayEnvEntity)) {
-            throw new BaseEasyException(FailureEnum.GRAY_ENV_NOT_EXIST);
+            throw new AdminApiException(AdminApiFailureEnum.GRAY_ENV_NOT_EXIST);
         }
 
         String fullName = requestVo.getFullName();
         GitProjectResponseVo gitProjectResponseVo = gitService.findRepositoryByFullName(gitProperties.getUsername() + "/" + "easy-gray");
         if (Objects.isNull(gitProjectResponseVo)) {
-            throw new BaseEasyException(FailureEnum.GIT_FETCH_EXCEPTION);
+            throw new AdminApiException(AdminApiFailureEnum.GIT_FETCH_EXCEPTION);
         }
 
         int i = fullName.lastIndexOf("/");
@@ -133,7 +133,7 @@ public class GrayService {
         example.createCriteria().andGrayEnvIdEqualTo(envId).andNameEqualTo(name);
         List<GrayProjectEntity> grayProjectEntities = grayProjectEntityMapper.selectByExample(example);
         if (!CollectionUtils.isEmpty(grayProjectEntities)) {
-            throw new BaseEasyException(FailureEnum.GRAY_ENV_PROJECT_EXIST);
+            throw new AdminApiException(AdminApiFailureEnum.GRAY_ENV_PROJECT_EXIST);
         }
 
         // 新增项目
@@ -156,7 +156,7 @@ public class GrayService {
     public void editProject(EditProjectRequestVo editProjectRequestVo) {
         GrayProjectEntity projectEntity = grayProjectEntityMapper.selectByPrimaryKey(editProjectRequestVo.getId());
         if (Objects.isNull(projectEntity)) {
-            throw new BaseEasyException(FailureEnum.GRAY_ENV_PROJECT_NOT_EXIST);
+            throw new AdminApiException(AdminApiFailureEnum.GRAY_ENV_PROJECT_NOT_EXIST);
         }
         // 更新项目
         GrayProjectEntity updateEntity = new GrayProjectEntity();
@@ -168,7 +168,7 @@ public class GrayService {
     public void deleteProjectInGrayEnv(Integer projectId) {
         GrayProjectEntity projectEntity = grayProjectEntityMapper.selectByPrimaryKey(projectId);
         if (Objects.isNull(projectEntity)) {
-            throw new BaseEasyException(FailureEnum.GRAY_ENV_PROJECT_NOT_EXIST);
+            throw new AdminApiException(AdminApiFailureEnum.GRAY_ENV_PROJECT_NOT_EXIST);
         }
         grayProjectEntityMapper.deleteByPrimaryKey(projectId);
     }
@@ -192,11 +192,11 @@ public class GrayService {
     public void runProjectInGrayEnv(Integer projectId) {
         GrayProjectEntity projectEntity = grayProjectEntityMapper.selectByPrimaryKey(projectId);
         if (Objects.isNull(projectEntity)) {
-            throw new BaseEasyException(FailureEnum.GRAY_ENV_PROJECT_NOT_EXIST);
+            throw new AdminApiException(AdminApiFailureEnum.GRAY_ENV_PROJECT_NOT_EXIST);
         }
         GrayEnvEntity grayEnvEntity = grayEnvMapper.selectByPrimaryKey(projectEntity.getGrayEnvId());
         if (Objects.isNull(grayEnvEntity)) {
-            throw new BaseEasyException(FailureEnum.GRAY_ENV_NOT_EXIST);
+            throw new AdminApiException(AdminApiFailureEnum.GRAY_ENV_NOT_EXIST);
         }
 
         String fullName = projectEntity.getFullName();
@@ -235,11 +235,11 @@ public class GrayService {
     public void stopProjectInGrayEnv(Integer id) {
         GrayProjectEntity projectEntity = grayProjectEntityMapper.selectByPrimaryKey(id);
         if (Objects.isNull(projectEntity)) {
-            throw new BaseEasyException(FailureEnum.GRAY_ENV_PROJECT_NOT_EXIST);
+            throw new AdminApiException(AdminApiFailureEnum.GRAY_ENV_PROJECT_NOT_EXIST);
         }
         GrayEnvEntity grayEnvEntity = grayEnvMapper.selectByPrimaryKey(projectEntity.getGrayEnvId());
         if (Objects.isNull(grayEnvEntity)) {
-            throw new BaseEasyException(FailureEnum.GRAY_ENV_NOT_EXIST);
+            throw new AdminApiException(AdminApiFailureEnum.GRAY_ENV_NOT_EXIST);
         }
         String fullName = projectEntity.getFullName();
         String executePath = buildProperties.getClonePath() + File.separator + grayEnvEntity.getName() + File.separator + fullName;
@@ -252,7 +252,7 @@ public class GrayService {
         try (FileInputStream fis = new FileInputStream(resourcePath); FileOutputStream fos = new FileOutputStream(targetPath)) {
             IOUtils.copy(fis, fos);
         } catch (Exception e) {
-            throw new BaseEasyException(FailureEnum.FILE_COPY_EXCEPTION);
+            throw new AdminApiException(AdminApiFailureEnum.FILE_COPY_EXCEPTION);
         }
     }
 

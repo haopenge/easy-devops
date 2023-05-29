@@ -15,6 +15,7 @@ import java.util.TimeZone;
 
 /**
  * 统一日期格式配置
+ * @author liupenghao
  */
 @Configuration
 public class DateFormatConfiguration {

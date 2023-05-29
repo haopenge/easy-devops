@@ -1,7 +1,7 @@
 package com.easy.api;
 
-import com.easy.api.domain.enumx.FailureEnum;
-import com.easy.api.exception.BaseEasyException;
+import com.easy.api.domain.enumx.AdminApiFailureEnum;
+import com.easy.api.exception.AdminApiException;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
@@ -25,7 +25,7 @@ public class GitTest {
                     .setCredentialsProvider(credentialsProvider)
                     .call();
         } catch (GitAPIException e) {
-            throw new BaseEasyException(FailureEnum.GIT_FETCH_EXCEPTION);
+            throw new AdminApiException(AdminApiFailureEnum.GIT_FETCH_EXCEPTION);
         }
 
     }

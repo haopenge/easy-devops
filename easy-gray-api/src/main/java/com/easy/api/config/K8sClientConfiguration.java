@@ -1,8 +1,8 @@
 package com.easy.api.config;
 
 import com.easy.api.config.properties.K8sProperties;
-import com.easy.api.domain.enumx.FailureEnum;
-import com.easy.api.exception.BaseEasyException;
+import com.easy.api.domain.enumx.AdminApiFailureEnum;
+import com.easy.api.exception.AdminApiException;
 import io.kubernetes.client.ProtoClient;
 import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.apis.AppsV1Api;
@@ -13,20 +13,23 @@ import io.kubernetes.client.util.KubeConfig;
 import io.kubernetes.client.util.credentials.Authentication;
 import io.kubernetes.client.util.credentials.KubeconfigAuthentication;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.annotation.Resource;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
 
+/**
+ * @author liupenghao
+ */
 @Slf4j
 @Configuration
 public class K8sClientConfiguration {
 
-    @Autowired
+    @Resource
     private K8sProperties k8sProperties;
 
     @Bean
@@ -44,7 +47,7 @@ public class K8sClientConfiguration {
             }
         } catch (Exception e) {
             log.error("kubeConfigAuthentication error: ", e);
-            throw new BaseEasyException(FailureEnum.K8S_DEPLOY_DEPLOY_ERROR);
+            throw new AdminApiException(AdminApiFailureEnum.K8S_DEPLOY_DEPLOY_ERROR);
         }
     }
 

@@ -1,7 +1,7 @@
 package com.easy.api.config;
 
 import com.easy.api.controller.BaseController;
-import com.easy.api.exception.BaseEasyException;
+import com.easy.api.exception.AdminApiException;
 import com.easy.core.domain.ApiResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -18,8 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 @RestControllerAdvice
 public class GlobalExceptionHandler extends BaseController {
 
-    @ExceptionHandler(BaseEasyException.class)
-    public ResponseEntity<Object> serviceException(HttpServletResponse response, BaseEasyException exception) {
+    @ExceptionHandler(AdminApiException.class)
+    public ResponseEntity<Object> serviceException(HttpServletResponse response, AdminApiException exception) {
         log.error("GlobalExceptionHandler.runtimeException,msg: {}", exception.getMessage(), exception);
         return buildResponseEntity(response, ApiResult.error("000001", exception.getMessage()));
     }

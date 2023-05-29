@@ -1,7 +1,7 @@
 package com.easy.core.controller;
 
 import com.easy.core.domain.ApiResult;
-import com.easy.core.enumx.FailureEnum;
+import com.easy.core.enumx.BaseFailureEnum;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -20,7 +20,7 @@ public class BaseController {
         return ApiResult.error();
     }
 
-    public ApiResult failure(FailureEnum failureEnum){
+    public ApiResult failure(BaseFailureEnum failureEnum){
         ApiResult.ApiVoidResult result = new ApiResult.ApiVoidResult();
         result.setSuccess(false);
         result.setCode(failureEnum.getCode());
