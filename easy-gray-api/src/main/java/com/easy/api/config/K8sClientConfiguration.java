@@ -1,7 +1,8 @@
 package com.easy.api.config;
 
+import com.easy.api.config.properties.K8sProperties;
 import com.easy.api.domain.enumx.FailureEnum;
-import com.easy.api.exception.ServiceException;
+import com.easy.api.exception.BaseEasyException;
 import io.kubernetes.client.ProtoClient;
 import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.apis.AppsV1Api;
@@ -12,7 +13,7 @@ import io.kubernetes.client.util.KubeConfig;
 import io.kubernetes.client.util.credentials.Authentication;
 import io.kubernetes.client.util.credentials.KubeconfigAuthentication;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -25,31 +26,25 @@ import java.io.Reader;
 @Configuration
 public class K8sClientConfiguration {
 
-    @Value("${k8s.base_path:https://10.8.0.1:6443}")
-    private String basePath;
+    @Autowired
+    private K8sProperties k8sProperties;
 
     @Bean
     public ApiClient getApiClient(Authentication kubeConfigAuthentication) {
-        return new ClientBuilder()
-                .setBasePath(basePath)
-                .setAuthentication(kubeConfigAuthentication)
-                .setVerifyingSsl(false)
-                .build();
+        return new ClientBuilder().setBasePath(k8sProperties.getBasePath()).setAuthentication(kubeConfigAuthentication).setVerifyingSsl(false).build();
     }
 
     @Bean
-    public Authentication kubeConfigAuthentication(){
-        try (        InputStream is = this.getClass().getClassLoader().getResourceAsStream("kube.yaml")
-        ) {
+    public Authentication kubeConfigAuthentication() {
+        try (InputStream is = this.getClass().getClassLoader().getResourceAsStream("kube.yaml")) {
             assert is != null;
-            try (Reader fr = new InputStreamReader(is)
-            ){
+            try (Reader fr = new InputStreamReader(is)) {
                 KubeConfig config = KubeConfig.loadKubeConfig(fr);
                 return new KubeconfigAuthentication(config);
             }
         } catch (Exception e) {
-            log.error("kubeConfigAuthentication error: " , e);
-            throw new ServiceException(FailureEnum.K8S_DEPLOY_DEPLOY_ERROR);
+            log.error("kubeConfigAuthentication error: ", e);
+            throw new BaseEasyException(FailureEnum.K8S_DEPLOY_DEPLOY_ERROR);
         }
     }
 

@@ -28,7 +28,7 @@ public class BaseController {
         return result;
     }
 
-    public ApiResult failure(int code,String message){
+    public ApiResult failure(String code,String message){
         return ApiResult.error(code,message);
     }
 }

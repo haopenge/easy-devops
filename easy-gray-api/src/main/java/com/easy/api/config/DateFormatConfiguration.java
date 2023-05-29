@@ -28,10 +28,7 @@ public class DateFormatConfiguration {
             TimeZone tz = TimeZone.getTimeZone("GMT+8");
             DateFormat df = new SimpleDateFormat(pattern);
             df.setTimeZone(tz);
-            builder.failOnEmptyBeans(false)
-                    .failOnUnknownProperties(false)
-                    .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-                    .dateFormat(df);
+            builder.failOnEmptyBeans(false).failOnUnknownProperties(false).featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS).dateFormat(df);
         };
     }
 

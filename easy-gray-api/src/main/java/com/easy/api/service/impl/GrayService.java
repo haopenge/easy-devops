@@ -1,6 +1,9 @@
-package com.easy.api.service;
+package com.easy.api.service.impl;
 
 import cn.hutool.core.io.FileUtil;
+import com.easy.api.config.properties.BuildProperties;
+import com.easy.api.config.properties.DockerProperties;
+import com.easy.api.config.properties.GitProperties;
 import com.easy.api.domain.entity.GrayEnvEntity;
 import com.easy.api.domain.entity.GrayEnvEntityExample;
 import com.easy.api.domain.entity.GrayProjectEntity;
@@ -12,15 +15,15 @@ import com.easy.api.domain.vo.request.GrayAddRequestVo;
 import com.easy.api.domain.vo.request.GrayEditRequestVo;
 import com.easy.api.domain.vo.response.GitProjectResponseVo;
 import com.easy.api.domain.vo.response.GrayEnvResponseVo;
-import com.easy.api.exception.ServiceException;
+import com.easy.api.exception.BaseEasyException;
 import com.easy.api.mapper.GrayEnvEntityMapper;
 import com.easy.api.mapper.GrayProjectEntityMapper;
+import com.easy.api.service.IGitService;
 import com.easy.api.util.ObjectUtil;
 import com.easy.core.util.CmdUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -51,20 +54,14 @@ public class GrayService {
     @Resource
     private IGitService gitService;
 
-    @Value("${docker.repository_username}")
-    private String dockerRepositoryUsername;
+    @Resource
+    private DockerProperties dockerProperties;
 
-    @Value("${docker.repository_pwd:}")
-    private String dockerRepositoryPwd;
+    @Resource
+    private GitProperties gitProperties;
 
-    @Value("${git.name:xiaoyuxxx}")
-    private String gitUserName;
-
-    /**
-     * 项目克隆地址
-     */
-    public static final String PROJECT_CLONE_PATH = System.getProperty("user.dir") + File.separator + "git";
-
+    @Resource
+    private BuildProperties buildProperties;
 
     public Integer addGrayEnv(GrayAddRequestVo requestVo) {
         GrayEnvEntity saveEntity = new GrayEnvEntity();
@@ -77,7 +74,7 @@ public class GrayService {
         try {
             k8sService.createNamespace(requestVo.getName());
         } catch (Exception e) {
-            throw new ServiceException(FailureEnum.K8S_NAMESPACE_CREATE_ERROR);
+            throw new BaseEasyException(FailureEnum.K8S_NAMESPACE_CREATE_ERROR);
         }
 
         return saveEntity.getId();
@@ -109,7 +106,7 @@ public class GrayService {
         try {
             k8sService.createNamespace(grayEnvEntity.getName());
         } catch (Exception e) {
-            throw new ServiceException(FailureEnum.K8S_NAMESPACE_CREATE_ERROR);
+            throw new BaseEasyException(FailureEnum.K8S_NAMESPACE_CREATE_ERROR);
         }
     }
 
@@ -120,13 +117,13 @@ public class GrayService {
         Integer envId = requestVo.getEnvId();
         GrayEnvEntity grayEnvEntity = grayEnvMapper.selectByPrimaryKey(envId);
         if (Objects.isNull(grayEnvEntity)) {
-            throw new ServiceException(FailureEnum.GRAY_ENV_NOT_EXIST);
+            throw new BaseEasyException(FailureEnum.GRAY_ENV_NOT_EXIST);
         }
 
         String fullName = requestVo.getFullName();
-        GitProjectResponseVo gitProjectResponseVo = gitService.findRepositoryByFullName(gitUserName + "/" + "easy-gray");
+        GitProjectResponseVo gitProjectResponseVo = gitService.findRepositoryByFullName(gitProperties.getUsername() + "/" + "easy-gray");
         if (Objects.isNull(gitProjectResponseVo)) {
-            throw new ServiceException(FailureEnum.GIT_FETCH_EXCEPTION);
+            throw new BaseEasyException(FailureEnum.GIT_FETCH_EXCEPTION);
         }
 
         int i = fullName.lastIndexOf("/");
@@ -136,7 +133,7 @@ public class GrayService {
         example.createCriteria().andGrayEnvIdEqualTo(envId).andNameEqualTo(name);
         List<GrayProjectEntity> grayProjectEntities = grayProjectEntityMapper.selectByExample(example);
         if (!CollectionUtils.isEmpty(grayProjectEntities)) {
-            throw new ServiceException(FailureEnum.GRAY_ENV_PROJECT_EXIST);
+            throw new BaseEasyException(FailureEnum.GRAY_ENV_PROJECT_EXIST);
         }
 
         // 新增项目
@@ -159,7 +156,7 @@ public class GrayService {
     public void editProject(EditProjectRequestVo editProjectRequestVo) {
         GrayProjectEntity projectEntity = grayProjectEntityMapper.selectByPrimaryKey(editProjectRequestVo.getId());
         if (Objects.isNull(projectEntity)) {
-            throw new ServiceException(FailureEnum.GRAY_ENV_PROJECT_NOT_EXIST);
+            throw new BaseEasyException(FailureEnum.GRAY_ENV_PROJECT_NOT_EXIST);
         }
         // 更新项目
         GrayProjectEntity updateEntity = new GrayProjectEntity();
@@ -171,7 +168,7 @@ public class GrayService {
     public void deleteProjectInGrayEnv(Integer projectId) {
         GrayProjectEntity projectEntity = grayProjectEntityMapper.selectByPrimaryKey(projectId);
         if (Objects.isNull(projectEntity)) {
-            throw new ServiceException(FailureEnum.GRAY_ENV_PROJECT_NOT_EXIST);
+            throw new BaseEasyException(FailureEnum.GRAY_ENV_PROJECT_NOT_EXIST);
         }
         grayProjectEntityMapper.deleteByPrimaryKey(projectId);
     }
@@ -195,11 +192,11 @@ public class GrayService {
     public void runProjectInGrayEnv(Integer projectId) {
         GrayProjectEntity projectEntity = grayProjectEntityMapper.selectByPrimaryKey(projectId);
         if (Objects.isNull(projectEntity)) {
-            throw new ServiceException(FailureEnum.GRAY_ENV_PROJECT_NOT_EXIST);
+            throw new BaseEasyException(FailureEnum.GRAY_ENV_PROJECT_NOT_EXIST);
         }
         GrayEnvEntity grayEnvEntity = grayEnvMapper.selectByPrimaryKey(projectEntity.getGrayEnvId());
         if (Objects.isNull(grayEnvEntity)) {
-            throw new ServiceException(FailureEnum.GRAY_ENV_NOT_EXIST);
+            throw new BaseEasyException(FailureEnum.GRAY_ENV_NOT_EXIST);
         }
 
         String fullName = projectEntity.getFullName();
@@ -208,16 +205,18 @@ public class GrayService {
         String cloneUrl = projectEntity.getCloneUrl();
 
         // 子项目 兼容处理
-        String gitClonePath = PROJECT_CLONE_PATH + File.separator + grayEnvEntity.getName() + File.separator + gitName;
-        String executePath = PROJECT_CLONE_PATH + File.separator + grayEnvEntity.getName() + File.separator + fullName;
+        String clonePath = buildProperties.getClonePath();
 
-        log.info("runProjectInGrayEnv project download start , path = " + PROJECT_CLONE_PATH);
+        String gitClonePath = clonePath + File.separator + grayEnvEntity.getName() + File.separator + gitName;
+        String executePath = clonePath + File.separator + grayEnvEntity.getName() + File.separator + fullName;
+
+        log.info("runProjectInGrayEnv project download start , path = " + clonePath);
 
         // 拉取代码
         FileUtil.del(gitClonePath);
         gitService.download(cloneUrl, branch, gitClonePath);
 
-        log.info("runProjectInGrayEnv project download ok , path = " + PROJECT_CLONE_PATH);
+        log.info("runProjectInGrayEnv project download ok , path = " + clonePath);
 
         // 文件复制 处理
         String startShPath = executePath + File.separator + "build.sh";
@@ -225,34 +224,35 @@ public class GrayService {
         // 执行运行服务脚本
         String version = LocalDateTime.now().format(DateTimeFormatter.ofPattern("ddHHmmss"));
         String grayEnvName = grayEnvEntity.getName();
-        CmdUtil.exec("sh",startShPath, dockerRepositoryUsername, dockerRepositoryPwd, grayEnvName, version);
+        CmdUtil.exec("sh", startShPath, dockerProperties.getUsername(), dockerProperties.getPassword(), grayEnvName, version);
     }
 
     /**
      * 停止运行
+     *
      * @param id 项目id
      */
     public void stopProjectInGrayEnv(Integer id) {
         GrayProjectEntity projectEntity = grayProjectEntityMapper.selectByPrimaryKey(id);
         if (Objects.isNull(projectEntity)) {
-            throw new ServiceException(FailureEnum.GRAY_ENV_PROJECT_NOT_EXIST);
+            throw new BaseEasyException(FailureEnum.GRAY_ENV_PROJECT_NOT_EXIST);
         }
         GrayEnvEntity grayEnvEntity = grayEnvMapper.selectByPrimaryKey(projectEntity.getGrayEnvId());
         if (Objects.isNull(grayEnvEntity)) {
-            throw new ServiceException(FailureEnum.GRAY_ENV_NOT_EXIST);
+            throw new BaseEasyException(FailureEnum.GRAY_ENV_NOT_EXIST);
         }
         String fullName = projectEntity.getFullName();
-        String executePath = PROJECT_CLONE_PATH + File.separator + grayEnvEntity.getName() + File.separator + fullName;
+        String executePath = buildProperties.getClonePath() + File.separator + grayEnvEntity.getName() + File.separator + fullName;
 
         String deploymentYamlPath = executePath + File.separator + "deployment.yaml";
-        CmdUtil.exec("kubectl","delete", "-f", deploymentYamlPath);
+        CmdUtil.exec("kubectl", "delete", "-f", deploymentYamlPath);
     }
 
     public void copy(String resourcePath, String targetPath) {
         try (FileInputStream fis = new FileInputStream(resourcePath); FileOutputStream fos = new FileOutputStream(targetPath)) {
             IOUtils.copy(fis, fos);
         } catch (Exception e) {
-            throw new ServiceException(FailureEnum.FILE_COPY_EXCEPTION);
+            throw new BaseEasyException(FailureEnum.FILE_COPY_EXCEPTION);
         }
     }
 

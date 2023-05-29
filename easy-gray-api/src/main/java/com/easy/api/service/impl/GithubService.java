@@ -1,7 +1,8 @@
-package com.easy.api.service;
+package com.easy.api.service.impl;
 
 import com.easy.api.domain.vo.GithubProjectVo;
 import com.easy.api.domain.vo.response.GitProjectResponseVo;
+import com.easy.api.service.AbstractGitService;
 import com.easy.api.util.EasyHttp;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
@@ -14,7 +15,7 @@ import java.util.Map;
 
 
 @Slf4j
-public class GithubService extends AbstractGitService{
+public class GithubService extends AbstractGitService {
 
     private final String password;
 

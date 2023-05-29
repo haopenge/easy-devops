@@ -1,5 +1,6 @@
-package com.easy.api.service;
+package com.easy.api.service.impl;
 
+import com.easy.api.config.properties.K8sProperties;
 import io.kubernetes.client.ProtoClient;
 import io.kubernetes.client.openapi.ApiException;
 import io.kubernetes.client.openapi.apis.AppsV1Api;
@@ -14,7 +15,6 @@ import io.kubernetes.client.proto.V1;
 import io.kubernetes.client.util.Yaml;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -36,54 +36,54 @@ public class K8sService {
     @Autowired
     private ExtensionsV1beta1Api extensionsV1beta1Api;
 
-    @Value("${k8s.path:/api/v1/namespaces/}")
-    private String path;
+    @Autowired
+    private K8sProperties k8sProperties;
 
-    public  void createDeployment(String namespace,String yamlFilePath) throws IOException, ApiException {
+    public void createDeployment(String namespace, String yamlFilePath) throws IOException, ApiException {
         V1Deployment body = (V1Deployment) Yaml.load(new File(yamlFilePath));
-        appsV1Api.createNamespacedDeployment(namespace,body,"true",null,null);
+        appsV1Api.createNamespacedDeployment(namespace, body, "true", null, null);
 
     }
 
-    public void deleteDeployment(String namespace,String name) throws ApiException {
+    public void deleteDeployment(String namespace, String name) throws ApiException {
         // 传入deployment的名字，命名空间，就可以删除deployment以及所有的pod了
-        appsV1Api.deleteNamespacedDeployment(name,namespace,Boolean.TRUE.toString(),null,null,null,null,null);
+        appsV1Api.deleteNamespacedDeployment(name, namespace, Boolean.TRUE.toString(), null, null, null, null, null);
     }
 
     public void createNamespace(String name) throws ApiException, IOException {
         V1.Namespace namespace = V1.Namespace.newBuilder().setMetadata(Meta.ObjectMeta.newBuilder().setName(name).build()).build();
-        protoClient.create(namespace, path, "v1", "Namespace");
+        protoClient.create(namespace, k8sProperties.getPath(), "v1", "Namespace");
     }
 
     public void deleteNamespace(String namespace) throws ApiException, IOException {
-        protoClient.delete(V1.Namespace.newBuilder(), path + namespace);
+        protoClient.delete(V1.Namespace.newBuilder(), k8sProperties.getPath() + namespace);
     }
 
-    public void createService(String namespace,String yamlFilePath) throws IOException, ApiException {
+    public void createService(String namespace, String yamlFilePath) throws IOException, ApiException {
         V1Service body = (V1Service) Yaml.load(new File(yamlFilePath));
-        coreV1Api.createNamespacedService(namespace,body,"true",null,null);
+        coreV1Api.createNamespacedService(namespace, body, "true", null, null);
     }
 
-    public void deleteService(String namespace,String name) throws ApiException {
-        coreV1Api.deleteNamespacedService(name,namespace,"true",null,null,false,null,null);
+    public void deleteService(String namespace, String name) throws ApiException {
+        coreV1Api.deleteNamespacedService(name, namespace, "true", null, null, false, null, null);
     }
 
 
-    public void createIngress(String namespace,String yamlFilePath) throws IOException, ApiException {
+    public void createIngress(String namespace, String yamlFilePath) throws IOException, ApiException {
         ExtensionsV1beta1Ingress body = (ExtensionsV1beta1Ingress) Yaml.load(new File(yamlFilePath));
-        extensionsV1beta1Api.createNamespacedIngress(namespace,body,"true",null,null);
+        extensionsV1beta1Api.createNamespacedIngress(namespace, body, "true", null, null);
     }
 
-    public void deleteIngress(String namespace,String name) throws ApiException {
-        extensionsV1beta1Api.deleteNamespacedIngress(name,namespace,"true",null,null,false,null,null);
+    public void deleteIngress(String namespace, String name) throws ApiException {
+        extensionsV1beta1Api.deleteNamespacedIngress(name, namespace, "true", null, null, false, null, null);
     }
 
-    public void createSecrets(String namespace,String yamlFilePath) throws IOException, ApiException {
+    public void createSecrets(String namespace, String yamlFilePath) throws IOException, ApiException {
         V1Secret body = (V1Secret) Yaml.load(new File(yamlFilePath));
-        coreV1Api.createNamespacedSecret(namespace,body,"true",null,null);
+        coreV1Api.createNamespacedSecret(namespace, body, "true", null, null);
     }
 
-    public void deleteSecrets(String namespace,String name) throws ApiException {
-        coreV1Api.deleteNamespacedSecret(name,namespace,"true",null,null,false,null,null);
+    public void deleteSecrets(String namespace, String name) throws ApiException {
+        coreV1Api.deleteNamespacedSecret(name, namespace, "true", null, null, false, null, null);
     }
 }

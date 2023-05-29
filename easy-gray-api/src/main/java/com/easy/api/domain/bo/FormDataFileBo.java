@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * Form-data 格式请求外部资源，文件model
+ * @author liupenghao
  */
 @Data
 @NoArgsConstructor

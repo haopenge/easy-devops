@@ -4,7 +4,8 @@ import com.easy.api.domain.enumx.FailureEnum;
 import com.easy.api.domain.vo.request.GrayAddRequestVo;
 import com.easy.api.domain.vo.request.GrayEditRequestVo;
 import com.easy.api.domain.vo.response.GrayEnvResponseVo;
-import com.easy.api.service.GrayService;
+import com.easy.api.exception.BaseEasyException;
+import com.easy.api.service.impl.GrayService;
 import com.easy.core.domain.ApiResult;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class EnvController extends BaseController {
     @PostMapping("/add")
     public ApiResult<Integer> addGrayEnv(@RequestBody GrayAddRequestVo requestVo) {
         if (StringUtils.isBlank(requestVo.getName())) {
-            return failure(FailureEnum.PARAM_ERROR);
+            throw new BaseEasyException(FailureEnum.PARAM_ERROR);
         }
         Integer grayEnvId = grayService.addGrayEnv(requestVo);
         return success(grayEnvId);
@@ -45,7 +46,7 @@ public class EnvController extends BaseController {
     @PostMapping("/edit")
     public ApiResult<Void> editGrayEnv(@RequestBody GrayEditRequestVo requestVo) {
         if (Objects.isNull(requestVo.getId())) {
-            return failure(FailureEnum.PARAM_ERROR);
+            throw new BaseEasyException(FailureEnum.PARAM_ERROR);
         }
         grayService.editGrayEnv(requestVo);
         return success();

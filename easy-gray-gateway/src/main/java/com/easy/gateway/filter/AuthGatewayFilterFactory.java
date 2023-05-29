@@ -21,9 +21,14 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * 网关过滤器
+ *
+ * @author liupenghao
+ */
 @Slf4j
 @Component
-public class AuthGatewayFilterFactory extends AbstractGatewayFilterFactory<AbstractGatewayFilterFactory.NameConfig>{
+public class AuthGatewayFilterFactory extends AbstractGatewayFilterFactory<AbstractGatewayFilterFactory.NameConfig> {
 
     /**
      * 用户登录状态token 字段
@@ -31,7 +36,7 @@ public class AuthGatewayFilterFactory extends AbstractGatewayFilterFactory<Abstr
     @Value("${user_token_field:token}")
     private String userTokenField;
 
-    public AuthGatewayFilterFactory(){
+    public AuthGatewayFilterFactory() {
         super(NameConfig.class);
         log.info("AuthGatewayFilterFactory init success");
     }
@@ -47,30 +52,30 @@ public class AuthGatewayFilterFactory extends AbstractGatewayFilterFactory<Abstr
             ServerHttpRequest request = exchange.getRequest();
             // 校验是否是 不用登录的URL
             String path = request.getPath().toString();
-            log.info("AuthGatewayFilterFactory.apply path:{}",path);
+            log.info("AuthGatewayFilterFactory.apply path:{}", path);
 
             String ignoreUrlListStr = config.getName();
-            log.info("AuthGatewayFilterFactory.apply ignoreUrlListStr={}",ignoreUrlListStr);
+            log.info("AuthGatewayFilterFactory.apply ignoreUrlListStr={}", ignoreUrlListStr);
 
             boolean ignoreOk = Arrays.asList(ignoreUrlListStr.split("\\|")).contains(path);
-            if(ignoreOk){
+            if (ignoreOk) {
                 return chain.filter(exchange);
             }
 
             // 校验是否登录
             HttpHeaders headers = request.getHeaders();
             String userToken = headers.getFirst(userTokenField);
-            if(StringUtils.isEmpty(userToken)){
+            if (StringUtils.isEmpty(userToken)) {
                 // 返回未登录提示
                 ServerHttpResponse response = exchange.getResponse();
                 response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
                 response.setStatusCode(HttpStatus.UNAUTHORIZED);
 
-                byte[] responseByteArray = JSON.toJSONBytes(ApiResult.error(FailureEnum.AUTH_TOKEN_EXPIRED));
+                byte[] responseByteArray = JSON.toJSONBytes(ApiResult.error(FailureEnum.AUTH_TOKEN_EXPIRED.getCode(), FailureEnum.AUTH_TOKEN_EXPIRED.getMessage()));
                 DataBuffer responseBuffer = response.bufferFactory().allocateBuffer(responseByteArray.length).write(responseByteArray);
                 return response.writeWith(Mono.just(responseBuffer));
             }
-            log.info("AuthGatewayFilterFactory.apply  token = {}",userToken);
+            log.info("AuthGatewayFilterFactory.apply  token = {}", userToken);
             return chain.filter(exchange);
         };
     }

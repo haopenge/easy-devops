@@ -3,7 +3,7 @@ package com.easy.api.controller;
 import com.easy.api.domain.vo.request.AddProjectToGrayEnvRequestVo;
 import com.easy.api.domain.vo.request.EditProjectRequestVo;
 import com.easy.api.domain.vo.response.GitProjectResponseVo;
-import com.easy.api.service.GrayService;
+import com.easy.api.service.impl.GrayService;
 import com.easy.core.domain.ApiResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;

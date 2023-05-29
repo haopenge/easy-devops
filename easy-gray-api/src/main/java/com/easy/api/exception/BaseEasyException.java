@@ -4,14 +4,16 @@ import com.easy.api.domain.enumx.FailureEnum;
 import lombok.Getter;
 
 /**
- * service 层异常处理
+ * easy异常基类
+ *
+ * @author liupenghao
  */
 @Getter
-public class ServiceException extends RuntimeException {
+public class BaseEasyException extends RuntimeException {
 
     private final FailureEnum failureEnum;
 
-    public ServiceException(FailureEnum failureEnum) {
+    public BaseEasyException(FailureEnum failureEnum) {
 
         super(failureEnum.getMessage());
         this.failureEnum = failureEnum;

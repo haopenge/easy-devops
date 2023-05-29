@@ -1,74 +1,95 @@
 package com.easy.core.domain;
 
-import cn.hutool.http.HttpStatus;
-import com.easy.core.enumx.FailureEnum;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.easy.core.enumx.HttpStatusEnum;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
- * 返回结果封装
+ * 接口响应结构
  */
-@Data
+@Getter
+@Setter
+@SuppressWarnings("all")
 public class ApiResult<T> {
 
-    private int code;
-
-    private T data;
-
+    /**
+     * 返回状态, true/false
+     */
     private boolean success;
 
-    private String message;
+    /**
+     * 翻译后的消息
+     */
+    private String message = "";
 
+    /**
+     * 业务Code，可作为返回标识
+     */
+    private String code;
+
+    /**
+     * 响应数据
+     */
+    private T data;
+
+
+    /**
+     * 请求通过正常返回值
+     *
+     * @return ApiResult
+     */
     public static ApiResult<Void> ok() {
         ApiVoidResult result = new ApiVoidResult();
         result.setSuccess(true);
-        result.setCode(HttpStatus.HTTP_OK);
+        result.setCode(String.valueOf(HttpStatusEnum.OK.getStatus()));
         return result;
     }
 
+    /**
+     * 请求通过正常返回值
+     *
+     * @param controller 当前controller
+     * @return ApiResult
+     */
     public static <T> ApiResult<T> ok(T t) {
-        ApiObjectResult result = new ApiObjectResult();
-        result.setCode(HttpStatus.HTTP_OK);
+        ApiResult<T> result = new ApiResult<T>();
         result.setSuccess(true);
+        result.setCode(String.valueOf(HttpStatusEnum.OK.getStatus()));
         result.setData(t);
-        return (ApiResult<T>) result;
+        return result;
     }
 
-    public ApiResult<T> data(T data) {
-        this.data = data;
-        return this;
+
+    /**
+     * 失败返回
+     *
+     * @return ApiResult
+     */
+    public static ApiResult<Void> error() {
+        ApiVoidResult result = new ApiVoidResult();
+        result.setSuccess(false);
+        return result;
     }
 
-    public static ApiResult<Object> error() {
+    public static ApiResult<Object> error(String code, String message) {
         ApiObjectResult result = new ApiObjectResult();
-        result.setSuccess(false);
-        return result;
-    }
-
-    public static ApiResult<Void> error(FailureEnum failureEnum) {
-        ApiVoidResult result = new ApiVoidResult();
-        result.setSuccess(false);
-        result.setCode(failureEnum.getCode());
-        result.setMessage(failureEnum.getMessage());
-        return result;
-    }
-
-    public static ApiResult<Void> error(int code,String message) {
-        ApiVoidResult result = new ApiVoidResult();
         result.setSuccess(false);
         result.setCode(code);
         result.setMessage(message);
         return result;
     }
 
-    @NoArgsConstructor
+    /**
+     * obj-返回通用对象
+     */
     public static class ApiObjectResult extends ApiResult<Object> {
 
     }
 
-    @NoArgsConstructor
+    /**
+     * 无返回值-通用对象
+     */
     public static class ApiVoidResult extends ApiResult<Void> {
 
     }
 }
-

@@ -44,6 +44,13 @@
             <artifactId>spring-cloud-starter-bootstrap</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <version>2.7.6</version>
+            <optional>true</optional>
+        </dependency>
+
         <!-- =========================== spring end =========================== -->
 
 

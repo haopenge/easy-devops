@@ -1,7 +1,8 @@
-package com.easy.api.service;
+package com.easy.api.service.impl;
 
 import com.easy.api.domain.vo.GiteeProjectVo;
 import com.easy.api.domain.vo.response.GitProjectResponseVo;
+import com.easy.api.service.AbstractGitService;
 import com.easy.api.util.EasyHttp;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.springframework.beans.BeanUtils;
@@ -13,7 +14,7 @@ import java.util.Objects;
 /**
  * @author liuph
  */
-public class GiteeService extends AbstractGitService{
+public class GiteeService extends AbstractGitService {
 
     private final String password;
 
@@ -21,7 +22,7 @@ public class GiteeService extends AbstractGitService{
 
     private final String singleProjectFindUrl;
 
-    public GiteeService(String username,String password,String repositoryProjectFindUrl,String singleProjectFindUrl) {
+    public GiteeService(String username, String password, String repositoryProjectFindUrl, String singleProjectFindUrl) {
         setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password));
         this.password = password;
         this.repositoryProjectFindUrl = repositoryProjectFindUrl;
@@ -43,8 +44,8 @@ public class GiteeService extends AbstractGitService{
 
     @Override
     public GitProjectResponseVo findRepositoryByFullName(String fullName) {
-        GiteeProjectVo giteeProjectVo = EasyHttp.httpGet(singleProjectFindUrl  + "/" + fullName  + "?access_token=" + password, null, GiteeProjectVo.class);
-        if(Objects.isNull(giteeProjectVo)){
+        GiteeProjectVo giteeProjectVo = EasyHttp.httpGet(singleProjectFindUrl + "/" + fullName + "?access_token=" + password, null, GiteeProjectVo.class);
+        if (Objects.isNull(giteeProjectVo)) {
             return null;
         }
         GitProjectResponseVo returnVo = new GitProjectResponseVo();
