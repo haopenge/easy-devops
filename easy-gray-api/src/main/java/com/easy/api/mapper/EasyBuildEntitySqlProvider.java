@@ -13,33 +13,33 @@ import static org.apache.ibatis.jdbc.SqlBuilder.UPDATE;
 import static org.apache.ibatis.jdbc.SqlBuilder.VALUES;
 import static org.apache.ibatis.jdbc.SqlBuilder.WHERE;
 
-import com.easy.api.domain.entity.GrayProjectEntity;
-import com.easy.api.domain.entity.GrayProjectEntityExample.Criteria;
-import com.easy.api.domain.entity.GrayProjectEntityExample.Criterion;
-import com.easy.api.domain.entity.GrayProjectEntityExample;
+import com.easy.api.domain.entity.EasyBuildEntity;
+import com.easy.api.domain.entity.EasyBuildEntityExample.Criteria;
+import com.easy.api.domain.entity.EasyBuildEntityExample.Criterion;
+import com.easy.api.domain.entity.EasyBuildEntityExample;
 import java.util.List;
 import java.util.Map;
 
-public class GrayProjectEntitySqlProvider {
+public class EasyBuildEntitySqlProvider {
 
-    public String countByExample(GrayProjectEntityExample example) {
+    public String countByExample(EasyBuildEntityExample example) {
         BEGIN();
         SELECT("count(*)");
-        FROM("gray_project");
+        FROM("easy_build");
         applyWhere(example, false);
         return SQL();
     }
 
-    public String deleteByExample(GrayProjectEntityExample example) {
+    public String deleteByExample(EasyBuildEntityExample example) {
         BEGIN();
-        DELETE_FROM("gray_project");
+        DELETE_FROM("easy_build");
         applyWhere(example, false);
         return SQL();
     }
 
-    public String insertSelective(GrayProjectEntity record) {
+    public String insertSelective(EasyBuildEntity record) {
         BEGIN();
-        INSERT_INTO("gray_project");
+        INSERT_INTO("easy_build");
         
         if (record.getId() != null) {
             VALUES("id", "#{id,jdbcType=INTEGER}");
@@ -53,42 +53,26 @@ public class GrayProjectEntitySqlProvider {
             VALUES("update_time", "#{updateTime,jdbcType=TIMESTAMP}");
         }
         
-        if (record.getGrayEnvId() != null) {
-            VALUES("gray_env_id", "#{grayEnvId,jdbcType=INTEGER}");
+        if (record.getEasyRepositoryId() != null) {
+            VALUES("easy_repository_id", "#{easyRepositoryId,jdbcType=INTEGER}");
         }
         
-        if (record.getDescription() != null) {
-            VALUES("description", "#{description,jdbcType=VARCHAR}");
+        if (record.getOrder() != null) {
+            VALUES("order", "#{order,jdbcType=INTEGER}");
         }
         
-        if (record.getName() != null) {
-            VALUES("`name`", "#{name,jdbcType=VARCHAR}");
+        if (record.getType() != null) {
+            VALUES("type", "#{type,jdbcType=INTEGER}");
         }
         
-        if (record.getFullName() != null) {
-            VALUES("full_name", "#{fullName,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getBranch() != null) {
-            VALUES("branch", "#{branch,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getCloneUrl() != null) {
-            VALUES("clone_url", "#{cloneUrl,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getStatus() != null) {
-            VALUES("`status`", "#{status,jdbcType=INTEGER}");
-        }
-        
-        if (record.getGitName() != null) {
-            VALUES("git_name", "#{gitName,jdbcType=VARCHAR}");
+        if (record.getContent() != null) {
+            VALUES("content", "#{content,jdbcType=LONGVARCHAR}");
         }
         
         return SQL();
     }
 
-    public String selectByExample(GrayProjectEntityExample example) {
+    public String selectByExampleWithBLOBs(EasyBuildEntityExample example) {
         BEGIN();
         if (example != null && example.isDistinct()) {
             SELECT_DISTINCT("id");
@@ -97,15 +81,33 @@ public class GrayProjectEntitySqlProvider {
         }
         SELECT("create_time");
         SELECT("update_time");
-        SELECT("gray_env_id");
-        SELECT("description");
-        SELECT("`name`");
-        SELECT("full_name");
-        SELECT("branch");
-        SELECT("clone_url");
-        SELECT("`status`");
-        SELECT("git_name");
-        FROM("gray_project");
+        SELECT("easy_repository_id");
+        SELECT("order");
+        SELECT("type");
+        SELECT("content");
+        FROM("easy_build");
+        applyWhere(example, false);
+        
+        if (example != null && example.getOrderByClause() != null) {
+            ORDER_BY(example.getOrderByClause());
+        }
+        
+        return SQL();
+    }
+
+    public String selectByExample(EasyBuildEntityExample example) {
+        BEGIN();
+        if (example != null && example.isDistinct()) {
+            SELECT_DISTINCT("id");
+        } else {
+            SELECT("id");
+        }
+        SELECT("create_time");
+        SELECT("update_time");
+        SELECT("easy_repository_id");
+        SELECT("order");
+        SELECT("type");
+        FROM("easy_build");
         applyWhere(example, false);
         
         if (example != null && example.getOrderByClause() != null) {
@@ -116,11 +118,11 @@ public class GrayProjectEntitySqlProvider {
     }
 
     public String updateByExampleSelective(Map<String, Object> parameter) {
-        GrayProjectEntity record = (GrayProjectEntity) parameter.get("record");
-        GrayProjectEntityExample example = (GrayProjectEntityExample) parameter.get("example");
+        EasyBuildEntity record = (EasyBuildEntity) parameter.get("record");
+        EasyBuildEntityExample example = (EasyBuildEntityExample) parameter.get("example");
         
         BEGIN();
-        UPDATE("gray_project");
+        UPDATE("easy_build");
         
         if (record.getId() != null) {
             SET("id = #{record.id,jdbcType=INTEGER}");
@@ -134,66 +136,62 @@ public class GrayProjectEntitySqlProvider {
             SET("update_time = #{record.updateTime,jdbcType=TIMESTAMP}");
         }
         
-        if (record.getGrayEnvId() != null) {
-            SET("gray_env_id = #{record.grayEnvId,jdbcType=INTEGER}");
+        if (record.getEasyRepositoryId() != null) {
+            SET("easy_repository_id = #{record.easyRepositoryId,jdbcType=INTEGER}");
         }
         
-        if (record.getDescription() != null) {
-            SET("description = #{record.description,jdbcType=VARCHAR}");
+        if (record.getOrder() != null) {
+            SET("order = #{record.order,jdbcType=INTEGER}");
         }
         
-        if (record.getName() != null) {
-            SET("`name` = #{record.name,jdbcType=VARCHAR}");
+        if (record.getType() != null) {
+            SET("type = #{record.type,jdbcType=INTEGER}");
         }
         
-        if (record.getFullName() != null) {
-            SET("full_name = #{record.fullName,jdbcType=VARCHAR}");
+        if (record.getContent() != null) {
+            SET("content = #{record.content,jdbcType=LONGVARCHAR}");
         }
         
-        if (record.getBranch() != null) {
-            SET("branch = #{record.branch,jdbcType=VARCHAR}");
-        }
+        applyWhere(example, true);
+        return SQL();
+    }
+
+    public String updateByExampleWithBLOBs(Map<String, Object> parameter) {
+        BEGIN();
+        UPDATE("easy_build");
         
-        if (record.getCloneUrl() != null) {
-            SET("clone_url = #{record.cloneUrl,jdbcType=VARCHAR}");
-        }
+        SET("id = #{record.id,jdbcType=INTEGER}");
+        SET("create_time = #{record.createTime,jdbcType=TIMESTAMP}");
+        SET("update_time = #{record.updateTime,jdbcType=TIMESTAMP}");
+        SET("easy_repository_id = #{record.easyRepositoryId,jdbcType=INTEGER}");
+        SET("order = #{record.order,jdbcType=INTEGER}");
+        SET("type = #{record.type,jdbcType=INTEGER}");
+        SET("content = #{record.content,jdbcType=LONGVARCHAR}");
         
-        if (record.getStatus() != null) {
-            SET("`status` = #{record.status,jdbcType=INTEGER}");
-        }
-        
-        if (record.getGitName() != null) {
-            SET("git_name = #{record.gitName,jdbcType=VARCHAR}");
-        }
-        
+        EasyBuildEntityExample example = (EasyBuildEntityExample) parameter.get("example");
         applyWhere(example, true);
         return SQL();
     }
 
     public String updateByExample(Map<String, Object> parameter) {
         BEGIN();
-        UPDATE("gray_project");
+        UPDATE("easy_build");
         
         SET("id = #{record.id,jdbcType=INTEGER}");
         SET("create_time = #{record.createTime,jdbcType=TIMESTAMP}");
         SET("update_time = #{record.updateTime,jdbcType=TIMESTAMP}");
-        SET("gray_env_id = #{record.grayEnvId,jdbcType=INTEGER}");
-        SET("description = #{record.description,jdbcType=VARCHAR}");
-        SET("`name` = #{record.name,jdbcType=VARCHAR}");
-        SET("full_name = #{record.fullName,jdbcType=VARCHAR}");
-        SET("branch = #{record.branch,jdbcType=VARCHAR}");
-        SET("clone_url = #{record.cloneUrl,jdbcType=VARCHAR}");
-        SET("`status` = #{record.status,jdbcType=INTEGER}");
-        SET("git_name = #{record.gitName,jdbcType=VARCHAR}");
+        SET("easy_repository_id = #{record.easyRepositoryId,jdbcType=INTEGER}");
+        SET("order = #{record.order,jdbcType=INTEGER}");
+        SET("type = #{record.type,jdbcType=INTEGER}");
         
-        GrayProjectEntityExample example = (GrayProjectEntityExample) parameter.get("example");
+        EasyBuildEntityExample example = (EasyBuildEntityExample) parameter.get("example");
         applyWhere(example, true);
         return SQL();
     }
 
-    public String updateByPrimaryKeySelective(GrayProjectEntity record) {
+    public String updateByPrimaryKeySelective(EasyBuildEntity record) {
         BEGIN();
-        UPDATE("gray_project");
+        UPDATE("easy_build");
         
         if (record.getCreateTime() != null) {
             SET("create_time = #{createTime,jdbcType=TIMESTAMP}");
@@ -203,36 +201,20 @@ public class GrayProjectEntitySqlProvider {
             SET("update_time = #{updateTime,jdbcType=TIMESTAMP}");
         }
         
-        if (record.getGrayEnvId() != null) {
-            SET("gray_env_id = #{grayEnvId,jdbcType=INTEGER}");
+        if (record.getEasyRepositoryId() != null) {
+            SET("easy_repository_id = #{easyRepositoryId,jdbcType=INTEGER}");
         }
         
-        if (record.getDescription() != null) {
-            SET("description = #{description,jdbcType=VARCHAR}");
+        if (record.getOrder() != null) {
+            SET("order = #{order,jdbcType=INTEGER}");
         }
         
-        if (record.getName() != null) {
-            SET("`name` = #{name,jdbcType=VARCHAR}");
+        if (record.getType() != null) {
+            SET("type = #{type,jdbcType=INTEGER}");
         }
         
-        if (record.getFullName() != null) {
-            SET("full_name = #{fullName,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getBranch() != null) {
-            SET("branch = #{branch,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getCloneUrl() != null) {
-            SET("clone_url = #{cloneUrl,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getStatus() != null) {
-            SET("`status` = #{status,jdbcType=INTEGER}");
-        }
-        
-        if (record.getGitName() != null) {
-            SET("git_name = #{gitName,jdbcType=VARCHAR}");
+        if (record.getContent() != null) {
+            SET("content = #{content,jdbcType=LONGVARCHAR}");
         }
         
         WHERE("id = #{id,jdbcType=INTEGER}");
@@ -240,7 +222,7 @@ public class GrayProjectEntitySqlProvider {
         return SQL();
     }
 
-    protected void applyWhere(GrayProjectEntityExample example, boolean includeExamplePhrase) {
+    protected void applyWhere(EasyBuildEntityExample example, boolean includeExamplePhrase) {
         if (example == null) {
             return;
         }

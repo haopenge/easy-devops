@@ -28,7 +28,7 @@ public class ClassUtil {
     /**
      * Object Class
      */
-    private final static Class OBJECT_CLASS = Object.class;
+    private static final Class<?> OBJECT_CLASS = Object.class;
 
     private ClassUtil() {
     }

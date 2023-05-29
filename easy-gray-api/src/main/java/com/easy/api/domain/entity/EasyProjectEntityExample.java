@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class GrayProjectEntityExample {
+public class EasyProjectEntityExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public GrayProjectEntityExample() {
+    public EasyProjectEntityExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -285,273 +285,263 @@ public class GrayProjectEntityExample {
             return (Criteria) this;
         }
 
-        public Criteria andGrayEnvIdIsNull() {
-            addCriterion("gray_env_id is null");
+        public Criteria andEasyEnvIdIsNull() {
+            addCriterion("easy_env_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andGrayEnvIdIsNotNull() {
-            addCriterion("gray_env_id is not null");
+        public Criteria andEasyEnvIdIsNotNull() {
+            addCriterion("easy_env_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andGrayEnvIdEqualTo(Integer value) {
-            addCriterion("gray_env_id =", value, "grayEnvId");
+        public Criteria andEasyEnvIdEqualTo(Integer value) {
+            addCriterion("easy_env_id =", value, "easyEnvId");
             return (Criteria) this;
         }
 
-        public Criteria andGrayEnvIdNotEqualTo(Integer value) {
-            addCriterion("gray_env_id <>", value, "grayEnvId");
+        public Criteria andEasyEnvIdNotEqualTo(Integer value) {
+            addCriterion("easy_env_id <>", value, "easyEnvId");
             return (Criteria) this;
         }
 
-        public Criteria andGrayEnvIdGreaterThan(Integer value) {
-            addCriterion("gray_env_id >", value, "grayEnvId");
+        public Criteria andEasyEnvIdGreaterThan(Integer value) {
+            addCriterion("easy_env_id >", value, "easyEnvId");
             return (Criteria) this;
         }
 
-        public Criteria andGrayEnvIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("gray_env_id >=", value, "grayEnvId");
+        public Criteria andEasyEnvIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("easy_env_id >=", value, "easyEnvId");
             return (Criteria) this;
         }
 
-        public Criteria andGrayEnvIdLessThan(Integer value) {
-            addCriterion("gray_env_id <", value, "grayEnvId");
+        public Criteria andEasyEnvIdLessThan(Integer value) {
+            addCriterion("easy_env_id <", value, "easyEnvId");
             return (Criteria) this;
         }
 
-        public Criteria andGrayEnvIdLessThanOrEqualTo(Integer value) {
-            addCriterion("gray_env_id <=", value, "grayEnvId");
+        public Criteria andEasyEnvIdLessThanOrEqualTo(Integer value) {
+            addCriterion("easy_env_id <=", value, "easyEnvId");
             return (Criteria) this;
         }
 
-        public Criteria andGrayEnvIdIn(List<Integer> values) {
-            addCriterion("gray_env_id in", values, "grayEnvId");
+        public Criteria andEasyEnvIdIn(List<Integer> values) {
+            addCriterion("easy_env_id in", values, "easyEnvId");
             return (Criteria) this;
         }
 
-        public Criteria andGrayEnvIdNotIn(List<Integer> values) {
-            addCriterion("gray_env_id not in", values, "grayEnvId");
+        public Criteria andEasyEnvIdNotIn(List<Integer> values) {
+            addCriterion("easy_env_id not in", values, "easyEnvId");
             return (Criteria) this;
         }
 
-        public Criteria andGrayEnvIdBetween(Integer value1, Integer value2) {
-            addCriterion("gray_env_id between", value1, value2, "grayEnvId");
+        public Criteria andEasyEnvIdBetween(Integer value1, Integer value2) {
+            addCriterion("easy_env_id between", value1, value2, "easyEnvId");
             return (Criteria) this;
         }
 
-        public Criteria andGrayEnvIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("gray_env_id not between", value1, value2, "grayEnvId");
+        public Criteria andEasyEnvIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("easy_env_id not between", value1, value2, "easyEnvId");
             return (Criteria) this;
         }
 
-        public Criteria andDescriptionIsNull() {
-            addCriterion("description is null");
+        public Criteria andEasyRepositoryIdIsNull() {
+            addCriterion("easy_repository_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andDescriptionIsNotNull() {
-            addCriterion("description is not null");
+        public Criteria andEasyRepositoryIdIsNotNull() {
+            addCriterion("easy_repository_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andDescriptionEqualTo(String value) {
-            addCriterion("description =", value, "description");
+        public Criteria andEasyRepositoryIdEqualTo(Integer value) {
+            addCriterion("easy_repository_id =", value, "easyRepositoryId");
             return (Criteria) this;
         }
 
-        public Criteria andDescriptionNotEqualTo(String value) {
-            addCriterion("description <>", value, "description");
+        public Criteria andEasyRepositoryIdNotEqualTo(Integer value) {
+            addCriterion("easy_repository_id <>", value, "easyRepositoryId");
             return (Criteria) this;
         }
 
-        public Criteria andDescriptionGreaterThan(String value) {
-            addCriterion("description >", value, "description");
+        public Criteria andEasyRepositoryIdGreaterThan(Integer value) {
+            addCriterion("easy_repository_id >", value, "easyRepositoryId");
             return (Criteria) this;
         }
 
-        public Criteria andDescriptionGreaterThanOrEqualTo(String value) {
-            addCriterion("description >=", value, "description");
+        public Criteria andEasyRepositoryIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("easy_repository_id >=", value, "easyRepositoryId");
             return (Criteria) this;
         }
 
-        public Criteria andDescriptionLessThan(String value) {
-            addCriterion("description <", value, "description");
+        public Criteria andEasyRepositoryIdLessThan(Integer value) {
+            addCriterion("easy_repository_id <", value, "easyRepositoryId");
             return (Criteria) this;
         }
 
-        public Criteria andDescriptionLessThanOrEqualTo(String value) {
-            addCriterion("description <=", value, "description");
+        public Criteria andEasyRepositoryIdLessThanOrEqualTo(Integer value) {
+            addCriterion("easy_repository_id <=", value, "easyRepositoryId");
             return (Criteria) this;
         }
 
-        public Criteria andDescriptionLike(String value) {
-            addCriterion("description like", value, "description");
+        public Criteria andEasyRepositoryIdIn(List<Integer> values) {
+            addCriterion("easy_repository_id in", values, "easyRepositoryId");
             return (Criteria) this;
         }
 
-        public Criteria andDescriptionNotLike(String value) {
-            addCriterion("description not like", value, "description");
+        public Criteria andEasyRepositoryIdNotIn(List<Integer> values) {
+            addCriterion("easy_repository_id not in", values, "easyRepositoryId");
             return (Criteria) this;
         }
 
-        public Criteria andDescriptionIn(List<String> values) {
-            addCriterion("description in", values, "description");
+        public Criteria andEasyRepositoryIdBetween(Integer value1, Integer value2) {
+            addCriterion("easy_repository_id between", value1, value2, "easyRepositoryId");
             return (Criteria) this;
         }
 
-        public Criteria andDescriptionNotIn(List<String> values) {
-            addCriterion("description not in", values, "description");
-            return (Criteria) this;
-        }
-
-        public Criteria andDescriptionBetween(String value1, String value2) {
-            addCriterion("description between", value1, value2, "description");
-            return (Criteria) this;
-        }
-
-        public Criteria andDescriptionNotBetween(String value1, String value2) {
-            addCriterion("description not between", value1, value2, "description");
+        public Criteria andEasyRepositoryIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("easy_repository_id not between", value1, value2, "easyRepositoryId");
             return (Criteria) this;
         }
 
         public Criteria andNameIsNull() {
-            addCriterion("`name` is null");
+            addCriterion("name is null");
             return (Criteria) this;
         }
 
         public Criteria andNameIsNotNull() {
-            addCriterion("`name` is not null");
+            addCriterion("name is not null");
             return (Criteria) this;
         }
 
         public Criteria andNameEqualTo(String value) {
-            addCriterion("`name` =", value, "name");
+            addCriterion("name =", value, "name");
             return (Criteria) this;
         }
 
         public Criteria andNameNotEqualTo(String value) {
-            addCriterion("`name` <>", value, "name");
+            addCriterion("name <>", value, "name");
             return (Criteria) this;
         }
 
         public Criteria andNameGreaterThan(String value) {
-            addCriterion("`name` >", value, "name");
+            addCriterion("name >", value, "name");
             return (Criteria) this;
         }
 
         public Criteria andNameGreaterThanOrEqualTo(String value) {
-            addCriterion("`name` >=", value, "name");
+            addCriterion("name >=", value, "name");
             return (Criteria) this;
         }
 
         public Criteria andNameLessThan(String value) {
-            addCriterion("`name` <", value, "name");
+            addCriterion("name <", value, "name");
             return (Criteria) this;
         }
 
         public Criteria andNameLessThanOrEqualTo(String value) {
-            addCriterion("`name` <=", value, "name");
+            addCriterion("name <=", value, "name");
             return (Criteria) this;
         }
 
         public Criteria andNameLike(String value) {
-            addCriterion("`name` like", value, "name");
+            addCriterion("name like", value, "name");
             return (Criteria) this;
         }
 
         public Criteria andNameNotLike(String value) {
-            addCriterion("`name` not like", value, "name");
+            addCriterion("name not like", value, "name");
             return (Criteria) this;
         }
 
         public Criteria andNameIn(List<String> values) {
-            addCriterion("`name` in", values, "name");
+            addCriterion("name in", values, "name");
             return (Criteria) this;
         }
 
         public Criteria andNameNotIn(List<String> values) {
-            addCriterion("`name` not in", values, "name");
+            addCriterion("name not in", values, "name");
             return (Criteria) this;
         }
 
         public Criteria andNameBetween(String value1, String value2) {
-            addCriterion("`name` between", value1, value2, "name");
+            addCriterion("name between", value1, value2, "name");
             return (Criteria) this;
         }
 
         public Criteria andNameNotBetween(String value1, String value2) {
-            addCriterion("`name` not between", value1, value2, "name");
+            addCriterion("name not between", value1, value2, "name");
             return (Criteria) this;
         }
 
-        public Criteria andFullNameIsNull() {
-            addCriterion("full_name is null");
+        public Criteria andBuildPathIsNull() {
+            addCriterion("build_path is null");
             return (Criteria) this;
         }
 
-        public Criteria andFullNameIsNotNull() {
-            addCriterion("full_name is not null");
+        public Criteria andBuildPathIsNotNull() {
+            addCriterion("build_path is not null");
             return (Criteria) this;
         }
 
-        public Criteria andFullNameEqualTo(String value) {
-            addCriterion("full_name =", value, "fullName");
+        public Criteria andBuildPathEqualTo(String value) {
+            addCriterion("build_path =", value, "buildPath");
             return (Criteria) this;
         }
 
-        public Criteria andFullNameNotEqualTo(String value) {
-            addCriterion("full_name <>", value, "fullName");
+        public Criteria andBuildPathNotEqualTo(String value) {
+            addCriterion("build_path <>", value, "buildPath");
             return (Criteria) this;
         }
 
-        public Criteria andFullNameGreaterThan(String value) {
-            addCriterion("full_name >", value, "fullName");
+        public Criteria andBuildPathGreaterThan(String value) {
+            addCriterion("build_path >", value, "buildPath");
             return (Criteria) this;
         }
 
-        public Criteria andFullNameGreaterThanOrEqualTo(String value) {
-            addCriterion("full_name >=", value, "fullName");
+        public Criteria andBuildPathGreaterThanOrEqualTo(String value) {
+            addCriterion("build_path >=", value, "buildPath");
             return (Criteria) this;
         }
 
-        public Criteria andFullNameLessThan(String value) {
-            addCriterion("full_name <", value, "fullName");
+        public Criteria andBuildPathLessThan(String value) {
+            addCriterion("build_path <", value, "buildPath");
             return (Criteria) this;
         }
 
-        public Criteria andFullNameLessThanOrEqualTo(String value) {
-            addCriterion("full_name <=", value, "fullName");
+        public Criteria andBuildPathLessThanOrEqualTo(String value) {
+            addCriterion("build_path <=", value, "buildPath");
             return (Criteria) this;
         }
 
-        public Criteria andFullNameLike(String value) {
-            addCriterion("full_name like", value, "fullName");
+        public Criteria andBuildPathLike(String value) {
+            addCriterion("build_path like", value, "buildPath");
             return (Criteria) this;
         }
 
-        public Criteria andFullNameNotLike(String value) {
-            addCriterion("full_name not like", value, "fullName");
+        public Criteria andBuildPathNotLike(String value) {
+            addCriterion("build_path not like", value, "buildPath");
             return (Criteria) this;
         }
 
-        public Criteria andFullNameIn(List<String> values) {
-            addCriterion("full_name in", values, "fullName");
+        public Criteria andBuildPathIn(List<String> values) {
+            addCriterion("build_path in", values, "buildPath");
             return (Criteria) this;
         }
 
-        public Criteria andFullNameNotIn(List<String> values) {
-            addCriterion("full_name not in", values, "fullName");
+        public Criteria andBuildPathNotIn(List<String> values) {
+            addCriterion("build_path not in", values, "buildPath");
             return (Criteria) this;
         }
 
-        public Criteria andFullNameBetween(String value1, String value2) {
-            addCriterion("full_name between", value1, value2, "fullName");
+        public Criteria andBuildPathBetween(String value1, String value2) {
+            addCriterion("build_path between", value1, value2, "buildPath");
             return (Criteria) this;
         }
 
-        public Criteria andFullNameNotBetween(String value1, String value2) {
-            addCriterion("full_name not between", value1, value2, "fullName");
+        public Criteria andBuildPathNotBetween(String value1, String value2) {
+            addCriterion("build_path not between", value1, value2, "buildPath");
             return (Criteria) this;
         }
 
@@ -625,203 +615,73 @@ public class GrayProjectEntityExample {
             return (Criteria) this;
         }
 
-        public Criteria andCloneUrlIsNull() {
-            addCriterion("clone_url is null");
+        public Criteria andHashCodeIsNull() {
+            addCriterion("hash_code is null");
             return (Criteria) this;
         }
 
-        public Criteria andCloneUrlIsNotNull() {
-            addCriterion("clone_url is not null");
+        public Criteria andHashCodeIsNotNull() {
+            addCriterion("hash_code is not null");
             return (Criteria) this;
         }
 
-        public Criteria andCloneUrlEqualTo(String value) {
-            addCriterion("clone_url =", value, "cloneUrl");
+        public Criteria andHashCodeEqualTo(String value) {
+            addCriterion("hash_code =", value, "hashCode");
             return (Criteria) this;
         }
 
-        public Criteria andCloneUrlNotEqualTo(String value) {
-            addCriterion("clone_url <>", value, "cloneUrl");
+        public Criteria andHashCodeNotEqualTo(String value) {
+            addCriterion("hash_code <>", value, "hashCode");
             return (Criteria) this;
         }
 
-        public Criteria andCloneUrlGreaterThan(String value) {
-            addCriterion("clone_url >", value, "cloneUrl");
+        public Criteria andHashCodeGreaterThan(String value) {
+            addCriterion("hash_code >", value, "hashCode");
             return (Criteria) this;
         }
 
-        public Criteria andCloneUrlGreaterThanOrEqualTo(String value) {
-            addCriterion("clone_url >=", value, "cloneUrl");
+        public Criteria andHashCodeGreaterThanOrEqualTo(String value) {
+            addCriterion("hash_code >=", value, "hashCode");
             return (Criteria) this;
         }
 
-        public Criteria andCloneUrlLessThan(String value) {
-            addCriterion("clone_url <", value, "cloneUrl");
+        public Criteria andHashCodeLessThan(String value) {
+            addCriterion("hash_code <", value, "hashCode");
             return (Criteria) this;
         }
 
-        public Criteria andCloneUrlLessThanOrEqualTo(String value) {
-            addCriterion("clone_url <=", value, "cloneUrl");
+        public Criteria andHashCodeLessThanOrEqualTo(String value) {
+            addCriterion("hash_code <=", value, "hashCode");
             return (Criteria) this;
         }
 
-        public Criteria andCloneUrlLike(String value) {
-            addCriterion("clone_url like", value, "cloneUrl");
+        public Criteria andHashCodeLike(String value) {
+            addCriterion("hash_code like", value, "hashCode");
             return (Criteria) this;
         }
 
-        public Criteria andCloneUrlNotLike(String value) {
-            addCriterion("clone_url not like", value, "cloneUrl");
+        public Criteria andHashCodeNotLike(String value) {
+            addCriterion("hash_code not like", value, "hashCode");
             return (Criteria) this;
         }
 
-        public Criteria andCloneUrlIn(List<String> values) {
-            addCriterion("clone_url in", values, "cloneUrl");
+        public Criteria andHashCodeIn(List<String> values) {
+            addCriterion("hash_code in", values, "hashCode");
             return (Criteria) this;
         }
 
-        public Criteria andCloneUrlNotIn(List<String> values) {
-            addCriterion("clone_url not in", values, "cloneUrl");
+        public Criteria andHashCodeNotIn(List<String> values) {
+            addCriterion("hash_code not in", values, "hashCode");
             return (Criteria) this;
         }
 
-        public Criteria andCloneUrlBetween(String value1, String value2) {
-            addCriterion("clone_url between", value1, value2, "cloneUrl");
+        public Criteria andHashCodeBetween(String value1, String value2) {
+            addCriterion("hash_code between", value1, value2, "hashCode");
             return (Criteria) this;
         }
 
-        public Criteria andCloneUrlNotBetween(String value1, String value2) {
-            addCriterion("clone_url not between", value1, value2, "cloneUrl");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusIsNull() {
-            addCriterion("`status` is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusIsNotNull() {
-            addCriterion("`status` is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusEqualTo(Integer value) {
-            addCriterion("`status` =", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusNotEqualTo(Integer value) {
-            addCriterion("`status` <>", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusGreaterThan(Integer value) {
-            addCriterion("`status` >", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusGreaterThanOrEqualTo(Integer value) {
-            addCriterion("`status` >=", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusLessThan(Integer value) {
-            addCriterion("`status` <", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusLessThanOrEqualTo(Integer value) {
-            addCriterion("`status` <=", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusIn(List<Integer> values) {
-            addCriterion("`status` in", values, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusNotIn(List<Integer> values) {
-            addCriterion("`status` not in", values, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusBetween(Integer value1, Integer value2) {
-            addCriterion("`status` between", value1, value2, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusNotBetween(Integer value1, Integer value2) {
-            addCriterion("`status` not between", value1, value2, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andGitNameIsNull() {
-            addCriterion("git_name is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andGitNameIsNotNull() {
-            addCriterion("git_name is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andGitNameEqualTo(String value) {
-            addCriterion("git_name =", value, "gitName");
-            return (Criteria) this;
-        }
-
-        public Criteria andGitNameNotEqualTo(String value) {
-            addCriterion("git_name <>", value, "gitName");
-            return (Criteria) this;
-        }
-
-        public Criteria andGitNameGreaterThan(String value) {
-            addCriterion("git_name >", value, "gitName");
-            return (Criteria) this;
-        }
-
-        public Criteria andGitNameGreaterThanOrEqualTo(String value) {
-            addCriterion("git_name >=", value, "gitName");
-            return (Criteria) this;
-        }
-
-        public Criteria andGitNameLessThan(String value) {
-            addCriterion("git_name <", value, "gitName");
-            return (Criteria) this;
-        }
-
-        public Criteria andGitNameLessThanOrEqualTo(String value) {
-            addCriterion("git_name <=", value, "gitName");
-            return (Criteria) this;
-        }
-
-        public Criteria andGitNameLike(String value) {
-            addCriterion("git_name like", value, "gitName");
-            return (Criteria) this;
-        }
-
-        public Criteria andGitNameNotLike(String value) {
-            addCriterion("git_name not like", value, "gitName");
-            return (Criteria) this;
-        }
-
-        public Criteria andGitNameIn(List<String> values) {
-            addCriterion("git_name in", values, "gitName");
-            return (Criteria) this;
-        }
-
-        public Criteria andGitNameNotIn(List<String> values) {
-            addCriterion("git_name not in", values, "gitName");
-            return (Criteria) this;
-        }
-
-        public Criteria andGitNameBetween(String value1, String value2) {
-            addCriterion("git_name between", value1, value2, "gitName");
-            return (Criteria) this;
-        }
-
-        public Criteria andGitNameNotBetween(String value1, String value2) {
-            addCriterion("git_name not between", value1, value2, "gitName");
+        public Criteria andHashCodeNotBetween(String value1, String value2) {
+            addCriterion("hash_code not between", value1, value2, "hashCode");
             return (Criteria) this;
         }
     }

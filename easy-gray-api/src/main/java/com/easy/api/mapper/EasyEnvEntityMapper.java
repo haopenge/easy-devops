@@ -1,7 +1,7 @@
 package com.easy.api.mapper;
 
-import com.easy.api.domain.entity.GrayEnvEntity;
-import com.easy.api.domain.entity.GrayEnvEntityExample;
+import com.easy.api.domain.entity.EasyEnvEntity;
+import com.easy.api.domain.entity.EasyEnvEntityExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.DeleteProvider;
@@ -16,33 +16,33 @@ import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.type.JdbcType;
 
-public interface GrayEnvEntityMapper {
-    @SelectProvider(type=GrayEnvEntitySqlProvider.class, method="countByExample")
-    int countByExample(GrayEnvEntityExample example);
+public interface EasyEnvEntityMapper {
+    @SelectProvider(type=EasyEnvEntitySqlProvider.class, method="countByExample")
+    int countByExample(EasyEnvEntityExample example);
 
-    @DeleteProvider(type=GrayEnvEntitySqlProvider.class, method="deleteByExample")
-    int deleteByExample(GrayEnvEntityExample example);
+    @DeleteProvider(type=EasyEnvEntitySqlProvider.class, method="deleteByExample")
+    int deleteByExample(EasyEnvEntityExample example);
 
     @Delete({
-        "delete from gray_env",
+        "delete from easy_env",
         "where id = #{id,jdbcType=INTEGER}"
     })
     int deleteByPrimaryKey(Integer id);
 
     @Insert({
-        "insert into gray_env (id, create_time, ",
+        "insert into easy_env (id, create_time, ",
         "update_time, description, ",
-        "`name`, expire_time)",
+        "name, expire_time)",
         "values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, ",
         "#{updateTime,jdbcType=TIMESTAMP}, #{description,jdbcType=VARCHAR}, ",
         "#{name,jdbcType=VARCHAR}, #{expireTime,jdbcType=TIMESTAMP})"
     })
-    int insert(GrayEnvEntity record);
+    int insert(EasyEnvEntity record);
 
-    @InsertProvider(type=GrayEnvEntitySqlProvider.class, method="insertSelective")
-    int insertSelective(GrayEnvEntity record);
+    @InsertProvider(type=EasyEnvEntitySqlProvider.class, method="insertSelective")
+    int insertSelective(EasyEnvEntity record);
 
-    @SelectProvider(type=GrayEnvEntitySqlProvider.class, method="selectByExample")
+    @SelectProvider(type=EasyEnvEntitySqlProvider.class, method="selectByExample")
     @Results({
         @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
         @Result(column="create_time", property="createTime", jdbcType=JdbcType.TIMESTAMP),
@@ -51,12 +51,12 @@ public interface GrayEnvEntityMapper {
         @Result(column="name", property="name", jdbcType=JdbcType.VARCHAR),
         @Result(column="expire_time", property="expireTime", jdbcType=JdbcType.TIMESTAMP)
     })
-    List<GrayEnvEntity> selectByExample(GrayEnvEntityExample example);
+    List<EasyEnvEntity> selectByExample(EasyEnvEntityExample example);
 
     @Select({
         "select",
-        "id, create_time, update_time, description, `name`, expire_time",
-        "from gray_env",
+        "id, create_time, update_time, description, name, expire_time",
+        "from easy_env",
         "where id = #{id,jdbcType=INTEGER}"
     })
     @Results({
@@ -67,25 +67,25 @@ public interface GrayEnvEntityMapper {
         @Result(column="name", property="name", jdbcType=JdbcType.VARCHAR),
         @Result(column="expire_time", property="expireTime", jdbcType=JdbcType.TIMESTAMP)
     })
-    GrayEnvEntity selectByPrimaryKey(Integer id);
+    EasyEnvEntity selectByPrimaryKey(Integer id);
 
-    @UpdateProvider(type=GrayEnvEntitySqlProvider.class, method="updateByExampleSelective")
-    int updateByExampleSelective(@Param("record") GrayEnvEntity record, @Param("example") GrayEnvEntityExample example);
+    @UpdateProvider(type=EasyEnvEntitySqlProvider.class, method="updateByExampleSelective")
+    int updateByExampleSelective(@Param("record") EasyEnvEntity record, @Param("example") EasyEnvEntityExample example);
 
-    @UpdateProvider(type=GrayEnvEntitySqlProvider.class, method="updateByExample")
-    int updateByExample(@Param("record") GrayEnvEntity record, @Param("example") GrayEnvEntityExample example);
+    @UpdateProvider(type=EasyEnvEntitySqlProvider.class, method="updateByExample")
+    int updateByExample(@Param("record") EasyEnvEntity record, @Param("example") EasyEnvEntityExample example);
 
-    @UpdateProvider(type=GrayEnvEntitySqlProvider.class, method="updateByPrimaryKeySelective")
-    int updateByPrimaryKeySelective(GrayEnvEntity record);
+    @UpdateProvider(type=EasyEnvEntitySqlProvider.class, method="updateByPrimaryKeySelective")
+    int updateByPrimaryKeySelective(EasyEnvEntity record);
 
     @Update({
-        "update gray_env",
+        "update easy_env",
         "set create_time = #{createTime,jdbcType=TIMESTAMP},",
           "update_time = #{updateTime,jdbcType=TIMESTAMP},",
           "description = #{description,jdbcType=VARCHAR},",
-          "`name` = #{name,jdbcType=VARCHAR},",
+          "name = #{name,jdbcType=VARCHAR},",
           "expire_time = #{expireTime,jdbcType=TIMESTAMP}",
         "where id = #{id,jdbcType=INTEGER}"
     })
-    int updateByPrimaryKey(GrayEnvEntity record);
+    int updateByPrimaryKey(EasyEnvEntity record);
 }

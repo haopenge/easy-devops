@@ -2,20 +2,17 @@ package com.easy.api.domain.entity;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.util.Date;
+import javax.persistence.*;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.util.Date;
-
-/**
- * @author liupenghao
- */
 @Data
-@Table(name = "gray_env")
-@ApiModel("gray_env")
-public class GrayEnvEntity {
+@Table(name = "easy_repository")
+@ApiModel("easy_repository")
+public class EasyRepositoryEntity {
+    /**
+     * Id
+     */
     @Id
     private Integer id;
 
@@ -39,16 +36,26 @@ public class GrayEnvEntity {
     private String description;
 
     /**
-     * 灰度环境名称
+     * 项目名
      */
-    @Column(name = "`name`")
-    @ApiModelProperty("灰度环境名称")
     private String name;
 
     /**
-     * 有效时间，此时间为截止日期
+     * git项目分支
      */
-    @Column(name = "expire_time")
-    @ApiModelProperty("有效时间，此时间为截止日期")
-    private Date expireTime;
+    private String branch;
+
+    /**
+     * Git 克隆地址
+     */
+    @Column(name = "clone_url")
+    @ApiModelProperty("Git 克隆地址")
+    private String cloneUrl;
+
+    /**
+     * 最新提交的hashCode
+     */
+    @Column(name = "hash_code")
+    @ApiModelProperty("最新提交的hashCode")
+    private String hashCode;
 }
