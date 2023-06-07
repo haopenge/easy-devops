@@ -5,14 +5,15 @@
 
     <parent>
         <groupId>io.github.haopenge</groupId>
-        <artifactId>easy-devops</artifactId>
+        <artifactId>easy-parent</artifactId>
         <version>1.0.0</version>
+        <relativePath/>
     </parent>
 
     <artifactId>easy-gray-gateway</artifactId>
     <version>1.0.0</version>
-    <name>easy-devops-gateway</name>
-    <description>easy-devops-gateway</description>
+    <name>easy-gray-gateway</name>
+    <description>easy-gray-gateway</description>
 
     <properties>
 

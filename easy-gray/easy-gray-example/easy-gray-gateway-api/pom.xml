@@ -6,8 +6,9 @@
 
     <parent>
         <groupId>io.github.haopenge</groupId>
-        <artifactId>easy-devops</artifactId>
+        <artifactId>easy-parent</artifactId>
         <version>1.0.0</version>
+        <relativePath/>
     </parent>
 
     <artifactId>easy-gray-gateway-api</artifactId>
@@ -20,7 +21,7 @@
         <dependency>
             <groupId>io.github.haopenge</groupId>
             <artifactId>easy-gray-gateway</artifactId>
-            <version>${easy-gray-gateway.version}</version>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
