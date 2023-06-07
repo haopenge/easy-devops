@@ -1,3 +1,23 @@
+<div align="center">
+
+🔥🔥🔥 轻量发布系统
+
+<h1 align="center">Chat2DB</h1>
+
+<div align="center">
+
+[![MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/haopenge/easy-devops/blob/main/LICENSE)
+[![GitHub release](https://img.shields.io/github/release/haopenge/easy-devops)](https://github.com/haopenge/easy-devops/releases)
+[![GitHub Stars](https://img.shields.io/github/stars/haopenge/easy-devops)](https://github.com/haopenge/easy-devops/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/haopenge/easy-devops)](https://github.com/haopenge/easy-devops/fork)
+[![GitHub Contributors](https://img.shields.io/github/contributors/haopenge/easy-devops)](https://github.com/haopenge/easy-devops/graphs/contributors)
+
+</div>
+
+语言： 中文 | [English](README_CN.md)
+</div>
+
+
 # 介绍
 
 此项目是一款轻量发布系统；
