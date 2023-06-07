@@ -35,7 +35,7 @@
 
         <dependency>
             <groupId>io.github.haopenge</groupId>
-            <artifactId>easy-gray-core</artifactId>
+            <artifactId>easy-core</artifactId>
             <version>1.0.0</version>
         </dependency>
 
@@ -119,8 +119,8 @@
                     </dependency>
                     <dependency>
                         <groupId>io.github.haopenge</groupId>
-                        <artifactId>easy-gray-core</artifactId>
-                        <version>${easy-gray-core.version}</version>
+                        <artifactId>easy-core</artifactId>
+                        <version>${easy-core.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>

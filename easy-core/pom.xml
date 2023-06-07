@@ -9,10 +9,10 @@
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>easy-gray-core</artifactId>
+    <artifactId>easy-core</artifactId>
     <version>1.0.0</version>
-    <name>easy-gray-core</name>
-    <description>easy-gray-core</description>
+    <name>easy-core</name>
+    <description>easy-core</description>
     <properties>
 
     </properties>

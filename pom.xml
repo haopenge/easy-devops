@@ -22,7 +22,7 @@
 		<commons-lang3.version>3.12.0</commons-lang3.version>
 		<fastjson.version>2.0.5</fastjson.version>
 		<lombok.version>1.18.24</lombok.version>
-		<easy-gray-core.version>1.0.0</easy-gray-core.version>
+		<easy-core.version>1.0.0</easy-core.version>
 		<easy-gray-intf.version>1.0.0</easy-gray-intf.version>
 		<easy-gray-gateway.version>1.0.0</easy-gray-gateway.version>
 		<org.eclipse.jgit.version>5.2.0.201812061821-r</org.eclipse.jgit.version>
@@ -39,7 +39,7 @@
 
 	<modules>
 		<module>easy-devops-admin-api</module>
-		<module>easy-gray-core</module>
+		<module>easy-core</module>
 		<module>easy-gray-gateway</module>
 		<module>easy-gray-example/easy-gray-intf</module>
 		<module>easy-gray-example/easy-gray-gateway-api</module>
@@ -52,6 +52,7 @@
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-configuration-processor</artifactId>
+				<version>${spring-boot.version}</version>
 				<optional>true</optional>
 			</dependency>
 			<dependency>

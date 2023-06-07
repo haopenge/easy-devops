@@ -11,8 +11,8 @@
 
     <artifactId>easy-gray-gateway</artifactId>
     <version>1.0.0</version>
-    <name>easy-gray-gateway</name>
-    <description>easy-gray-gateway</description>
+    <name>easy-devops-gateway</name>
+    <description>easy-devops-gateway</description>
 
     <properties>
 
@@ -22,8 +22,8 @@
 
         <dependency>
             <groupId>io.github.haopenge</groupId>
-            <artifactId>easy-gray-core</artifactId>
-            <version>${easy-gray-core.version}</version>
+            <artifactId>easy-core</artifactId>
+            <version>${easy-core.version}</version>
             <exclusions>
                 <exclusion>
                     <artifactId>spring-boot-starter-web</artifactId>

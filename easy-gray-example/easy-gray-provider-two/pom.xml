@@ -18,7 +18,7 @@
     <dependencies>
         <dependency>
             <groupId>io.github.haopenge</groupId>
-            <artifactId>easy-gray-core</artifactId>
+            <artifactId>easy-core</artifactId>
             <version>1.0.0</version>
         </dependency>
         <dependency>
