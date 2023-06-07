@@ -1,7 +1,6 @@
 package com.easy.core.generate;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
@@ -64,31 +63,6 @@ public class MapperPlugin extends PluginAdapter {
      * 处理实体类的包和@Table注解
      */
     private void processEntityClass(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
-        //引入JPA注解
-        topLevelClass.addImportedType("javax.persistence.*");
-
-        topLevelClass.addImportedType("io.swagger.annotations.ApiModel");
-        topLevelClass.addImportedType("io.swagger.annotations.ApiModelProperty");
-
-        String tableName = introspectedTable.getFullyQualifiedTableNameAtRuntime();
-        //如果包含空格，或者需要分隔符，需要完善
-        if (StringUtility.stringContainsSpace(tableName)) {
-            tableName = context.getBeginningDelimiter()
-                    + tableName
-                    + context.getEndingDelimiter();
-        }
-
-        if(StringUtils.isNotBlank(tableName) && tableName.contains(".")){
-            tableName = tableName.substring(tableName.indexOf(".") + 1);
-        }
-
-        //是否忽略大小写，对于区分大小写的数据库，会有用
-        if (caseSensitive && !topLevelClass.getType().getShortName().equals(tableName)) {
-            topLevelClass.addAnnotation("@Table(name = \"" + tableName + "\")");
-        } else if (!topLevelClass.getType().getShortName().equalsIgnoreCase(tableName)) {
-            topLevelClass.addAnnotation("@Table(name = \"" + tableName + "\")");
-        }
-        topLevelClass.addAnnotation("@ApiModel(\"" + introspectedTable.getFullyQualifiedTable().getIntrospectedTableName() + "\")");
 
     }
 

@@ -73,6 +73,10 @@ public class AuthenticateEntitySqlProvider {
             VALUES("type", "#{type,jdbcType=INTEGER}");
         }
         
+        if (record.getSshPrivateKeyFileName() != null) {
+            VALUES("ssh_private_key_file_name", "#{sshPrivateKeyFileName,jdbcType=VARCHAR}");
+        }
+        
         if (record.getSshPrivateKey() != null) {
             VALUES("ssh_private_key", "#{sshPrivateKey,jdbcType=LONGVARCHAR}");
         }
@@ -94,6 +98,7 @@ public class AuthenticateEntitySqlProvider {
         SELECT("username");
         SELECT("password");
         SELECT("type");
+        SELECT("ssh_private_key_file_name");
         SELECT("ssh_private_key");
         FROM("easy_authenticate");
         applyWhere(example, false);
@@ -119,6 +124,7 @@ public class AuthenticateEntitySqlProvider {
         SELECT("username");
         SELECT("password");
         SELECT("type");
+        SELECT("ssh_private_key_file_name");
         FROM("easy_authenticate");
         applyWhere(example, false);
         
@@ -168,6 +174,10 @@ public class AuthenticateEntitySqlProvider {
             SET("type = #{record.type,jdbcType=INTEGER}");
         }
         
+        if (record.getSshPrivateKeyFileName() != null) {
+            SET("ssh_private_key_file_name = #{record.sshPrivateKeyFileName,jdbcType=VARCHAR}");
+        }
+        
         if (record.getSshPrivateKey() != null) {
             SET("ssh_private_key = #{record.sshPrivateKey,jdbcType=LONGVARCHAR}");
         }
@@ -188,6 +198,7 @@ public class AuthenticateEntitySqlProvider {
         SET("username = #{record.username,jdbcType=VARCHAR}");
         SET("password = #{record.password,jdbcType=VARCHAR}");
         SET("type = #{record.type,jdbcType=INTEGER}");
+        SET("ssh_private_key_file_name = #{record.sshPrivateKeyFileName,jdbcType=VARCHAR}");
         SET("ssh_private_key = #{record.sshPrivateKey,jdbcType=LONGVARCHAR}");
         
         AuthenticateEntityExample example = (AuthenticateEntityExample) parameter.get("example");
@@ -207,6 +218,7 @@ public class AuthenticateEntitySqlProvider {
         SET("username = #{record.username,jdbcType=VARCHAR}");
         SET("password = #{record.password,jdbcType=VARCHAR}");
         SET("type = #{record.type,jdbcType=INTEGER}");
+        SET("ssh_private_key_file_name = #{record.sshPrivateKeyFileName,jdbcType=VARCHAR}");
         
         AuthenticateEntityExample example = (AuthenticateEntityExample) parameter.get("example");
         applyWhere(example, true);
@@ -243,6 +255,10 @@ public class AuthenticateEntitySqlProvider {
         
         if (record.getType() != null) {
             SET("type = #{type,jdbcType=INTEGER}");
+        }
+        
+        if (record.getSshPrivateKeyFileName() != null) {
+            SET("ssh_private_key_file_name = #{sshPrivateKeyFileName,jdbcType=VARCHAR}");
         }
         
         if (record.getSshPrivateKey() != null) {

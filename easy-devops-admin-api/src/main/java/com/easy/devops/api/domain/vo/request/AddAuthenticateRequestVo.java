@@ -1,25 +1,14 @@
-package com.easy.devops.api.domain.entity;
+package com.easy.devops.api.domain.vo.request;
 
 import lombok.Data;
 
-import java.util.Date;
-
+/**
+ * 新增认证请求
+ *
+ * @author liuph
+ */
 @Data
-public class AuthenticateEntity {
-    /**
-     * Id
-     */
-    private Integer id;
-
-    /**
-     * 创建时间
-     */
-    private Date createTime;
-
-    /**
-     * 更新时间
-     */
-    private Date updateTime;
+public class AddAuthenticateRequestVo {
 
     /**
      * 名称
@@ -45,11 +34,6 @@ public class AuthenticateEntity {
      * 认证类型：1-账号密码； 5-ssh私钥
      */
     private Integer type;
-
-    /**
-     * ssh私钥本地存储文件名
-     */
-    private String sshPrivateKeyFileName;
 
     /**
      * ssh私钥

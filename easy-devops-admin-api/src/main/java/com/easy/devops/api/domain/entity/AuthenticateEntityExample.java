@@ -624,6 +624,76 @@ public class AuthenticateEntityExample {
             addCriterion("type not between", value1, value2, "type");
             return (Criteria) this;
         }
+
+        public Criteria andSshPrivateKeyFileNameIsNull() {
+            addCriterion("ssh_private_key_file_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSshPrivateKeyFileNameIsNotNull() {
+            addCriterion("ssh_private_key_file_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSshPrivateKeyFileNameEqualTo(String value) {
+            addCriterion("ssh_private_key_file_name =", value, "sshPrivateKeyFileName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSshPrivateKeyFileNameNotEqualTo(String value) {
+            addCriterion("ssh_private_key_file_name <>", value, "sshPrivateKeyFileName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSshPrivateKeyFileNameGreaterThan(String value) {
+            addCriterion("ssh_private_key_file_name >", value, "sshPrivateKeyFileName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSshPrivateKeyFileNameGreaterThanOrEqualTo(String value) {
+            addCriterion("ssh_private_key_file_name >=", value, "sshPrivateKeyFileName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSshPrivateKeyFileNameLessThan(String value) {
+            addCriterion("ssh_private_key_file_name <", value, "sshPrivateKeyFileName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSshPrivateKeyFileNameLessThanOrEqualTo(String value) {
+            addCriterion("ssh_private_key_file_name <=", value, "sshPrivateKeyFileName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSshPrivateKeyFileNameLike(String value) {
+            addCriterion("ssh_private_key_file_name like", value, "sshPrivateKeyFileName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSshPrivateKeyFileNameNotLike(String value) {
+            addCriterion("ssh_private_key_file_name not like", value, "sshPrivateKeyFileName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSshPrivateKeyFileNameIn(List<String> values) {
+            addCriterion("ssh_private_key_file_name in", values, "sshPrivateKeyFileName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSshPrivateKeyFileNameNotIn(List<String> values) {
+            addCriterion("ssh_private_key_file_name not in", values, "sshPrivateKeyFileName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSshPrivateKeyFileNameBetween(String value1, String value2) {
+            addCriterion("ssh_private_key_file_name between", value1, value2, "sshPrivateKeyFileName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSshPrivateKeyFileNameNotBetween(String value1, String value2) {
+            addCriterion("ssh_private_key_file_name not between", value1, value2, "sshPrivateKeyFileName");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

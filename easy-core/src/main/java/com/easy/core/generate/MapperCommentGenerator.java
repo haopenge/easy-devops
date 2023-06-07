@@ -1,6 +1,5 @@
 package com.easy.core.generate;
 
-import org.apache.commons.lang3.StringUtils;
 import org.mybatis.generator.api.CommentGenerator;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
@@ -70,41 +69,6 @@ public class MapperCommentGenerator implements CommentGenerator {
                     introspectedColumn.getRemarks();
             field.addJavaDocLine(sb);
             field.addJavaDocLine(" */");
-        }
-
-        //添加注解
-        if (field.isTransient()) {
-            field.addAnnotation("@Transient");
-        }
-
-        for (IntrospectedColumn column : introspectedTable.getPrimaryKeyColumns()) {
-            if (introspectedColumn == column) {
-                field.addAnnotation("@Id");
-                break;
-            }
-        }
-        String column = introspectedColumn.getActualColumnName();
-        if (StringUtility.stringContainsSpace(column) || introspectedColumn.isColumnNameDelimited()) {
-            column = introspectedColumn.getContext().getBeginningDelimiter()
-                    + column
-                    + introspectedColumn.getContext().getEndingDelimiter();
-        }
-        if (!column.equals(introspectedColumn.getJavaProperty())) {
-            field.addAnnotation("@Column(name = \"" + column + "\")");
-            String remarks = introspectedColumn.getRemarks();
-            if(StringUtils.isNotBlank(remarks)){
-                field.addAnnotation("@ApiModelProperty(\"" + remarks + "\")");
-            }
-
-        }
-        if (introspectedColumn.isIdentity()) {
-            if (introspectedTable.getTableConfiguration().getGeneratedKey().getRuntimeSqlStatement().equals("JDBC")) {
-                field.addAnnotation("@GeneratedValue(generator = \"JDBC\")");
-            } else {
-                field.addAnnotation("@GeneratedValue(strategy = GenerationType.IDENTITY)");
-            }
-        } else if (introspectedColumn.isSequenceColumn()) {
-            field.addAnnotation("@SequenceGenerator(name=\"\",sequenceName=\"" + introspectedTable.getTableConfiguration().getGeneratedKey().getRuntimeSqlStatement() + "\")");
         }
     }
 

@@ -2,7 +2,6 @@ package com.easy.devops.api.mapper;
 
 import com.easy.devops.api.domain.entity.AuthenticateEntity;
 import com.easy.devops.api.domain.entity.AuthenticateEntityExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.DeleteProvider;
 import org.apache.ibatis.annotations.Insert;
@@ -15,6 +14,8 @@ import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.type.JdbcType;
+
+import java.util.List;
 
 public interface AuthenticateEntityMapper {
     @SelectProvider(type=AuthenticateEntitySqlProvider.class, method="countByExample")
@@ -34,12 +35,12 @@ public interface AuthenticateEntityMapper {
         "update_time, name, ",
         "description, username, ",
         "password, type, ",
-        "ssh_private_key)",
+        "ssh_private_key_file_name, ssh_private_key)",
         "values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, ",
         "#{updateTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR}, ",
         "#{description,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, ",
         "#{password,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, ",
-        "#{sshPrivateKey,jdbcType=LONGVARCHAR})"
+        "#{sshPrivateKeyFileName,jdbcType=VARCHAR}, #{sshPrivateKey,jdbcType=LONGVARCHAR})"
     })
     int insert(AuthenticateEntity record);
 
@@ -56,6 +57,7 @@ public interface AuthenticateEntityMapper {
         @Result(column="username", property="username", jdbcType=JdbcType.VARCHAR),
         @Result(column="password", property="password", jdbcType=JdbcType.VARCHAR),
         @Result(column="type", property="type", jdbcType=JdbcType.INTEGER),
+        @Result(column="ssh_private_key_file_name", property="sshPrivateKeyFileName", jdbcType=JdbcType.VARCHAR),
         @Result(column="ssh_private_key", property="sshPrivateKey", jdbcType=JdbcType.LONGVARCHAR)
     })
     List<AuthenticateEntity> selectByExampleWithBLOBs(AuthenticateEntityExample example);
@@ -69,13 +71,15 @@ public interface AuthenticateEntityMapper {
         @Result(column="description", property="description", jdbcType=JdbcType.VARCHAR),
         @Result(column="username", property="username", jdbcType=JdbcType.VARCHAR),
         @Result(column="password", property="password", jdbcType=JdbcType.VARCHAR),
-        @Result(column="type", property="type", jdbcType=JdbcType.INTEGER)
+        @Result(column="type", property="type", jdbcType=JdbcType.INTEGER),
+        @Result(column="ssh_private_key_file_name", property="sshPrivateKeyFileName", jdbcType=JdbcType.VARCHAR)
     })
     List<AuthenticateEntity> selectByExample(AuthenticateEntityExample example);
 
     @Select({
         "select",
-        "id, create_time, update_time, name, description, username, password, type, ssh_private_key",
+        "id, create_time, update_time, name, description, username, password, type, ssh_private_key_file_name, ",
+        "ssh_private_key",
         "from easy_authenticate",
         "where id = #{id,jdbcType=INTEGER}"
     })
@@ -88,6 +92,7 @@ public interface AuthenticateEntityMapper {
         @Result(column="username", property="username", jdbcType=JdbcType.VARCHAR),
         @Result(column="password", property="password", jdbcType=JdbcType.VARCHAR),
         @Result(column="type", property="type", jdbcType=JdbcType.INTEGER),
+        @Result(column="ssh_private_key_file_name", property="sshPrivateKeyFileName", jdbcType=JdbcType.VARCHAR),
         @Result(column="ssh_private_key", property="sshPrivateKey", jdbcType=JdbcType.LONGVARCHAR)
     })
     AuthenticateEntity selectByPrimaryKey(Integer id);
@@ -113,6 +118,7 @@ public interface AuthenticateEntityMapper {
           "username = #{username,jdbcType=VARCHAR},",
           "password = #{password,jdbcType=VARCHAR},",
           "type = #{type,jdbcType=INTEGER},",
+          "ssh_private_key_file_name = #{sshPrivateKeyFileName,jdbcType=VARCHAR},",
           "ssh_private_key = #{sshPrivateKey,jdbcType=LONGVARCHAR}",
         "where id = #{id,jdbcType=INTEGER}"
     })
@@ -126,7 +132,8 @@ public interface AuthenticateEntityMapper {
           "description = #{description,jdbcType=VARCHAR},",
           "username = #{username,jdbcType=VARCHAR},",
           "password = #{password,jdbcType=VARCHAR},",
-          "type = #{type,jdbcType=INTEGER}",
+          "type = #{type,jdbcType=INTEGER},",
+          "ssh_private_key_file_name = #{sshPrivateKeyFileName,jdbcType=VARCHAR}",
         "where id = #{id,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(AuthenticateEntity record);
