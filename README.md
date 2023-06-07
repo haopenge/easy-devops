@@ -65,7 +65,7 @@ feat: 初始化项目
 
 
 ## ❤️ 致谢
-感谢所有为Chat2DB贡献力量的同学们~
+感谢所有为easy-devops贡献力量的同学们~
 
 <a href="https://github.com/haopenge/easy-devops/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=haopenge/easy-devops" />
