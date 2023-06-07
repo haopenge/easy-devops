@@ -21,6 +21,7 @@
 此项目是一款轻量发布系统；
 ![](docs/img/project.png)
 
+文档地址：https://haopenge.github.io/easy-devops/#/
 
 # mr规范
 
