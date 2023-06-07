@@ -1,8 +1,6 @@
 <div align="center">
 
-🔥🔥🔥 轻量发布系统
-
-<h1 align="center">Chat2DB</h1>
+<h1 align="center">🔥🔥🔥 轻量发布系统</h1>
 
 <div align="center">
 
