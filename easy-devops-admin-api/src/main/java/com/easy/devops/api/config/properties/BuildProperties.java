@@ -19,11 +19,11 @@ public class BuildProperties {
     /**
      * 克隆地址
      */
-    private String clonePath = System.getProperty("user.dir") + File.separator + "data" + File.separator + "git";
+    private String clonePath = System.getProperty("user.dir") + File.separator + "work" + File.separator + "git";
 
     /**
      * 打包地址
      */
-    private String packagePath = System.getProperty("user.dir") + File.separator + "data" + File.separator + "package";
+    private String packagePath = System.getProperty("user.dir") + File.separator + "work" + File.separator + "package";
 
 }
