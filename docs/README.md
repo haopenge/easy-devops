@@ -19,7 +19,7 @@
 # 介绍
 
 此项目是一款轻量发布系统；
-![](docs/img/project.png)
+![](doc/img/img_1.png)
 
 
 # mr规范
@@ -50,7 +50,7 @@ feat: 初始化项目
 * <a href="https://github.com/haopenge/easy-devops/wiki">WIKI</a>
 * <a href="https://github.com/haopenge/easy-devops/issues">Issue tracker</a>
 
- ## Stargazers
+## Stargazers
 [![Stargazers repo roster for @haopenge/easy-devops](https://reporoster.com/stars/haopenge/easy-devops)](https://github.com/haopenge/easy-devops/stargazers)
 
 ## Forkers
