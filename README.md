@@ -44,15 +44,43 @@ feat: 初始化项目
 -   test: 添加缺失测试或纠正现有测试
 -   revert: 撤回
 
-# 项目贡献者
 
-<table>
-  <tr>
-    <td align="center"><a href="https://github.com/haopenge"><img src="https://avatars.githubusercontent.com/u/37403993?v=4" width="100px;" alt=""/><br /><sub><b>小雨淅淅淅</b></sub></a><br />🤔🚀</td>
-    <td align="center"><a href="https://github.com/RuanRoah"><img src="https://avatars.githubusercontent.com/u/12394571?v=4" width="100px;" alt=""/><br /><sub><b>阮阮酱！</b></sub></a><br />😄✈️</td>
-    <td align="center"><a href="https://github.com/dislazy"><img src="https://avatars.githubusercontent.com/u/30426054?v=4" width="100px;" alt=""/><br /><sub><b>Jack Song</b></sub></a><br />😁🚗</td>
-</tr>
-</table>
+## 📑 文档
+
+* <a href="https://github.com/haopenge/easy-devops/wiki">WIKI</a>
+* <a href="https://github.com/haopenge/easy-devops/issues">Issue tracker</a>
+
+ ## Stargazers
+[![Stargazers repo roster for @haopenge/easy-devops](https://reporoster.com/stars/haopenge/easy-devops)](https://github.com/haopenge/easy-devops/stargazers)
+
+## Forkers
+[![Forkers repo roster for @haopenge/easy-devops](https://reporoster.com/forks/haopenge/easy-devops)](https://github.com/haopenge/easy-devops/network/members)
+
+## ☎️ 联系我们
+
+加群前请先Star和Fork，谢谢~
+
+微信：wx270698050
+
+
+
+## ❤️ 致谢
+感谢所有为Chat2DB贡献力量的同学们~
+
+<a href="https://github.com/haopenge/easy-devops/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=haopenge/easy-devops" />
+</a>
+
+## Star History
+
+<a href="https://star-history.com/#haopenge/easy-devops&Date">
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=haopenge/easy-devops&type=Date&theme=dark" />
+<source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=haopenge/easy-devops&type=Date" />
+<img alt="Star History Chart" src="https://api.star-history.com/svg?repos=haopenge/easy-devops&type=Date" />
+</picture>
+</a>
+
 
 
 
