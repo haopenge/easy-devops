@@ -10,9 +10,12 @@ import javax.persistence.Table;
 import java.util.Date;
 
 @Data
-@Table(name = "easy_env")
-@ApiModel("easy_env")
-public class EasyEnvEntity {
+@Table(name = "easy_authenticate")
+@ApiModel("easy_authenticate")
+public class AuthenticateEntity {
+    /**
+     * Id
+     */
     @Id
     private Integer id;
 
@@ -31,19 +34,34 @@ public class EasyEnvEntity {
     private Date updateTime;
 
     /**
-     * 描述
-     */
-    private String description;
-
-    /**
-     * 灰度环境名称
+     * 名称
      */
     private String name;
 
     /**
-     * 有效时间，此时间为截止日期
+     * 描述信息
      */
-    @Column(name = "expire_time")
-    @ApiModelProperty("有效时间，此时间为截止日期")
-    private Date expireTime;
+    private String description;
+
+    /**
+     * 用户名
+     */
+    private String username;
+
+    /**
+     * 密码
+     */
+    private String password;
+
+    /**
+     * 认证类型：1-账号密码； 5-ssh私钥
+     */
+    private Integer type;
+
+    /**
+     * ssh私钥
+     */
+    @Column(name = "ssh_private_key")
+    @ApiModelProperty("ssh私钥")
+    private String sshPrivateKey;
 }

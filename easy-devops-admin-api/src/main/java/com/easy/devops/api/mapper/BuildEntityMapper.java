@@ -1,8 +1,7 @@
 package com.easy.devops.api.mapper;
 
-import com.easy.devops.api.domain.entity.EasyBuildEntity;
-import com.easy.devops.api.domain.entity.EasyBuildEntityExample;
-
+import com.easy.devops.api.domain.entity.BuildEntity;
+import com.easy.devops.api.domain.entity.BuildEntityExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.DeleteProvider;
@@ -17,12 +16,12 @@ import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.type.JdbcType;
 
-public interface EasyBuildEntityMapper {
-    @SelectProvider(type=EasyBuildEntitySqlProvider.class, method="countByExample")
-    int countByExample(EasyBuildEntityExample example);
+public interface BuildEntityMapper {
+    @SelectProvider(type=BuildEntitySqlProvider.class, method="countByExample")
+    int countByExample(BuildEntityExample example);
 
-    @DeleteProvider(type=EasyBuildEntitySqlProvider.class, method="deleteByExample")
-    int deleteByExample(EasyBuildEntityExample example);
+    @DeleteProvider(type=BuildEntitySqlProvider.class, method="deleteByExample")
+    int deleteByExample(BuildEntityExample example);
 
     @Delete({
         "delete from easy_build",
@@ -33,17 +32,19 @@ public interface EasyBuildEntityMapper {
     @Insert({
         "insert into easy_build (id, create_time, ",
         "update_time, easy_repository_id, ",
-        "order, type, content)",
+        "order, type, hash_code, ",
+        "content)",
         "values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, ",
         "#{updateTime,jdbcType=TIMESTAMP}, #{easyRepositoryId,jdbcType=INTEGER}, ",
-        "#{order,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR})"
+        "#{order,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{hashCode,jdbcType=VARCHAR}, ",
+        "#{content,jdbcType=LONGVARCHAR})"
     })
-    int insert(EasyBuildEntity record);
+    int insert(BuildEntity record);
 
-    @InsertProvider(type=EasyBuildEntitySqlProvider.class, method="insertSelective")
-    int insertSelective(EasyBuildEntity record);
+    @InsertProvider(type=BuildEntitySqlProvider.class, method="insertSelective")
+    int insertSelective(BuildEntity record);
 
-    @SelectProvider(type=EasyBuildEntitySqlProvider.class, method="selectByExampleWithBLOBs")
+    @SelectProvider(type=BuildEntitySqlProvider.class, method="selectByExampleWithBLOBs")
     @Results({
         @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
         @Result(column="create_time", property="createTime", jdbcType=JdbcType.TIMESTAMP),
@@ -51,24 +52,26 @@ public interface EasyBuildEntityMapper {
         @Result(column="easy_repository_id", property="easyRepositoryId", jdbcType=JdbcType.INTEGER),
         @Result(column="order", property="order", jdbcType=JdbcType.INTEGER),
         @Result(column="type", property="type", jdbcType=JdbcType.INTEGER),
+        @Result(column="hash_code", property="hashCode", jdbcType=JdbcType.VARCHAR),
         @Result(column="content", property="content", jdbcType=JdbcType.LONGVARCHAR)
     })
-    List<EasyBuildEntity> selectByExampleWithBLOBs(EasyBuildEntityExample example);
+    List<BuildEntity> selectByExampleWithBLOBs(BuildEntityExample example);
 
-    @SelectProvider(type=EasyBuildEntitySqlProvider.class, method="selectByExample")
+    @SelectProvider(type=BuildEntitySqlProvider.class, method="selectByExample")
     @Results({
         @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
         @Result(column="create_time", property="createTime", jdbcType=JdbcType.TIMESTAMP),
         @Result(column="update_time", property="updateTime", jdbcType=JdbcType.TIMESTAMP),
         @Result(column="easy_repository_id", property="easyRepositoryId", jdbcType=JdbcType.INTEGER),
         @Result(column="order", property="order", jdbcType=JdbcType.INTEGER),
-        @Result(column="type", property="type", jdbcType=JdbcType.INTEGER)
+        @Result(column="type", property="type", jdbcType=JdbcType.INTEGER),
+        @Result(column="hash_code", property="hashCode", jdbcType=JdbcType.VARCHAR)
     })
-    List<EasyBuildEntity> selectByExample(EasyBuildEntityExample example);
+    List<BuildEntity> selectByExample(BuildEntityExample example);
 
     @Select({
         "select",
-        "id, create_time, update_time, easy_repository_id, order, type, content",
+        "id, create_time, update_time, easy_repository_id, order, type, hash_code, content",
         "from easy_build",
         "where id = #{id,jdbcType=INTEGER}"
     })
@@ -79,21 +82,22 @@ public interface EasyBuildEntityMapper {
         @Result(column="easy_repository_id", property="easyRepositoryId", jdbcType=JdbcType.INTEGER),
         @Result(column="order", property="order", jdbcType=JdbcType.INTEGER),
         @Result(column="type", property="type", jdbcType=JdbcType.INTEGER),
+        @Result(column="hash_code", property="hashCode", jdbcType=JdbcType.VARCHAR),
         @Result(column="content", property="content", jdbcType=JdbcType.LONGVARCHAR)
     })
-    EasyBuildEntity selectByPrimaryKey(Integer id);
+    BuildEntity selectByPrimaryKey(Integer id);
 
-    @UpdateProvider(type=EasyBuildEntitySqlProvider.class, method="updateByExampleSelective")
-    int updateByExampleSelective(@Param("record") EasyBuildEntity record, @Param("example") EasyBuildEntityExample example);
+    @UpdateProvider(type=BuildEntitySqlProvider.class, method="updateByExampleSelective")
+    int updateByExampleSelective(@Param("record") BuildEntity record, @Param("example") BuildEntityExample example);
 
-    @UpdateProvider(type=EasyBuildEntitySqlProvider.class, method="updateByExampleWithBLOBs")
-    int updateByExampleWithBLOBs(@Param("record") EasyBuildEntity record, @Param("example") EasyBuildEntityExample example);
+    @UpdateProvider(type=BuildEntitySqlProvider.class, method="updateByExampleWithBLOBs")
+    int updateByExampleWithBLOBs(@Param("record") BuildEntity record, @Param("example") BuildEntityExample example);
 
-    @UpdateProvider(type=EasyBuildEntitySqlProvider.class, method="updateByExample")
-    int updateByExample(@Param("record") EasyBuildEntity record, @Param("example") EasyBuildEntityExample example);
+    @UpdateProvider(type=BuildEntitySqlProvider.class, method="updateByExample")
+    int updateByExample(@Param("record") BuildEntity record, @Param("example") BuildEntityExample example);
 
-    @UpdateProvider(type=EasyBuildEntitySqlProvider.class, method="updateByPrimaryKeySelective")
-    int updateByPrimaryKeySelective(EasyBuildEntity record);
+    @UpdateProvider(type=BuildEntitySqlProvider.class, method="updateByPrimaryKeySelective")
+    int updateByPrimaryKeySelective(BuildEntity record);
 
     @Update({
         "update easy_build",
@@ -102,10 +106,11 @@ public interface EasyBuildEntityMapper {
           "easy_repository_id = #{easyRepositoryId,jdbcType=INTEGER},",
           "order = #{order,jdbcType=INTEGER},",
           "type = #{type,jdbcType=INTEGER},",
+          "hash_code = #{hashCode,jdbcType=VARCHAR},",
           "content = #{content,jdbcType=LONGVARCHAR}",
         "where id = #{id,jdbcType=INTEGER}"
     })
-    int updateByPrimaryKeyWithBLOBs(EasyBuildEntity record);
+    int updateByPrimaryKeyWithBLOBs(BuildEntity record);
 
     @Update({
         "update easy_build",
@@ -113,8 +118,9 @@ public interface EasyBuildEntityMapper {
           "update_time = #{updateTime,jdbcType=TIMESTAMP},",
           "easy_repository_id = #{easyRepositoryId,jdbcType=INTEGER},",
           "order = #{order,jdbcType=INTEGER},",
-          "type = #{type,jdbcType=INTEGER}",
+          "type = #{type,jdbcType=INTEGER},",
+          "hash_code = #{hashCode,jdbcType=VARCHAR}",
         "where id = #{id,jdbcType=INTEGER}"
     })
-    int updateByPrimaryKey(EasyBuildEntity record);
+    int updateByPrimaryKey(BuildEntity record);
 }

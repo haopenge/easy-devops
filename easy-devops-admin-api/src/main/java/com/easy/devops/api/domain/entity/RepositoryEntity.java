@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 @Table(name = "easy_repository")
 @ApiModel("easy_repository")
-public class EasyRepositoryEntity {
+public class RepositoryEntity {
     /**
      * Id
      */
@@ -58,4 +58,11 @@ public class EasyRepositoryEntity {
     @Column(name = "hash_code")
     @ApiModelProperty("最新提交的hashCode")
     private String hashCode;
+
+    /**
+     * 认证id
+     */
+    @Column(name = "easy_authenticate_id")
+    @ApiModelProperty("认证id")
+    private Integer easyAuthenticateId;
 }

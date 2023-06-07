@@ -13,62 +13,70 @@ import static org.apache.ibatis.jdbc.SqlBuilder.UPDATE;
 import static org.apache.ibatis.jdbc.SqlBuilder.VALUES;
 import static org.apache.ibatis.jdbc.SqlBuilder.WHERE;
 
-import com.easy.devops.api.domain.entity.EasyEnvEntity;
-import com.easy.devops.api.domain.entity.EasyEnvEntityExample.Criteria;
-import com.easy.devops.api.domain.entity.EasyEnvEntityExample.Criterion;
-import com.easy.devops.api.domain.entity.EasyEnvEntityExample;
+import com.easy.devops.api.domain.entity.BuildEntity;
+import com.easy.devops.api.domain.entity.BuildEntityExample.Criteria;
+import com.easy.devops.api.domain.entity.BuildEntityExample.Criterion;
+import com.easy.devops.api.domain.entity.BuildEntityExample;
 import java.util.List;
 import java.util.Map;
 
-public class EasyEnvEntitySqlProvider {
+public class BuildEntitySqlProvider {
 
-    public String countByExample(EasyEnvEntityExample example) {
+    public String countByExample(BuildEntityExample example) {
         BEGIN();
         SELECT("count(*)");
-        FROM("easy_env");
+        FROM("easy_build");
         applyWhere(example, false);
         return SQL();
     }
 
-    public String deleteByExample(EasyEnvEntityExample example) {
+    public String deleteByExample(BuildEntityExample example) {
         BEGIN();
-        DELETE_FROM("easy_env");
+        DELETE_FROM("easy_build");
         applyWhere(example, false);
         return SQL();
     }
 
-    public String insertSelective(EasyEnvEntity record) {
+    public String insertSelective(BuildEntity record) {
         BEGIN();
-        INSERT_INTO("easy_env");
-
+        INSERT_INTO("easy_build");
+        
         if (record.getId() != null) {
             VALUES("id", "#{id,jdbcType=INTEGER}");
         }
-
+        
         if (record.getCreateTime() != null) {
             VALUES("create_time", "#{createTime,jdbcType=TIMESTAMP}");
         }
-
+        
         if (record.getUpdateTime() != null) {
             VALUES("update_time", "#{updateTime,jdbcType=TIMESTAMP}");
         }
-
-        if (record.getDescription() != null) {
-            VALUES("description", "#{description,jdbcType=VARCHAR}");
+        
+        if (record.getEasyRepositoryId() != null) {
+            VALUES("easy_repository_id", "#{easyRepositoryId,jdbcType=INTEGER}");
         }
-
-        if (record.getName() != null) {
-            VALUES("name", "#{name,jdbcType=VARCHAR}");
+        
+        if (record.getOrder() != null) {
+            VALUES("order", "#{order,jdbcType=INTEGER}");
         }
-
-        if (record.getExpireTime() != null) {
-            VALUES("expire_time", "#{expireTime,jdbcType=TIMESTAMP}");
+        
+        if (record.getType() != null) {
+            VALUES("type", "#{type,jdbcType=INTEGER}");
         }
-
+        
+        if (record.getHashCode() != null) {
+            VALUES("hash_code", "#{hashCode,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getContent() != null) {
+            VALUES("content", "#{content,jdbcType=LONGVARCHAR}");
+        }
+        
         return SQL();
     }
 
-    public String selectByExample(EasyEnvEntityExample example) {
+    public String selectByExampleWithBLOBs(BuildEntityExample example) {
         BEGIN();
         if (example != null && example.isDistinct()) {
             SELECT_DISTINCT("id");
@@ -77,104 +85,164 @@ public class EasyEnvEntitySqlProvider {
         }
         SELECT("create_time");
         SELECT("update_time");
-        SELECT("description");
-        SELECT("name");
-        SELECT("expire_time");
-        FROM("easy_env");
+        SELECT("easy_repository_id");
+        SELECT("order");
+        SELECT("type");
+        SELECT("hash_code");
+        SELECT("content");
+        FROM("easy_build");
         applyWhere(example, false);
-
+        
         if (example != null && example.getOrderByClause() != null) {
             ORDER_BY(example.getOrderByClause());
         }
+        
+        return SQL();
+    }
 
+    public String selectByExample(BuildEntityExample example) {
+        BEGIN();
+        if (example != null && example.isDistinct()) {
+            SELECT_DISTINCT("id");
+        } else {
+            SELECT("id");
+        }
+        SELECT("create_time");
+        SELECT("update_time");
+        SELECT("easy_repository_id");
+        SELECT("order");
+        SELECT("type");
+        SELECT("hash_code");
+        FROM("easy_build");
+        applyWhere(example, false);
+        
+        if (example != null && example.getOrderByClause() != null) {
+            ORDER_BY(example.getOrderByClause());
+        }
+        
         return SQL();
     }
 
     public String updateByExampleSelective(Map<String, Object> parameter) {
-        EasyEnvEntity record = (EasyEnvEntity) parameter.get("record");
-        EasyEnvEntityExample example = (EasyEnvEntityExample) parameter.get("example");
-
+        BuildEntity record = (BuildEntity) parameter.get("record");
+        BuildEntityExample example = (BuildEntityExample) parameter.get("example");
+        
         BEGIN();
-        UPDATE("easy_env");
-
+        UPDATE("easy_build");
+        
         if (record.getId() != null) {
             SET("id = #{record.id,jdbcType=INTEGER}");
         }
-
+        
         if (record.getCreateTime() != null) {
             SET("create_time = #{record.createTime,jdbcType=TIMESTAMP}");
         }
-
+        
         if (record.getUpdateTime() != null) {
             SET("update_time = #{record.updateTime,jdbcType=TIMESTAMP}");
         }
-
-        if (record.getDescription() != null) {
-            SET("description = #{record.description,jdbcType=VARCHAR}");
+        
+        if (record.getEasyRepositoryId() != null) {
+            SET("easy_repository_id = #{record.easyRepositoryId,jdbcType=INTEGER}");
         }
-
-        if (record.getName() != null) {
-            SET("name = #{record.name,jdbcType=VARCHAR}");
+        
+        if (record.getOrder() != null) {
+            SET("order = #{record.order,jdbcType=INTEGER}");
         }
-
-        if (record.getExpireTime() != null) {
-            SET("expire_time = #{record.expireTime,jdbcType=TIMESTAMP}");
+        
+        if (record.getType() != null) {
+            SET("type = #{record.type,jdbcType=INTEGER}");
         }
+        
+        if (record.getHashCode() != null) {
+            SET("hash_code = #{record.hashCode,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getContent() != null) {
+            SET("content = #{record.content,jdbcType=LONGVARCHAR}");
+        }
+        
+        applyWhere(example, true);
+        return SQL();
+    }
 
+    public String updateByExampleWithBLOBs(Map<String, Object> parameter) {
+        BEGIN();
+        UPDATE("easy_build");
+        
+        SET("id = #{record.id,jdbcType=INTEGER}");
+        SET("create_time = #{record.createTime,jdbcType=TIMESTAMP}");
+        SET("update_time = #{record.updateTime,jdbcType=TIMESTAMP}");
+        SET("easy_repository_id = #{record.easyRepositoryId,jdbcType=INTEGER}");
+        SET("order = #{record.order,jdbcType=INTEGER}");
+        SET("type = #{record.type,jdbcType=INTEGER}");
+        SET("hash_code = #{record.hashCode,jdbcType=VARCHAR}");
+        SET("content = #{record.content,jdbcType=LONGVARCHAR}");
+        
+        BuildEntityExample example = (BuildEntityExample) parameter.get("example");
         applyWhere(example, true);
         return SQL();
     }
 
     public String updateByExample(Map<String, Object> parameter) {
         BEGIN();
-        UPDATE("easy_env");
-
+        UPDATE("easy_build");
+        
         SET("id = #{record.id,jdbcType=INTEGER}");
         SET("create_time = #{record.createTime,jdbcType=TIMESTAMP}");
         SET("update_time = #{record.updateTime,jdbcType=TIMESTAMP}");
-        SET("description = #{record.description,jdbcType=VARCHAR}");
-        SET("name = #{record.name,jdbcType=VARCHAR}");
-        SET("expire_time = #{record.expireTime,jdbcType=TIMESTAMP}");
-
-        EasyEnvEntityExample example = (EasyEnvEntityExample) parameter.get("example");
+        SET("easy_repository_id = #{record.easyRepositoryId,jdbcType=INTEGER}");
+        SET("order = #{record.order,jdbcType=INTEGER}");
+        SET("type = #{record.type,jdbcType=INTEGER}");
+        SET("hash_code = #{record.hashCode,jdbcType=VARCHAR}");
+        
+        BuildEntityExample example = (BuildEntityExample) parameter.get("example");
         applyWhere(example, true);
         return SQL();
     }
 
-    public String updateByPrimaryKeySelective(EasyEnvEntity record) {
+    public String updateByPrimaryKeySelective(BuildEntity record) {
         BEGIN();
-        UPDATE("easy_env");
-
+        UPDATE("easy_build");
+        
         if (record.getCreateTime() != null) {
             SET("create_time = #{createTime,jdbcType=TIMESTAMP}");
         }
-
+        
         if (record.getUpdateTime() != null) {
             SET("update_time = #{updateTime,jdbcType=TIMESTAMP}");
         }
-
-        if (record.getDescription() != null) {
-            SET("description = #{description,jdbcType=VARCHAR}");
+        
+        if (record.getEasyRepositoryId() != null) {
+            SET("easy_repository_id = #{easyRepositoryId,jdbcType=INTEGER}");
         }
-
-        if (record.getName() != null) {
-            SET("name = #{name,jdbcType=VARCHAR}");
+        
+        if (record.getOrder() != null) {
+            SET("order = #{order,jdbcType=INTEGER}");
         }
-
-        if (record.getExpireTime() != null) {
-            SET("expire_time = #{expireTime,jdbcType=TIMESTAMP}");
+        
+        if (record.getType() != null) {
+            SET("type = #{type,jdbcType=INTEGER}");
         }
-
+        
+        if (record.getHashCode() != null) {
+            SET("hash_code = #{hashCode,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getContent() != null) {
+            SET("content = #{content,jdbcType=LONGVARCHAR}");
+        }
+        
         WHERE("id = #{id,jdbcType=INTEGER}");
-
+        
         return SQL();
     }
 
-    protected void applyWhere(EasyEnvEntityExample example, boolean includeExamplePhrase) {
+    protected void applyWhere(BuildEntityExample example, boolean includeExamplePhrase) {
         if (example == null) {
             return;
         }
-
+        
         String parmPhrase1;
         String parmPhrase1_th;
         String parmPhrase2;
@@ -196,7 +264,7 @@ public class EasyEnvEntitySqlProvider {
             parmPhrase3 = "#{oredCriteria[%d].allCriteria[%d].value[%d]}";
             parmPhrase3_th = "#{oredCriteria[%d].allCriteria[%d].value[%d],typeHandler=%s}";
         }
-
+        
         StringBuilder sb = new StringBuilder();
         List<Criteria> oredCriteria = example.getOredCriteria();
         boolean firstCriteria = true;
@@ -208,7 +276,7 @@ public class EasyEnvEntitySqlProvider {
                 } else {
                     sb.append(" or ");
                 }
-
+                
                 sb.append('(');
                 List<Criterion> criterions = criteria.getAllCriteria();
                 boolean firstCriterion = true;
@@ -219,7 +287,7 @@ public class EasyEnvEntitySqlProvider {
                     } else {
                         sb.append(" and ");
                     }
-
+                    
                     if (criterion.isNoValue()) {
                         sb.append(criterion.getCondition());
                     } else if (criterion.isSingleValue()) {
@@ -257,7 +325,7 @@ public class EasyEnvEntitySqlProvider {
                 sb.append(')');
             }
         }
-
+        
         if (sb.length() > 0) {
             WHERE(sb.toString());
         }

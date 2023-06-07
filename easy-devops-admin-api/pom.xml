@@ -18,7 +18,7 @@
         <maven.compiler.target>8</maven.compiler.target>
         <javaBaseProject>${basedir}/src/main/java</javaBaseProject>
         <resourcesBaseProject>${basedir}/src/test/resources</resourcesBaseProject>
-        <basePackage>com.easy.devops</basePackage>
+        <basePackage>com.easy.devops.api</basePackage>
 
         <plugin.driver-class-name>com.mysql.cj.jdbc.Driver</plugin.driver-class-name>
         <plugin.datasource.url>jdbc:mysql://10.8.0.10:3306/easy_admin?serverTimezone=Asia/Shanghai&amp;useUnicode=true&amp;characterEncoding=utf8&amp;allowMultiQueries=true</plugin.datasource.url>
@@ -116,7 +116,7 @@
                     <dependency>
                         <groupId>mysql</groupId>
                         <artifactId>mysql-connector-java</artifactId>
-                        <version>8.0.32</version>
+                        <version>${mysql.version}</version>
                     </dependency>
                     <dependency>
                         <groupId>io.github.haopenge</groupId>

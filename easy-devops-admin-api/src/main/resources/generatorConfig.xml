@@ -34,10 +34,13 @@
         </javaClientGenerator>
 
         <!--  <table schema="PUBLIC" tableName="%"/>-->
-        <table schema="" tableName="easy_env" domainObjectName="EasyEnvEntity"></table>
-        <table schema="" tableName="easy_project" domainObjectName="EasyProjectEntity"></table>
-        <table schema="" tableName="easy_build" domainObjectName="EasyBuildEntity"></table>
-        <table schema="" tableName="easy_repository" domainObjectName="EasyRepositoryEntity"></table>
+        <table schema="" tableName="easy_authenticate" domainObjectName="AuthenticateEntity"/>
+        <table schema="" tableName="easy_build" domainObjectName="BuildEntity"/>
+        <table schema="" tableName="easy_env" domainObjectName="EnvEntity"/>
+        <table schema="" tableName="easy_project" domainObjectName="ProjectEntity"/>
+        <table schema="" tableName="easy_repository" domainObjectName="RepositoryEntity"/>
+        <table schema="" tableName="easy_template" domainObjectName="TemplateEntity"/>
+
 
 
 

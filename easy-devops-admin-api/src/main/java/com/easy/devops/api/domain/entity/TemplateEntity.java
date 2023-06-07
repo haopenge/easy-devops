@@ -10,9 +10,9 @@ import javax.persistence.Table;
 import java.util.Date;
 
 @Data
-@Table(name = "easy_build")
-@ApiModel("easy_build")
-public class EasyBuildEntity {
+@Table(name = "easy_template")
+@ApiModel("easy_template")
+public class TemplateEntity {
     /**
      * Id
      */
@@ -34,19 +34,12 @@ public class EasyBuildEntity {
     private Date updateTime;
 
     /**
-     * 仓库id
-     */
-    @Column(name = "easy_repository_id")
-    @ApiModelProperty("仓库id")
-    private Integer easyRepositoryId;
-
-    /**
      * 构建顺序，执行时由小到大
      */
     private Integer order;
 
     /**
-     * 构建类型：0-检出代码；5-脚本执行；10-镜像构建；15-发布项目
+     * 模板类型：1-shell；5-dockerfile ;  10-yaml ;
      */
     private Integer type;
 

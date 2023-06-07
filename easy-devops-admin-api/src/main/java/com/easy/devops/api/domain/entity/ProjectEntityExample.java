@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class EasyEnvEntityExample {
+public class ProjectEntityExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public EasyEnvEntityExample() {
+    public ProjectEntityExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -285,76 +285,6 @@ public class EasyEnvEntityExample {
             return (Criteria) this;
         }
 
-        public Criteria andDescriptionIsNull() {
-            addCriterion("description is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDescriptionIsNotNull() {
-            addCriterion("description is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDescriptionEqualTo(String value) {
-            addCriterion("description =", value, "description");
-            return (Criteria) this;
-        }
-
-        public Criteria andDescriptionNotEqualTo(String value) {
-            addCriterion("description <>", value, "description");
-            return (Criteria) this;
-        }
-
-        public Criteria andDescriptionGreaterThan(String value) {
-            addCriterion("description >", value, "description");
-            return (Criteria) this;
-        }
-
-        public Criteria andDescriptionGreaterThanOrEqualTo(String value) {
-            addCriterion("description >=", value, "description");
-            return (Criteria) this;
-        }
-
-        public Criteria andDescriptionLessThan(String value) {
-            addCriterion("description <", value, "description");
-            return (Criteria) this;
-        }
-
-        public Criteria andDescriptionLessThanOrEqualTo(String value) {
-            addCriterion("description <=", value, "description");
-            return (Criteria) this;
-        }
-
-        public Criteria andDescriptionLike(String value) {
-            addCriterion("description like", value, "description");
-            return (Criteria) this;
-        }
-
-        public Criteria andDescriptionNotLike(String value) {
-            addCriterion("description not like", value, "description");
-            return (Criteria) this;
-        }
-
-        public Criteria andDescriptionIn(List<String> values) {
-            addCriterion("description in", values, "description");
-            return (Criteria) this;
-        }
-
-        public Criteria andDescriptionNotIn(List<String> values) {
-            addCriterion("description not in", values, "description");
-            return (Criteria) this;
-        }
-
-        public Criteria andDescriptionBetween(String value1, String value2) {
-            addCriterion("description between", value1, value2, "description");
-            return (Criteria) this;
-        }
-
-        public Criteria andDescriptionNotBetween(String value1, String value2) {
-            addCriterion("description not between", value1, value2, "description");
-            return (Criteria) this;
-        }
-
         public Criteria andNameIsNull() {
             addCriterion("name is null");
             return (Criteria) this;
@@ -425,63 +355,193 @@ public class EasyEnvEntityExample {
             return (Criteria) this;
         }
 
-        public Criteria andExpireTimeIsNull() {
-            addCriterion("expire_time is null");
+        public Criteria andEasyEnvIdIsNull() {
+            addCriterion("easy_env_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andExpireTimeIsNotNull() {
-            addCriterion("expire_time is not null");
+        public Criteria andEasyEnvIdIsNotNull() {
+            addCriterion("easy_env_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andExpireTimeEqualTo(Date value) {
-            addCriterion("expire_time =", value, "expireTime");
+        public Criteria andEasyEnvIdEqualTo(Integer value) {
+            addCriterion("easy_env_id =", value, "easyEnvId");
             return (Criteria) this;
         }
 
-        public Criteria andExpireTimeNotEqualTo(Date value) {
-            addCriterion("expire_time <>", value, "expireTime");
+        public Criteria andEasyEnvIdNotEqualTo(Integer value) {
+            addCriterion("easy_env_id <>", value, "easyEnvId");
             return (Criteria) this;
         }
 
-        public Criteria andExpireTimeGreaterThan(Date value) {
-            addCriterion("expire_time >", value, "expireTime");
+        public Criteria andEasyEnvIdGreaterThan(Integer value) {
+            addCriterion("easy_env_id >", value, "easyEnvId");
             return (Criteria) this;
         }
 
-        public Criteria andExpireTimeGreaterThanOrEqualTo(Date value) {
-            addCriterion("expire_time >=", value, "expireTime");
+        public Criteria andEasyEnvIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("easy_env_id >=", value, "easyEnvId");
             return (Criteria) this;
         }
 
-        public Criteria andExpireTimeLessThan(Date value) {
-            addCriterion("expire_time <", value, "expireTime");
+        public Criteria andEasyEnvIdLessThan(Integer value) {
+            addCriterion("easy_env_id <", value, "easyEnvId");
             return (Criteria) this;
         }
 
-        public Criteria andExpireTimeLessThanOrEqualTo(Date value) {
-            addCriterion("expire_time <=", value, "expireTime");
+        public Criteria andEasyEnvIdLessThanOrEqualTo(Integer value) {
+            addCriterion("easy_env_id <=", value, "easyEnvId");
             return (Criteria) this;
         }
 
-        public Criteria andExpireTimeIn(List<Date> values) {
-            addCriterion("expire_time in", values, "expireTime");
+        public Criteria andEasyEnvIdIn(List<Integer> values) {
+            addCriterion("easy_env_id in", values, "easyEnvId");
             return (Criteria) this;
         }
 
-        public Criteria andExpireTimeNotIn(List<Date> values) {
-            addCriterion("expire_time not in", values, "expireTime");
+        public Criteria andEasyEnvIdNotIn(List<Integer> values) {
+            addCriterion("easy_env_id not in", values, "easyEnvId");
             return (Criteria) this;
         }
 
-        public Criteria andExpireTimeBetween(Date value1, Date value2) {
-            addCriterion("expire_time between", value1, value2, "expireTime");
+        public Criteria andEasyEnvIdBetween(Integer value1, Integer value2) {
+            addCriterion("easy_env_id between", value1, value2, "easyEnvId");
             return (Criteria) this;
         }
 
-        public Criteria andExpireTimeNotBetween(Date value1, Date value2) {
-            addCriterion("expire_time not between", value1, value2, "expireTime");
+        public Criteria andEasyEnvIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("easy_env_id not between", value1, value2, "easyEnvId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEasyRepositoryIdIsNull() {
+            addCriterion("easy_repository_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEasyRepositoryIdIsNotNull() {
+            addCriterion("easy_repository_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEasyRepositoryIdEqualTo(Integer value) {
+            addCriterion("easy_repository_id =", value, "easyRepositoryId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEasyRepositoryIdNotEqualTo(Integer value) {
+            addCriterion("easy_repository_id <>", value, "easyRepositoryId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEasyRepositoryIdGreaterThan(Integer value) {
+            addCriterion("easy_repository_id >", value, "easyRepositoryId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEasyRepositoryIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("easy_repository_id >=", value, "easyRepositoryId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEasyRepositoryIdLessThan(Integer value) {
+            addCriterion("easy_repository_id <", value, "easyRepositoryId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEasyRepositoryIdLessThanOrEqualTo(Integer value) {
+            addCriterion("easy_repository_id <=", value, "easyRepositoryId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEasyRepositoryIdIn(List<Integer> values) {
+            addCriterion("easy_repository_id in", values, "easyRepositoryId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEasyRepositoryIdNotIn(List<Integer> values) {
+            addCriterion("easy_repository_id not in", values, "easyRepositoryId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEasyRepositoryIdBetween(Integer value1, Integer value2) {
+            addCriterion("easy_repository_id between", value1, value2, "easyRepositoryId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEasyRepositoryIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("easy_repository_id not between", value1, value2, "easyRepositoryId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBranchIsNull() {
+            addCriterion("branch is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBranchIsNotNull() {
+            addCriterion("branch is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBranchEqualTo(String value) {
+            addCriterion("branch =", value, "branch");
+            return (Criteria) this;
+        }
+
+        public Criteria andBranchNotEqualTo(String value) {
+            addCriterion("branch <>", value, "branch");
+            return (Criteria) this;
+        }
+
+        public Criteria andBranchGreaterThan(String value) {
+            addCriterion("branch >", value, "branch");
+            return (Criteria) this;
+        }
+
+        public Criteria andBranchGreaterThanOrEqualTo(String value) {
+            addCriterion("branch >=", value, "branch");
+            return (Criteria) this;
+        }
+
+        public Criteria andBranchLessThan(String value) {
+            addCriterion("branch <", value, "branch");
+            return (Criteria) this;
+        }
+
+        public Criteria andBranchLessThanOrEqualTo(String value) {
+            addCriterion("branch <=", value, "branch");
+            return (Criteria) this;
+        }
+
+        public Criteria andBranchLike(String value) {
+            addCriterion("branch like", value, "branch");
+            return (Criteria) this;
+        }
+
+        public Criteria andBranchNotLike(String value) {
+            addCriterion("branch not like", value, "branch");
+            return (Criteria) this;
+        }
+
+        public Criteria andBranchIn(List<String> values) {
+            addCriterion("branch in", values, "branch");
+            return (Criteria) this;
+        }
+
+        public Criteria andBranchNotIn(List<String> values) {
+            addCriterion("branch not in", values, "branch");
+            return (Criteria) this;
+        }
+
+        public Criteria andBranchBetween(String value1, String value2) {
+            addCriterion("branch between", value1, value2, "branch");
+            return (Criteria) this;
+        }
+
+        public Criteria andBranchNotBetween(String value1, String value2) {
+            addCriterion("branch not between", value1, value2, "branch");
             return (Criteria) this;
         }
     }
