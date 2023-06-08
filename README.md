@@ -23,6 +23,28 @@
 
 文档地址：https://haopenge.github.io/easy-devops/#/
 
+# 技术难点与解决方案如下：
+
+| 描述               | 状态      | 方案   |
+| ---------------- | ------- | ---- |
+| 【技术方案】代码仓库管理方案   | 📄文档补充中 | 链接跳转 |
+| 【运维】发布系统项目基础镜像   | 🚀进行中   | 链接跳转 |
+| 【技术方案】灰度发布方案     | ✅已完成    | 链接跳转 |
+| 【前端组件】容器启动日志显示组件 | 🈳未开始   | 链接跳转 |
+| 【前端组件】容器终端页面显示组件 | 🈳未开始   | 链接跳转  |
+
+  
+# 重构进度汇总（这里以业务功能点来说）  
+
+
+| 描述   | 状态    |
+| ---- | ----- |
+| 凭证管理 | ✅已完成  |
+| 仓库管理 | 🚀进行中 |
+| 项目管理 | 🈳未开始 |
+| 构建管理 | 🈳未开始 |
+| 环境管理 | 🈳未开始 |
+
 # mr规范
 
 commit格式：`type: ${decription}`
@@ -46,12 +68,14 @@ feat: 初始化项目
 -   revert: 撤回
 
 
+# 其他
+
 ## 📑 文档
 
 * <a href="https://github.com/haopenge/easy-devops/wiki">WIKI</a>
 * <a href="https://github.com/haopenge/easy-devops/issues">Issue tracker</a>
 
- ## Stargazers
+## Stargazers
 [![Stargazers repo roster for @haopenge/easy-devops](https://reporoster.com/stars/haopenge/easy-devops)](https://github.com/haopenge/easy-devops/stargazers)
 
 ## Forkers
