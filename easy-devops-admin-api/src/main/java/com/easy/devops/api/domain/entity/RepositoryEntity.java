@@ -49,4 +49,14 @@ public class RepositoryEntity {
      * 认证id
      */
     private Integer easyAuthenticateId;
+
+    /**
+     * git克隆地址类型：0-https  1-ssh
+     */
+    private Integer cloneUrlType;
+
+    /**
+     * git仓库类型，1-github  2-gitee   3-gitlab
+     */
+    private Integer gitType;
 }

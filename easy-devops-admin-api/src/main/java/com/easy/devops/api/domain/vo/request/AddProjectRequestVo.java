@@ -6,19 +6,23 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
- * 编辑项目Vo
+ * 新增项目
  *
  * @author liupenghao
  */
 @Data
-public class EditProjectRequestVo {
-
-    private Integer id;
+public class AddProjectRequestVo {
 
     /**
      * 环境id
      */
     private Integer envId;
+
+    /**
+     * 项目名
+     */
+    @NotBlank
+    private String name;
 
     /**
      * 仓库id
@@ -31,4 +35,5 @@ public class EditProjectRequestVo {
      */
     @NotBlank
     private String branchName;
+
 }

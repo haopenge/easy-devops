@@ -1,10 +1,10 @@
 package com.easy.devops.api.controller;
 
-import com.easy.devops.api.domain.vo.request.AddProjectToGrayEnvRequestVo;
+import com.easy.devops.api.domain.vo.request.AddProjectRequestVo;
 import com.easy.devops.api.domain.vo.request.EditProjectRequestVo;
 import com.easy.devops.api.domain.vo.response.GitProjectResponseVo;
-import com.easy.devops.api.service.impl.GrayService;
 import com.easy.core.domain.ApiResult;
+import com.easy.devops.api.service.impl.ProjectService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,14 +25,14 @@ import java.util.List;
 public class ProjectController extends BaseController {
 
     @Resource
-    private GrayService grayService;
+    private ProjectService projectService;
 
     /**
      * 删除灰度环境的项目
      */
     @DeleteMapping("/deleteById")
-    public ApiResult<Void> deleteProjectInGrayEnv(@RequestParam Integer id) {
-        grayService.deleteProjectInGrayEnv(id);
+    public ApiResult<Void> deleteById(@RequestParam Integer id) {
+        projectService.deleteById(id);
         return success();
     }
 
@@ -40,8 +40,8 @@ public class ProjectController extends BaseController {
      * 添加项目
      */
     @PostMapping("/add")
-    public ApiResult<Void> addProject(@RequestBody @Validated AddProjectToGrayEnvRequestVo addProjectToGrayEnv) {
-        grayService.addProjectToGrayEnv(addProjectToGrayEnv);
+    public ApiResult<Void> addProject(@RequestBody @Validated AddProjectRequestVo addProjectToGrayEnv) {
+        projectService.addProject(addProjectToGrayEnv);
         return success();
     }
 
@@ -50,7 +50,7 @@ public class ProjectController extends BaseController {
      */
     @PostMapping("/edit")
     public ApiResult<Void> editProject(@RequestBody @Validated EditProjectRequestVo editProjectRequestVo) {
-        grayService.editProject(editProjectRequestVo);
+        projectService.editProject(editProjectRequestVo);
         return success();
     }
 
@@ -62,7 +62,7 @@ public class ProjectController extends BaseController {
      */
     @PostMapping("/run")
     public ApiResult<Void> runProjectInGrayEnv(Integer id) {
-        grayService.runProjectInGrayEnv(id);
+      //  grayService.runProjectInGrayEnv(id);
         return success();
     }
 
@@ -74,19 +74,8 @@ public class ProjectController extends BaseController {
      */
     @PostMapping("/stop")
     public ApiResult<Void> stopProjectInGrayEnv(Integer id) {
-        grayService.stopProjectInGrayEnv(id);
+       // grayService.stopProjectInGrayEnv(id);
         return success();
-    }
-
-    /**
-     * 获取环境中的项目
-     *
-     * @param envId 环境id
-     * @return 项目
-     */
-    @GetMapping("/findByEnvId")
-    public ApiResult<List<GitProjectResponseVo>> findProject(Integer envId) {
-        return success(grayService.findProject(envId));
     }
 
 }

@@ -1,6 +1,6 @@
 package com.easy.devops.api.config;
 
-import com.easy.devops.api.config.properties.AdminApiProperties;
+import com.easy.devops.api.config.properties.GlobalProperties;
 import com.github.pagehelper.PageInterceptor;
 import org.apache.ibatis.logging.nologging.NoLoggingImpl;
 import org.apache.ibatis.logging.stdout.StdOutImpl;
@@ -22,7 +22,7 @@ import java.util.Properties;
 public class DataSourceConfiguration {
 
     @Resource
-    private AdminApiProperties adminApiProperties;
+    private GlobalProperties globalProperties;
 
     @Bean
     public SqlSessionFactoryBean sqlSessionFactoryBean(@Autowired DataSource dataSource) {
@@ -47,7 +47,7 @@ public class DataSourceConfiguration {
 
         // 控制台日志配置
         org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
-        configuration.setLogImpl(adminApiProperties.isSqlLogEnabled() ? StdOutImpl.class : NoLoggingImpl.class);
+        configuration.setLogImpl(globalProperties.isSqlLogEnabled() ? StdOutImpl.class : NoLoggingImpl.class);
         sqlSessionFactoryBean.setConfiguration(configuration);
 
         return sqlSessionFactoryBean;

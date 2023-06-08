@@ -694,6 +694,126 @@ public class RepositoryEntityExample {
             addCriterion("easy_authenticate_id not between", value1, value2, "easyAuthenticateId");
             return (Criteria) this;
         }
+
+        public Criteria andCloneUrlTypeIsNull() {
+            addCriterion("clone_url_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCloneUrlTypeIsNotNull() {
+            addCriterion("clone_url_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCloneUrlTypeEqualTo(Integer value) {
+            addCriterion("clone_url_type =", value, "cloneUrlType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCloneUrlTypeNotEqualTo(Integer value) {
+            addCriterion("clone_url_type <>", value, "cloneUrlType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCloneUrlTypeGreaterThan(Integer value) {
+            addCriterion("clone_url_type >", value, "cloneUrlType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCloneUrlTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("clone_url_type >=", value, "cloneUrlType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCloneUrlTypeLessThan(Integer value) {
+            addCriterion("clone_url_type <", value, "cloneUrlType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCloneUrlTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("clone_url_type <=", value, "cloneUrlType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCloneUrlTypeIn(List<Integer> values) {
+            addCriterion("clone_url_type in", values, "cloneUrlType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCloneUrlTypeNotIn(List<Integer> values) {
+            addCriterion("clone_url_type not in", values, "cloneUrlType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCloneUrlTypeBetween(Integer value1, Integer value2) {
+            addCriterion("clone_url_type between", value1, value2, "cloneUrlType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCloneUrlTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("clone_url_type not between", value1, value2, "cloneUrlType");
+            return (Criteria) this;
+        }
+
+        public Criteria andGitTypeIsNull() {
+            addCriterion("git_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGitTypeIsNotNull() {
+            addCriterion("git_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGitTypeEqualTo(Integer value) {
+            addCriterion("git_type =", value, "gitType");
+            return (Criteria) this;
+        }
+
+        public Criteria andGitTypeNotEqualTo(Integer value) {
+            addCriterion("git_type <>", value, "gitType");
+            return (Criteria) this;
+        }
+
+        public Criteria andGitTypeGreaterThan(Integer value) {
+            addCriterion("git_type >", value, "gitType");
+            return (Criteria) this;
+        }
+
+        public Criteria andGitTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("git_type >=", value, "gitType");
+            return (Criteria) this;
+        }
+
+        public Criteria andGitTypeLessThan(Integer value) {
+            addCriterion("git_type <", value, "gitType");
+            return (Criteria) this;
+        }
+
+        public Criteria andGitTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("git_type <=", value, "gitType");
+            return (Criteria) this;
+        }
+
+        public Criteria andGitTypeIn(List<Integer> values) {
+            addCriterion("git_type in", values, "gitType");
+            return (Criteria) this;
+        }
+
+        public Criteria andGitTypeNotIn(List<Integer> values) {
+            addCriterion("git_type not in", values, "gitType");
+            return (Criteria) this;
+        }
+
+        public Criteria andGitTypeBetween(Integer value1, Integer value2) {
+            addCriterion("git_type between", value1, value2, "gitType");
+            return (Criteria) this;
+        }
+
+        public Criteria andGitTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("git_type not between", value1, value2, "gitType");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

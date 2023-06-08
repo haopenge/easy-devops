@@ -3,7 +3,7 @@ package com.easy.devops.api.domain.vo.response;
 import lombok.Data;
 
 /**
- * 新增认证请求
+ * 认证响应vo
  *
  * @author liuph
  */

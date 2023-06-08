@@ -1,8 +1,7 @@
 package com.easy.devops.api.domain.entity;
 
-import lombok.Data;
-
 import java.util.Date;
+import lombok.Data;
 
 @Data
 public class AuthenticateEntity {

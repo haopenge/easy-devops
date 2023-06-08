@@ -1,16 +1,20 @@
 package com.easy.devops.api.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.io.IoUtil;
 import com.easy.devops.api.config.properties.GlobalProperties;
+import com.easy.devops.api.domain.bo.HostAndUsername;
 import com.easy.devops.api.domain.entity.AuthenticateEntity;
 import com.easy.devops.api.domain.entity.AuthenticateEntityExample;
 import com.easy.devops.api.domain.enumx.AuthenticateTypeEnum;
 import com.easy.devops.api.domain.vo.request.AddAuthenticateRequestVo;
 import com.easy.devops.api.domain.vo.request.EditAuthenticateRequestVo;
 import com.easy.devops.api.domain.vo.response.AuthenticateResponseVo;
+import com.easy.devops.api.domain.vo.response.RepositoryResponseVo;
 import com.easy.devops.api.exception.AdminApiException;
 import com.easy.devops.api.mapper.AuthenticateEntityMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.Host;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -25,6 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.easy.devops.api.domain.enumx.AdminApiFailureEnum.AUTHENTICATE_NAME_EXISTS;
 import static com.easy.devops.api.domain.enumx.AdminApiFailureEnum.AUTHENTICATE_NOT_EXISTS;
@@ -73,7 +79,6 @@ public class AuthenticateService {
             String fileName = UUID.randomUUID().toString();
             addEntity.setSshPrivateKey(sshPrivateKey);
             addEntity.setSshPrivateKeyFileName(fileName);
-
             String privateKeyPath = globalProperties.getAuthSshPrivateKeyPath() + File.separator + fileName;
 
             // 存储 ssh文件到服务器
@@ -131,18 +136,7 @@ public class AuthenticateService {
      */
     public List<AuthenticateResponseVo> findAll() {
         List<AuthenticateEntity> entityList = authenticateEntityMapper.selectByExample(new AuthenticateEntityExample());
-        List<AuthenticateResponseVo> dataList = new ArrayList<>();
-        for (AuthenticateEntity loopEntity : entityList) {
-            AuthenticateResponseVo responseVo = new AuthenticateResponseVo();
-            responseVo.setId(loopEntity.getId());
-            responseVo.setName(loopEntity.getName());
-            responseVo.setDescription(loopEntity.getDescription());
-            responseVo.setUsername(loopEntity.getUsername());
-            responseVo.setType(loopEntity.getType());
-
-            dataList.add(responseVo);
-        }
-        return dataList;
+        return BeanUtil.copyToList(entityList, AuthenticateResponseVo.class);
     }
 
     /**

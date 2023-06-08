@@ -9,10 +9,7 @@ import com.easy.devops.api.exception.AdminApiException;
 import com.easy.devops.api.service.impl.AuthenticateService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Objects;
@@ -46,7 +43,7 @@ public class AuthenticateController extends BaseController {
     /**
      * 修改凭证信息
      */
-    @PostMapping("/edit")
+    @PutMapping("/edit")
     public ApiResult<Void> edit(@RequestBody EditAuthenticateRequestVo requestVo) {
         Integer type = requestVo.getType();
         if (Objects.isNull(type)) {
@@ -59,7 +56,7 @@ public class AuthenticateController extends BaseController {
     /**
      * 删除凭证信息
      */
-    @PostMapping("/deleteById")
+    @DeleteMapping("/deleteById")
     public ApiResult<Void> deleteById(Integer id) {
         if (Objects.isNull(id)) {
             throw new AdminApiException(AdminApiFailureEnum.PARAM_ERROR);
@@ -72,7 +69,7 @@ public class AuthenticateController extends BaseController {
     /**
      * 获取凭证信息
      */
-    @PostMapping("/findAll")
+    @GetMapping("/findAll")
     public ApiResult<List<AuthenticateResponseVo>> findAll() {
         List<AuthenticateResponseVo> data = authenticateService.findAll();
         return success(data);

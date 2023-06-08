@@ -1,52 +1,37 @@
 package com.easy.devops.api.service.impl;
 
-import cn.hutool.core.io.FileUtil;
-import com.easy.devops.api.domain.entity.EasyEnvEntity;
-import com.easy.devops.api.domain.enumx.AdminApiFailureEnum;
-import com.easy.devops.api.domain.vo.request.AddProjectToGrayEnvRequestVo;
-import com.easy.devops.api.domain.vo.request.EditProjectRequestVo;
-import com.easy.devops.api.mapper.EasyProjectEntityMapper;
-import com.easy.devops.api.service.IGitService;
-import com.easy.devops.api.util.ObjectUtil;
 import com.easy.devops.api.config.properties.BuildProperties;
 import com.easy.devops.api.config.properties.DockerProperties;
 import com.easy.devops.api.config.properties.GitProperties;
-import com.easy.devops.api.domain.entity.EasyEnvEntityExample;
-import com.easy.devops.api.domain.entity.EasyProjectEntity;
-import com.easy.devops.api.domain.entity.EasyProjectEntityExample;
+import com.easy.devops.api.domain.enumx.AdminApiFailureEnum;
+import com.easy.devops.api.domain.vo.request.AddProjectRequestVo;
+import com.easy.devops.api.domain.vo.request.EditProjectRequestVo;
 import com.easy.devops.api.domain.vo.request.GrayAddRequestVo;
 import com.easy.devops.api.domain.vo.request.GrayEditRequestVo;
 import com.easy.devops.api.domain.vo.response.GitProjectResponseVo;
 import com.easy.devops.api.domain.vo.response.GrayEnvResponseVo;
 import com.easy.devops.api.exception.AdminApiException;
-import com.easy.devops.api.mapper.EasyEnvEntityMapper;
-import com.easy.core.util.CmdUtil;
+import com.easy.devops.api.mapper.EnvEntityMapper;
+import com.easy.devops.api.mapper.ProjectEntityMapper;
+import com.easy.devops.api.service.IGitService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 @Slf4j
 @Service
 public class GrayService {
 
     @Resource
-    private EasyEnvEntityMapper easyEnvEntityMapper;
+    private EnvEntityMapper easyEnvEntityMapper;
 
     @Resource
-    private EasyProjectEntityMapper easyProjectEntityMapper;
+    private ProjectEntityMapper easyProjectEntityMapper;
 
     @Resource
     private K8sService k8sService;
@@ -64,7 +49,7 @@ public class GrayService {
     private BuildProperties buildProperties;
 
     public Integer addGrayEnv(GrayAddRequestVo requestVo) {
-        EasyEnvEntity saveEntity = new EasyEnvEntity();
+        /*EasyEnvEntity saveEntity = new EasyEnvEntity();
         saveEntity.setName(requestVo.getName());
         saveEntity.setDescription(requestVo.getDescription());
         saveEntity.setExpireTime(requestVo.getExpireTime());
@@ -77,7 +62,9 @@ public class GrayService {
             throw new AdminApiException(AdminApiFailureEnum.K8S_NAMESPACE_CREATE_ERROR);
         }
 
-        return saveEntity.getId();
+        return saveEntity.getId();*/
+
+        return 0;
     }
 
     /**
@@ -86,7 +73,7 @@ public class GrayService {
      * @param requestVo 请求Vo
      */
     public void editGrayEnv(GrayEditRequestVo requestVo) {
-        EasyEnvEntity grayEnvEntity = easyEnvEntityMapper.selectByPrimaryKey(requestVo.getId());
+       /* EasyEnvEntity grayEnvEntity = easyEnvEntityMapper.selectByPrimaryKey(requestVo.getId());
         if (Objects.isNull(grayEnvEntity)) {
             return;
         }
@@ -94,11 +81,11 @@ public class GrayService {
         updateEntity.setId(requestVo.getId());
         updateEntity.setExpireTime(requestVo.getExpireTime());
         updateEntity.setDescription(requestVo.getDescription());
-        easyEnvEntityMapper.updateByPrimaryKeySelective(updateEntity);
+        easyEnvEntityMapper.updateByPrimaryKeySelective(updateEntity);*/
     }
 
     public void deleteById(Integer id) {
-        EasyEnvEntity grayEnvEntity = easyEnvEntityMapper.selectByPrimaryKey(id);
+       /* EasyEnvEntity grayEnvEntity = easyEnvEntityMapper.selectByPrimaryKey(id);
         if (Objects.isNull(grayEnvEntity)) {
             return;
         }
@@ -107,41 +94,14 @@ public class GrayService {
             k8sService.createNamespace(grayEnvEntity.getName());
         } catch (Exception e) {
             throw new AdminApiException(AdminApiFailureEnum.K8S_NAMESPACE_CREATE_ERROR);
-        }
+        }*/
     }
 
     /**
      * 添加项目到灰度环境
      */
-    public void addProjectToGrayEnv(AddProjectToGrayEnvRequestVo requestVo) {
-        Integer envId = requestVo.getEnvId();
-        EasyEnvEntity grayEnvEntity = easyEnvEntityMapper.selectByPrimaryKey(envId);
-        if (Objects.isNull(grayEnvEntity)) {
-            throw new AdminApiException(AdminApiFailureEnum.GRAY_ENV_NOT_EXIST);
-        }
+    public void addProjectToGrayEnv(AddProjectRequestVo requestVo) {
 
-        String fullName = requestVo.getFullName();
-        GitProjectResponseVo gitProjectResponseVo = gitService.findRepositoryByFullName(gitProperties.getUsername() + "/" + "easy-gray");
-        if (Objects.isNull(gitProjectResponseVo)) {
-            throw new AdminApiException(AdminApiFailureEnum.GIT_FETCH_EXCEPTION);
-        }
-
-        int i = fullName.lastIndexOf("/");
-        String name = (i == -1 ? fullName : fullName.substring(i + 1));
-
-        EasyProjectEntityExample example = new EasyProjectEntityExample();
-        example.createCriteria().andEasyEnvIdEqualTo(envId).andNameEqualTo(name);
-        List<EasyProjectEntity> grayProjectEntities = easyProjectEntityMapper.selectByExample(example);
-        if (!CollectionUtils.isEmpty(grayProjectEntities)) {
-            throw new AdminApiException(AdminApiFailureEnum.GRAY_ENV_PROJECT_EXIST);
-        }
-
-        // 新增项目
-        EasyProjectEntity projectEntity = new EasyProjectEntity();
-        projectEntity.setName(name);
-        projectEntity.setBranch(requestVo.getBranchName());
-       // projectEntity.setGrayEnvId(envId);
-        easyProjectEntityMapper.insertSelective(projectEntity);
     }
 
     /**
@@ -150,7 +110,7 @@ public class GrayService {
      * @param editProjectRequestVo 请求vo
      */
     public void editProject(EditProjectRequestVo editProjectRequestVo) {
-        EasyProjectEntity projectEntity = easyProjectEntityMapper.selectByPrimaryKey(editProjectRequestVo.getId());
+       /* EasyProjectEntity projectEntity = easyProjectEntityMapper.selectByPrimaryKey(editProjectRequestVo.getId());
         if (Objects.isNull(projectEntity)) {
             throw new AdminApiException(AdminApiFailureEnum.GRAY_ENV_PROJECT_NOT_EXIST);
         }
@@ -158,19 +118,19 @@ public class GrayService {
         EasyProjectEntity updateEntity = new EasyProjectEntity();
         updateEntity.setId(editProjectRequestVo.getId());
         updateEntity.setBranch(editProjectRequestVo.getBranchName());
-        easyProjectEntityMapper.updateByPrimaryKeySelective(updateEntity);
+        easyProjectEntityMapper.updateByPrimaryKeySelective(updateEntity);*/
     }
 
     public void deleteProjectInGrayEnv(Integer projectId) {
-        EasyProjectEntity projectEntity = easyProjectEntityMapper.selectByPrimaryKey(projectId);
+        /*EasyProjectEntity projectEntity = easyProjectEntityMapper.selectByPrimaryKey(projectId);
         if (Objects.isNull(projectEntity)) {
             throw new AdminApiException(AdminApiFailureEnum.GRAY_ENV_PROJECT_NOT_EXIST);
         }
-        easyProjectEntityMapper.deleteByPrimaryKey(projectId);
+        easyProjectEntityMapper.deleteByPrimaryKey(projectId);*/
     }
 
     public List<GrayEnvResponseVo> findAllGrayEnv() {
-        EasyEnvEntityExample example = new EasyEnvEntityExample();
+       /* EasyEnvEntityExample example = new EasyEnvEntityExample();
         List<EasyEnvEntity> grayEnvEntityList = easyEnvEntityMapper.selectByExample(example);
         if (CollectionUtils.isEmpty(grayEnvEntityList)) {
             return Collections.emptyList();
@@ -182,11 +142,12 @@ public class GrayService {
             BeanUtils.copyProperties(loopEntity, envVo);
             returnList.add(envVo);
         }
-        return returnList;
+        return returnList;*/
+        return null;
     }
 
     public void runProjectInGrayEnv(Integer projectId) {
-        EasyProjectEntity projectEntity = easyProjectEntityMapper.selectByPrimaryKey(projectId);
+      /*  EasyProjectEntity projectEntity = easyProjectEntityMapper.selectByPrimaryKey(projectId);
         if (Objects.isNull(projectEntity)) {
             throw new AdminApiException(AdminApiFailureEnum.GRAY_ENV_PROJECT_NOT_EXIST);
         }
@@ -217,7 +178,7 @@ public class GrayService {
         // 执行运行服务脚本
         String version = LocalDateTime.now().format(DateTimeFormatter.ofPattern("ddHHmmss"));
         String grayEnvName = grayEnvEntity.getName();
-        CmdUtil.exec("sh", startShPath, dockerProperties.getUsername(), dockerProperties.getPassword(), grayEnvName, version);
+        CmdUtil.exec("sh", startShPath, dockerProperties.getUsername(), dockerProperties.getPassword(), grayEnvName, version);*/
     }
 
     /**
@@ -226,7 +187,7 @@ public class GrayService {
      * @param id 项目id
      */
     public void stopProjectInGrayEnv(Integer id) {
-        EasyProjectEntity projectEntity = easyProjectEntityMapper.selectByPrimaryKey(id);
+        /*EasyProjectEntity projectEntity = easyProjectEntityMapper.selectByPrimaryKey(id);
         if (Objects.isNull(projectEntity)) {
             throw new AdminApiException(AdminApiFailureEnum.GRAY_ENV_PROJECT_NOT_EXIST);
         }
@@ -238,7 +199,7 @@ public class GrayService {
         String executePath = buildProperties.getClonePath() + File.separator + grayEnvEntity.getName() + File.separator + fullName;
 
         String deploymentYamlPath = executePath + File.separator + "deployment.yaml";
-        CmdUtil.exec("kubectl", "delete", "-f", deploymentYamlPath);
+        CmdUtil.exec("kubectl", "delete", "-f", deploymentYamlPath);*/
     }
 
     public void copy(String resourcePath, String targetPath) {
@@ -256,9 +217,10 @@ public class GrayService {
      * @return 项目
      */
     public List<GitProjectResponseVo> findProject(Integer envId) {
-        EasyProjectEntityExample example = new EasyProjectEntityExample();
+        /*EasyProjectEntityExample example = new EasyProjectEntityExample();
         example.createCriteria().andEasyEnvIdEqualTo(envId);
         List<EasyProjectEntity> grayProjectEntities = easyProjectEntityMapper.selectByExample(example);
-        return ObjectUtil.convertList(grayProjectEntities, GitProjectResponseVo.class);
+        return ObjectUtil.convertList(grayProjectEntities, GitProjectResponseVo.class);*/
+        return null;
     }
 }

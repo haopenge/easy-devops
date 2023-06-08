@@ -1,9 +1,8 @@
-package com.easy.devops.api.service;
+package com.easy.devops.api.service.impl;
 
 import com.easy.devops.api.domain.enumx.AdminApiFailureEnum;
 import com.easy.devops.api.domain.vo.GitCommitVo;
 import com.easy.devops.api.exception.AdminApiException;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -22,29 +21,20 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ * git通用服务
+ *
  * @author liuph
  */
 @Slf4j
-@NoArgsConstructor
-public abstract class AbstractGitService implements IGitService{
+public class GitService {
 
     public static final String BRANCH_PREFIX = "refs/heads/";
 
-    private CredentialsProvider credentialsProvider;
-
-    public CredentialsProvider getCredentialsProvider() {
-        return credentialsProvider;
-    }
-
-    public void setCredentialsProvider(CredentialsProvider credentialsProvider) {
-        this.credentialsProvider = credentialsProvider;
-    }
 
     /**
      * 获取git项目远程分支列表
      */
-    @Override
-    public List<String> getRemoteBranches(String url) {
+    public List<String> getRemoteBranches(CredentialsProvider credentialsProvider, String url) {
         Collection<Ref> refList = null;
         try {
             refList = Git.lsRemoteRepository().setRemote(url).setCredentialsProvider(credentialsProvider).call();
@@ -63,15 +53,9 @@ public abstract class AbstractGitService implements IGitService{
     }
 
 
-    @Override
-    public void download(String uri, String branch, String projectPath){
+    public void download(CredentialsProvider credentialsProvider, String uri, String branch, String projectPath) {
         try {
-            Git.cloneRepository()
-                    .setURI(uri)
-                    .setBranch(branch)
-                    .setDirectory(new File(projectPath))
-                    .setCredentialsProvider(credentialsProvider)
-                    .call();
+            Git.cloneRepository().setURI(uri).setBranch(branch).setDirectory(new File(projectPath)).setCredentialsProvider(credentialsProvider).call();
         } catch (GitAPIException e) {
             throw new AdminApiException(AdminApiFailureEnum.GIT_FETCH_EXCEPTION);
         }
@@ -80,13 +64,10 @@ public abstract class AbstractGitService implements IGitService{
     /**
      * 获取提交日志
      */
-    @Override
     public GitCommitVo getCommitLog(String projectDirPath, String branch) {
         Repository repository = null;
         try {
-            repository = new FileRepositoryBuilder()
-                    .setGitDir(Paths.get(projectDirPath, ".git").toFile())
-                    .build();
+            repository = new FileRepositoryBuilder().setGitDir(Paths.get(projectDirPath, ".git").toFile()).build();
         } catch (IOException e) {
             return null;
         }
@@ -106,13 +87,13 @@ public abstract class AbstractGitService implements IGitService{
                 try (RevWalk revWalk = new RevWalk(repository)) {
                     revWalk.markStart(revWalk.parseCommit(head.getObjectId()));
                     for (RevCommit revCommit : revWalk) {
-                        gitCommitVo = new GitCommitVo(revCommit.getId().getName(),revCommit.getFullMessage());
+                        gitCommitVo = new GitCommitVo(revCommit.getId().getName(), revCommit.getFullMessage());
                         break;
                     }
                 }
             }
         } catch (IOException e) {
-            log.warn("获取日志信息失败, name : {} , branch : {}",repository.getRemoteNames(),branch,e);
+            log.warn("获取日志信息失败, name : {} , branch : {}", repository.getRemoteNames(), branch, e);
         }
         return gitCommitVo;
     }
@@ -120,9 +101,7 @@ public abstract class AbstractGitService implements IGitService{
     public static GitCommitVo getCommitLog1(String projectDirPath, String branch) {
         Repository repository = null;
         try {
-            repository = new FileRepositoryBuilder()
-                    .setGitDir(Paths.get(projectDirPath, ".git").toFile())
-                    .build();
+            repository = new FileRepositoryBuilder().setGitDir(Paths.get(projectDirPath, ".git").toFile()).build();
         } catch (IOException e) {
             return null;
         }
@@ -142,13 +121,13 @@ public abstract class AbstractGitService implements IGitService{
                 try (RevWalk revWalk = new RevWalk(repository)) {
                     revWalk.markStart(revWalk.parseCommit(head.getObjectId()));
                     for (RevCommit revCommit : revWalk) {
-                        gitCommitVo = new GitCommitVo(revCommit.getId().getName(),revCommit.getFullMessage());
+                        gitCommitVo = new GitCommitVo(revCommit.getId().getName(), revCommit.getFullMessage());
                         break;
                     }
                 }
             }
         } catch (IOException e) {
-            log.warn("获取日志信息失败, name : {} , branch : {}",repository.getRemoteNames(),branch,e);
+            log.warn("获取日志信息失败, name : {} , branch : {}", repository.getRemoteNames(), branch, e);
         }
         return gitCommitVo;
     }

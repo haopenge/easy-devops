@@ -33,11 +33,13 @@ public interface RepositoryEntityMapper {
         "insert into easy_repository (id, create_time, ",
         "update_time, description, ",
         "name, branch, clone_url, ",
-        "hash_code, easy_authenticate_id)",
+        "hash_code, easy_authenticate_id, ",
+        "clone_url_type, git_type)",
         "values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, ",
         "#{updateTime,jdbcType=TIMESTAMP}, #{description,jdbcType=VARCHAR}, ",
         "#{name,jdbcType=VARCHAR}, #{branch,jdbcType=VARCHAR}, #{cloneUrl,jdbcType=VARCHAR}, ",
-        "#{hashCode,jdbcType=VARCHAR}, #{easyAuthenticateId,jdbcType=INTEGER})"
+        "#{hashCode,jdbcType=VARCHAR}, #{easyAuthenticateId,jdbcType=INTEGER}, ",
+        "#{cloneUrlType,jdbcType=INTEGER}, #{gitType,jdbcType=INTEGER})"
     })
     int insert(RepositoryEntity record);
 
@@ -54,14 +56,16 @@ public interface RepositoryEntityMapper {
         @Result(column="branch", property="branch", jdbcType=JdbcType.VARCHAR),
         @Result(column="clone_url", property="cloneUrl", jdbcType=JdbcType.VARCHAR),
         @Result(column="hash_code", property="hashCode", jdbcType=JdbcType.VARCHAR),
-        @Result(column="easy_authenticate_id", property="easyAuthenticateId", jdbcType=JdbcType.INTEGER)
+        @Result(column="easy_authenticate_id", property="easyAuthenticateId", jdbcType=JdbcType.INTEGER),
+        @Result(column="clone_url_type", property="cloneUrlType", jdbcType=JdbcType.INTEGER),
+        @Result(column="git_type", property="gitType", jdbcType=JdbcType.INTEGER)
     })
     List<RepositoryEntity> selectByExample(RepositoryEntityExample example);
 
     @Select({
         "select",
         "id, create_time, update_time, description, name, branch, clone_url, hash_code, ",
-        "easy_authenticate_id",
+        "easy_authenticate_id, clone_url_type, git_type",
         "from easy_repository",
         "where id = #{id,jdbcType=INTEGER}"
     })
@@ -74,7 +78,9 @@ public interface RepositoryEntityMapper {
         @Result(column="branch", property="branch", jdbcType=JdbcType.VARCHAR),
         @Result(column="clone_url", property="cloneUrl", jdbcType=JdbcType.VARCHAR),
         @Result(column="hash_code", property="hashCode", jdbcType=JdbcType.VARCHAR),
-        @Result(column="easy_authenticate_id", property="easyAuthenticateId", jdbcType=JdbcType.INTEGER)
+        @Result(column="easy_authenticate_id", property="easyAuthenticateId", jdbcType=JdbcType.INTEGER),
+        @Result(column="clone_url_type", property="cloneUrlType", jdbcType=JdbcType.INTEGER),
+        @Result(column="git_type", property="gitType", jdbcType=JdbcType.INTEGER)
     })
     RepositoryEntity selectByPrimaryKey(Integer id);
 
@@ -96,7 +102,9 @@ public interface RepositoryEntityMapper {
           "branch = #{branch,jdbcType=VARCHAR},",
           "clone_url = #{cloneUrl,jdbcType=VARCHAR},",
           "hash_code = #{hashCode,jdbcType=VARCHAR},",
-          "easy_authenticate_id = #{easyAuthenticateId,jdbcType=INTEGER}",
+          "easy_authenticate_id = #{easyAuthenticateId,jdbcType=INTEGER},",
+          "clone_url_type = #{cloneUrlType,jdbcType=INTEGER},",
+          "git_type = #{gitType,jdbcType=INTEGER}",
         "where id = #{id,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(RepositoryEntity record);

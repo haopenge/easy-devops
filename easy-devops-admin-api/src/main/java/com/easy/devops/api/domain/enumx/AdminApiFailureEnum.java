@@ -62,6 +62,22 @@ public enum AdminApiFailureEnum implements ExceptionEnumInterface {
     AUTHENTICATE_NOT_EXISTS("100_502", "凭证不存在或已删除"),
 
 
+    // ****************************************** 仓库问题 100600 ~ 100699 *************************************************************
+
+    REPOSITORY_NAME_EXISTS("100600", "仓库名称重复"),
+
+    REPOSITORY_SSH_PRIVATE_KEY_SAVE_ERROR("100_601", "仓库保存失败"),
+
+    REPOSITORY_NOT_EXISTS("100_602", "仓库不存在或已删除"),
+
+
+    // ****************************************** 环境问题 100700 ~ 100799 *************************************************************
+    ENV_NOT_EXIST("100301", "此灰度环境不存在，或已删除"),
+
+    ENV_PROJECT_NOT_EXIST("100301", "此项目还未添加到当前环境或已删除"),
+
+    ENV_PROJECT_EXIST("100302", "此项目已存在，请勿重复添加"),
+
     ;
     private String code;
 
