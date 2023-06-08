@@ -23,48 +23,50 @@ public enum AdminApiFailureEnum implements ExceptionEnumInterface {
     CMD_RUN_EXCEPTION("100_004", "CMD命令执行异常"),
 
     // ****************************************** 认证错误 100100 ~ 100199 *************************************************************
-    AUTH_FAIL("100100", "access token was invalid"),
+    AUTH_FAIL("100_100", "access token was invalid"),
 
-    SSO_TOKEN_FEIGN_EXCEPTION("100101", "sso token 回调接口异常"),
+    SSO_TOKEN_FEIGN_EXCEPTION("100_101", "sso token 回调接口异常"),
 
-    SSO_REDIRECT_EXCEPTION("100102", "sso 重定向异常"),
+    SSO_REDIRECT_EXCEPTION("100_102", "sso 重定向异常"),
 
     // 参数问题 100200 ~ 100299
-    PARAM_ERROR("100103", "param error"),
+    PARAM_ERROR("100_103", "参数异常"),
 
 
     // ****************************************** git 问题 100200 ~ 100299 *************************************************************
-    GIT_FETCH_EXCEPTION("100201", "获取git仓库信息异常"),
+    GIT_FETCH_EXCEPTION("100_201", "获取git仓库信息异常"),
 
 
     // ****************************************** 业务问题-灰度数据 100300 ~ 100399 *************************************************************
-    GRAY_ENV_NOT_EXIST("100301", "此灰度环境不存在，或已删除"),
+    GRAY_ENV_NOT_EXIST("100_301", "此灰度环境不存在，或已删除"),
 
-    GRAY_ENV_PROJECT_NOT_EXIST("100301", "此项目还未添加到当前灰度环境或已删除"),
+    GRAY_ENV_PROJECT_NOT_EXIST("100_301", "此项目还未添加到当前灰度环境或已删除"),
 
-    GRAY_ENV_PROJECT_EXIST("100302", "此项目已存在，请勿重复添加"),
+    GRAY_ENV_PROJECT_EXIST("100_302", "此项目已存在，请勿重复添加"),
 
     // ****************************************** 业务问题-灰度发布 100400 ~ 100499 *************************************************************
 
-    K8S_INIT_ERROR("100410", "k8s init error"),
+    K8S_INIT_ERROR("100_400", "k8s init error"),
 
 
-    K8S_DEPLOY_DEPLOY_ERROR("10020", "k8s deploy error"),
+    K8S_DEPLOY_DEPLOY_ERROR("100_401", "k8s deploy error"),
 
-    K8S_NAMESPACE_CREATE_ERROR("100430", "k8s create error"),
+    K8S_NAMESPACE_CREATE_ERROR("100_403", "k8s create error"),
 
     // ****************************************** 凭证问题 100500 ~ 100599 *************************************************************
 
-    AUTHENTICATE_NAME_EXISTS("100500", "凭证名称重复"),
+    CERTIFICATE_NAME_EXISTS("100_500", "凭证名称重复"),
 
-    AUTHENTICATE_SSH_PRIVATE_KEY_SAVE_ERROR("100_501", "ssh私钥凭证保存失败"),
+    CERTIFICATE_SSH_PRIVATE_KEY_SAVE_ERROR("100_501", "ssh私钥凭证保存失败"),
 
-    AUTHENTICATE_NOT_EXISTS("100_502", "凭证不存在或已删除"),
+    CERTIFICATE_NOT_EXISTS("100_502", "凭证不存在或已删除"),
+
+    CERTIFICATE_NEED_CONFIG_BY_YOURSELF("100_503","windows或者mac环境请手动配置系统ssh私钥"),
 
 
     // ****************************************** 仓库问题 100600 ~ 100699 *************************************************************
 
-    REPOSITORY_NAME_EXISTS("100600", "仓库名称重复"),
+    REPOSITORY_NAME_EXISTS("100_600", "仓库名称重复"),
 
     REPOSITORY_SSH_PRIVATE_KEY_SAVE_ERROR("100_601", "仓库保存失败"),
 
@@ -72,11 +74,11 @@ public enum AdminApiFailureEnum implements ExceptionEnumInterface {
 
 
     // ****************************************** 环境问题 100700 ~ 100799 *************************************************************
-    ENV_NOT_EXIST("100301", "此灰度环境不存在，或已删除"),
+    ENV_NOT_EXIST("100_701", "此灰度环境不存在，或已删除"),
 
-    ENV_PROJECT_NOT_EXIST("100301", "此项目还未添加到当前环境或已删除"),
+    ENV_PROJECT_NOT_EXIST("100_701", "此项目还未添加到当前环境或已删除"),
 
-    ENV_PROJECT_EXIST("100302", "此项目已存在，请勿重复添加"),
+    ENV_PROJECT_EXIST("100_702", "此项目已存在，请勿重复添加"),
 
     ;
     private String code;

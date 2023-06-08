@@ -13,33 +13,33 @@ import static org.apache.ibatis.jdbc.SqlBuilder.UPDATE;
 import static org.apache.ibatis.jdbc.SqlBuilder.VALUES;
 import static org.apache.ibatis.jdbc.SqlBuilder.WHERE;
 
-import com.easy.devops.api.domain.entity.AuthenticateEntity;
-import com.easy.devops.api.domain.entity.AuthenticateEntityExample.Criteria;
-import com.easy.devops.api.domain.entity.AuthenticateEntityExample.Criterion;
-import com.easy.devops.api.domain.entity.AuthenticateEntityExample;
+import com.easy.devops.api.domain.entity.CertificateEntity;
+import com.easy.devops.api.domain.entity.CertificateEntityExample.Criteria;
+import com.easy.devops.api.domain.entity.CertificateEntityExample.Criterion;
+import com.easy.devops.api.domain.entity.CertificateEntityExample;
 import java.util.List;
 import java.util.Map;
 
-public class AuthenticateEntitySqlProvider {
+public class CertificateEntitySqlProvider {
 
-    public String countByExample(AuthenticateEntityExample example) {
+    public String countByExample(CertificateEntityExample example) {
         BEGIN();
         SELECT("count(*)");
-        FROM("easy_authenticate");
+        FROM("easy_certificate");
         applyWhere(example, false);
         return SQL();
     }
 
-    public String deleteByExample(AuthenticateEntityExample example) {
+    public String deleteByExample(CertificateEntityExample example) {
         BEGIN();
-        DELETE_FROM("easy_authenticate");
+        DELETE_FROM("easy_certificate");
         applyWhere(example, false);
         return SQL();
     }
 
-    public String insertSelective(AuthenticateEntity record) {
+    public String insertSelective(CertificateEntity record) {
         BEGIN();
-        INSERT_INTO("easy_authenticate");
+        INSERT_INTO("easy_certificate");
         
         if (record.getId() != null) {
             VALUES("id", "#{id,jdbcType=INTEGER}");
@@ -65,26 +65,18 @@ public class AuthenticateEntitySqlProvider {
             VALUES("username", "#{username,jdbcType=VARCHAR}");
         }
         
-        if (record.getPassword() != null) {
-            VALUES("password", "#{password,jdbcType=VARCHAR}");
+        if (record.getAccessToken() != null) {
+            VALUES("access_token", "#{accessToken,jdbcType=VARCHAR}");
         }
         
-        if (record.getType() != null) {
-            VALUES("type", "#{type,jdbcType=INTEGER}");
-        }
-        
-        if (record.getSshPrivateKeyFileName() != null) {
-            VALUES("ssh_private_key_file_name", "#{sshPrivateKeyFileName,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getSshPrivateKey() != null) {
-            VALUES("ssh_private_key", "#{sshPrivateKey,jdbcType=LONGVARCHAR}");
+        if (record.getRepositoryType() != null) {
+            VALUES("repository_type", "#{repositoryType,jdbcType=INTEGER}");
         }
         
         return SQL();
     }
 
-    public String selectByExampleWithBLOBs(AuthenticateEntityExample example) {
+    public String selectByExample(CertificateEntityExample example) {
         BEGIN();
         if (example != null && example.isDistinct()) {
             SELECT_DISTINCT("id");
@@ -96,36 +88,9 @@ public class AuthenticateEntitySqlProvider {
         SELECT("name");
         SELECT("description");
         SELECT("username");
-        SELECT("password");
-        SELECT("type");
-        SELECT("ssh_private_key_file_name");
-        SELECT("ssh_private_key");
-        FROM("easy_authenticate");
-        applyWhere(example, false);
-        
-        if (example != null && example.getOrderByClause() != null) {
-            ORDER_BY(example.getOrderByClause());
-        }
-        
-        return SQL();
-    }
-
-    public String selectByExample(AuthenticateEntityExample example) {
-        BEGIN();
-        if (example != null && example.isDistinct()) {
-            SELECT_DISTINCT("id");
-        } else {
-            SELECT("id");
-        }
-        SELECT("create_time");
-        SELECT("update_time");
-        SELECT("name");
-        SELECT("description");
-        SELECT("username");
-        SELECT("password");
-        SELECT("type");
-        SELECT("ssh_private_key_file_name");
-        FROM("easy_authenticate");
+        SELECT("access_token");
+        SELECT("repository_type");
+        FROM("easy_certificate");
         applyWhere(example, false);
         
         if (example != null && example.getOrderByClause() != null) {
@@ -136,11 +101,11 @@ public class AuthenticateEntitySqlProvider {
     }
 
     public String updateByExampleSelective(Map<String, Object> parameter) {
-        AuthenticateEntity record = (AuthenticateEntity) parameter.get("record");
-        AuthenticateEntityExample example = (AuthenticateEntityExample) parameter.get("example");
+        CertificateEntity record = (CertificateEntity) parameter.get("record");
+        CertificateEntityExample example = (CertificateEntityExample) parameter.get("example");
         
         BEGIN();
-        UPDATE("easy_authenticate");
+        UPDATE("easy_certificate");
         
         if (record.getId() != null) {
             SET("id = #{record.id,jdbcType=INTEGER}");
@@ -166,49 +131,21 @@ public class AuthenticateEntitySqlProvider {
             SET("username = #{record.username,jdbcType=VARCHAR}");
         }
         
-        if (record.getPassword() != null) {
-            SET("password = #{record.password,jdbcType=VARCHAR}");
+        if (record.getAccessToken() != null) {
+            SET("access_token = #{record.accessToken,jdbcType=VARCHAR}");
         }
         
-        if (record.getType() != null) {
-            SET("type = #{record.type,jdbcType=INTEGER}");
+        if (record.getRepositoryType() != null) {
+            SET("repository_type = #{record.repositoryType,jdbcType=INTEGER}");
         }
         
-        if (record.getSshPrivateKeyFileName() != null) {
-            SET("ssh_private_key_file_name = #{record.sshPrivateKeyFileName,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getSshPrivateKey() != null) {
-            SET("ssh_private_key = #{record.sshPrivateKey,jdbcType=LONGVARCHAR}");
-        }
-        
-        applyWhere(example, true);
-        return SQL();
-    }
-
-    public String updateByExampleWithBLOBs(Map<String, Object> parameter) {
-        BEGIN();
-        UPDATE("easy_authenticate");
-        
-        SET("id = #{record.id,jdbcType=INTEGER}");
-        SET("create_time = #{record.createTime,jdbcType=TIMESTAMP}");
-        SET("update_time = #{record.updateTime,jdbcType=TIMESTAMP}");
-        SET("name = #{record.name,jdbcType=VARCHAR}");
-        SET("description = #{record.description,jdbcType=VARCHAR}");
-        SET("username = #{record.username,jdbcType=VARCHAR}");
-        SET("password = #{record.password,jdbcType=VARCHAR}");
-        SET("type = #{record.type,jdbcType=INTEGER}");
-        SET("ssh_private_key_file_name = #{record.sshPrivateKeyFileName,jdbcType=VARCHAR}");
-        SET("ssh_private_key = #{record.sshPrivateKey,jdbcType=LONGVARCHAR}");
-        
-        AuthenticateEntityExample example = (AuthenticateEntityExample) parameter.get("example");
         applyWhere(example, true);
         return SQL();
     }
 
     public String updateByExample(Map<String, Object> parameter) {
         BEGIN();
-        UPDATE("easy_authenticate");
+        UPDATE("easy_certificate");
         
         SET("id = #{record.id,jdbcType=INTEGER}");
         SET("create_time = #{record.createTime,jdbcType=TIMESTAMP}");
@@ -216,18 +153,17 @@ public class AuthenticateEntitySqlProvider {
         SET("name = #{record.name,jdbcType=VARCHAR}");
         SET("description = #{record.description,jdbcType=VARCHAR}");
         SET("username = #{record.username,jdbcType=VARCHAR}");
-        SET("password = #{record.password,jdbcType=VARCHAR}");
-        SET("type = #{record.type,jdbcType=INTEGER}");
-        SET("ssh_private_key_file_name = #{record.sshPrivateKeyFileName,jdbcType=VARCHAR}");
+        SET("access_token = #{record.accessToken,jdbcType=VARCHAR}");
+        SET("repository_type = #{record.repositoryType,jdbcType=INTEGER}");
         
-        AuthenticateEntityExample example = (AuthenticateEntityExample) parameter.get("example");
+        CertificateEntityExample example = (CertificateEntityExample) parameter.get("example");
         applyWhere(example, true);
         return SQL();
     }
 
-    public String updateByPrimaryKeySelective(AuthenticateEntity record) {
+    public String updateByPrimaryKeySelective(CertificateEntity record) {
         BEGIN();
-        UPDATE("easy_authenticate");
+        UPDATE("easy_certificate");
         
         if (record.getCreateTime() != null) {
             SET("create_time = #{createTime,jdbcType=TIMESTAMP}");
@@ -249,20 +185,12 @@ public class AuthenticateEntitySqlProvider {
             SET("username = #{username,jdbcType=VARCHAR}");
         }
         
-        if (record.getPassword() != null) {
-            SET("password = #{password,jdbcType=VARCHAR}");
+        if (record.getAccessToken() != null) {
+            SET("access_token = #{accessToken,jdbcType=VARCHAR}");
         }
         
-        if (record.getType() != null) {
-            SET("type = #{type,jdbcType=INTEGER}");
-        }
-        
-        if (record.getSshPrivateKeyFileName() != null) {
-            SET("ssh_private_key_file_name = #{sshPrivateKeyFileName,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getSshPrivateKey() != null) {
-            SET("ssh_private_key = #{sshPrivateKey,jdbcType=LONGVARCHAR}");
+        if (record.getRepositoryType() != null) {
+            SET("repository_type = #{repositoryType,jdbcType=INTEGER}");
         }
         
         WHERE("id = #{id,jdbcType=INTEGER}");
@@ -270,7 +198,7 @@ public class AuthenticateEntitySqlProvider {
         return SQL();
     }
 
-    protected void applyWhere(AuthenticateEntityExample example, boolean includeExamplePhrase) {
+    protected void applyWhere(CertificateEntityExample example, boolean includeExamplePhrase) {
         if (example == null) {
             return;
         }

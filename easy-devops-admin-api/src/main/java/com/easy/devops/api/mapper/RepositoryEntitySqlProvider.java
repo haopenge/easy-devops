@@ -77,14 +77,6 @@ public class RepositoryEntitySqlProvider {
             VALUES("easy_authenticate_id", "#{easyAuthenticateId,jdbcType=INTEGER}");
         }
         
-        if (record.getCloneUrlType() != null) {
-            VALUES("clone_url_type", "#{cloneUrlType,jdbcType=INTEGER}");
-        }
-        
-        if (record.getGitType() != null) {
-            VALUES("git_type", "#{gitType,jdbcType=INTEGER}");
-        }
-        
         return SQL();
     }
 
@@ -103,8 +95,6 @@ public class RepositoryEntitySqlProvider {
         SELECT("clone_url");
         SELECT("hash_code");
         SELECT("easy_authenticate_id");
-        SELECT("clone_url_type");
-        SELECT("git_type");
         FROM("easy_repository");
         applyWhere(example, false);
         
@@ -158,14 +148,6 @@ public class RepositoryEntitySqlProvider {
             SET("easy_authenticate_id = #{record.easyAuthenticateId,jdbcType=INTEGER}");
         }
         
-        if (record.getCloneUrlType() != null) {
-            SET("clone_url_type = #{record.cloneUrlType,jdbcType=INTEGER}");
-        }
-        
-        if (record.getGitType() != null) {
-            SET("git_type = #{record.gitType,jdbcType=INTEGER}");
-        }
-        
         applyWhere(example, true);
         return SQL();
     }
@@ -183,8 +165,6 @@ public class RepositoryEntitySqlProvider {
         SET("clone_url = #{record.cloneUrl,jdbcType=VARCHAR}");
         SET("hash_code = #{record.hashCode,jdbcType=VARCHAR}");
         SET("easy_authenticate_id = #{record.easyAuthenticateId,jdbcType=INTEGER}");
-        SET("clone_url_type = #{record.cloneUrlType,jdbcType=INTEGER}");
-        SET("git_type = #{record.gitType,jdbcType=INTEGER}");
         
         RepositoryEntityExample example = (RepositoryEntityExample) parameter.get("example");
         applyWhere(example, true);
@@ -225,14 +205,6 @@ public class RepositoryEntitySqlProvider {
         
         if (record.getEasyAuthenticateId() != null) {
             SET("easy_authenticate_id = #{easyAuthenticateId,jdbcType=INTEGER}");
-        }
-        
-        if (record.getCloneUrlType() != null) {
-            SET("clone_url_type = #{cloneUrlType,jdbcType=INTEGER}");
-        }
-        
-        if (record.getGitType() != null) {
-            SET("git_type = #{gitType,jdbcType=INTEGER}");
         }
         
         WHERE("id = #{id,jdbcType=INTEGER}");

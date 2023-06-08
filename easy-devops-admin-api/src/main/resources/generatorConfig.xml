@@ -34,7 +34,7 @@
         </javaClientGenerator>
 
         <!--  <table schema="PUBLIC" tableName="%"/>-->
-        <table schema="" tableName="easy_authenticate" domainObjectName="AuthenticateEntity"/>
+        <table schema="" tableName="easy_certificate" domainObjectName="CertificateEntity"/>
         <table schema="" tableName="easy_build" domainObjectName="BuildEntity"/>
         <table schema="" tableName="easy_env" domainObjectName="EnvEntity"/>
         <table schema="" tableName="easy_project" domainObjectName="ProjectEntity"/>

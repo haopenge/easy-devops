@@ -35,7 +35,7 @@ const config = {
     host: 'localhost',
     proxy: {
       '/': {
-        target: 'http://easy-gray-api.rainxx.top',
+        target: 'http://localhost:10081',
         changeOrigin: true,
         /* pathRewrite: {
           '^/api': ''

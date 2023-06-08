@@ -8,7 +8,7 @@ import lombok.Data;
  * @author liuph
  */
 @Data
-public class AddAuthenticateRequestVo {
+public class AddCertificateRequestVo {
 
     /**
      * 名称
@@ -26,17 +26,12 @@ public class AddAuthenticateRequestVo {
     private String username;
 
     /**
-     * 密码
+     * 认证令牌
      */
-    private String password;
+    private String accessToken;
 
     /**
-     * 认证类型：1-账号密码； 5-ssh私钥
+     * git仓库类型，1-github  2-gitee   3-gitlab
      */
-    private Integer type;
-
-    /**
-     * ssh私钥
-     */
-    private String sshPrivateKey;
+    private Integer repositoryType;
 }

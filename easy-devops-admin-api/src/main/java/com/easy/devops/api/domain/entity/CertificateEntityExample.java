@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class AuthenticateEntityExample {
+public class CertificateEntityExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public AuthenticateEntityExample() {
+    public CertificateEntityExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -495,203 +495,133 @@ public class AuthenticateEntityExample {
             return (Criteria) this;
         }
 
-        public Criteria andPasswordIsNull() {
-            addCriterion("password is null");
+        public Criteria andAccessTokenIsNull() {
+            addCriterion("access_token is null");
             return (Criteria) this;
         }
 
-        public Criteria andPasswordIsNotNull() {
-            addCriterion("password is not null");
+        public Criteria andAccessTokenIsNotNull() {
+            addCriterion("access_token is not null");
             return (Criteria) this;
         }
 
-        public Criteria andPasswordEqualTo(String value) {
-            addCriterion("password =", value, "password");
+        public Criteria andAccessTokenEqualTo(String value) {
+            addCriterion("access_token =", value, "accessToken");
             return (Criteria) this;
         }
 
-        public Criteria andPasswordNotEqualTo(String value) {
-            addCriterion("password <>", value, "password");
+        public Criteria andAccessTokenNotEqualTo(String value) {
+            addCriterion("access_token <>", value, "accessToken");
             return (Criteria) this;
         }
 
-        public Criteria andPasswordGreaterThan(String value) {
-            addCriterion("password >", value, "password");
+        public Criteria andAccessTokenGreaterThan(String value) {
+            addCriterion("access_token >", value, "accessToken");
             return (Criteria) this;
         }
 
-        public Criteria andPasswordGreaterThanOrEqualTo(String value) {
-            addCriterion("password >=", value, "password");
+        public Criteria andAccessTokenGreaterThanOrEqualTo(String value) {
+            addCriterion("access_token >=", value, "accessToken");
             return (Criteria) this;
         }
 
-        public Criteria andPasswordLessThan(String value) {
-            addCriterion("password <", value, "password");
+        public Criteria andAccessTokenLessThan(String value) {
+            addCriterion("access_token <", value, "accessToken");
             return (Criteria) this;
         }
 
-        public Criteria andPasswordLessThanOrEqualTo(String value) {
-            addCriterion("password <=", value, "password");
+        public Criteria andAccessTokenLessThanOrEqualTo(String value) {
+            addCriterion("access_token <=", value, "accessToken");
             return (Criteria) this;
         }
 
-        public Criteria andPasswordLike(String value) {
-            addCriterion("password like", value, "password");
+        public Criteria andAccessTokenLike(String value) {
+            addCriterion("access_token like", value, "accessToken");
             return (Criteria) this;
         }
 
-        public Criteria andPasswordNotLike(String value) {
-            addCriterion("password not like", value, "password");
+        public Criteria andAccessTokenNotLike(String value) {
+            addCriterion("access_token not like", value, "accessToken");
             return (Criteria) this;
         }
 
-        public Criteria andPasswordIn(List<String> values) {
-            addCriterion("password in", values, "password");
+        public Criteria andAccessTokenIn(List<String> values) {
+            addCriterion("access_token in", values, "accessToken");
             return (Criteria) this;
         }
 
-        public Criteria andPasswordNotIn(List<String> values) {
-            addCriterion("password not in", values, "password");
+        public Criteria andAccessTokenNotIn(List<String> values) {
+            addCriterion("access_token not in", values, "accessToken");
             return (Criteria) this;
         }
 
-        public Criteria andPasswordBetween(String value1, String value2) {
-            addCriterion("password between", value1, value2, "password");
+        public Criteria andAccessTokenBetween(String value1, String value2) {
+            addCriterion("access_token between", value1, value2, "accessToken");
             return (Criteria) this;
         }
 
-        public Criteria andPasswordNotBetween(String value1, String value2) {
-            addCriterion("password not between", value1, value2, "password");
+        public Criteria andAccessTokenNotBetween(String value1, String value2) {
+            addCriterion("access_token not between", value1, value2, "accessToken");
             return (Criteria) this;
         }
 
-        public Criteria andTypeIsNull() {
-            addCriterion("type is null");
+        public Criteria andRepositoryTypeIsNull() {
+            addCriterion("repository_type is null");
             return (Criteria) this;
         }
 
-        public Criteria andTypeIsNotNull() {
-            addCriterion("type is not null");
+        public Criteria andRepositoryTypeIsNotNull() {
+            addCriterion("repository_type is not null");
             return (Criteria) this;
         }
 
-        public Criteria andTypeEqualTo(Integer value) {
-            addCriterion("type =", value, "type");
+        public Criteria andRepositoryTypeEqualTo(Integer value) {
+            addCriterion("repository_type =", value, "repositoryType");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotEqualTo(Integer value) {
-            addCriterion("type <>", value, "type");
+        public Criteria andRepositoryTypeNotEqualTo(Integer value) {
+            addCriterion("repository_type <>", value, "repositoryType");
             return (Criteria) this;
         }
 
-        public Criteria andTypeGreaterThan(Integer value) {
-            addCriterion("type >", value, "type");
+        public Criteria andRepositoryTypeGreaterThan(Integer value) {
+            addCriterion("repository_type >", value, "repositoryType");
             return (Criteria) this;
         }
 
-        public Criteria andTypeGreaterThanOrEqualTo(Integer value) {
-            addCriterion("type >=", value, "type");
+        public Criteria andRepositoryTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("repository_type >=", value, "repositoryType");
             return (Criteria) this;
         }
 
-        public Criteria andTypeLessThan(Integer value) {
-            addCriterion("type <", value, "type");
+        public Criteria andRepositoryTypeLessThan(Integer value) {
+            addCriterion("repository_type <", value, "repositoryType");
             return (Criteria) this;
         }
 
-        public Criteria andTypeLessThanOrEqualTo(Integer value) {
-            addCriterion("type <=", value, "type");
+        public Criteria andRepositoryTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("repository_type <=", value, "repositoryType");
             return (Criteria) this;
         }
 
-        public Criteria andTypeIn(List<Integer> values) {
-            addCriterion("type in", values, "type");
+        public Criteria andRepositoryTypeIn(List<Integer> values) {
+            addCriterion("repository_type in", values, "repositoryType");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotIn(List<Integer> values) {
-            addCriterion("type not in", values, "type");
+        public Criteria andRepositoryTypeNotIn(List<Integer> values) {
+            addCriterion("repository_type not in", values, "repositoryType");
             return (Criteria) this;
         }
 
-        public Criteria andTypeBetween(Integer value1, Integer value2) {
-            addCriterion("type between", value1, value2, "type");
+        public Criteria andRepositoryTypeBetween(Integer value1, Integer value2) {
+            addCriterion("repository_type between", value1, value2, "repositoryType");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotBetween(Integer value1, Integer value2) {
-            addCriterion("type not between", value1, value2, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andSshPrivateKeyFileNameIsNull() {
-            addCriterion("ssh_private_key_file_name is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSshPrivateKeyFileNameIsNotNull() {
-            addCriterion("ssh_private_key_file_name is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSshPrivateKeyFileNameEqualTo(String value) {
-            addCriterion("ssh_private_key_file_name =", value, "sshPrivateKeyFileName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSshPrivateKeyFileNameNotEqualTo(String value) {
-            addCriterion("ssh_private_key_file_name <>", value, "sshPrivateKeyFileName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSshPrivateKeyFileNameGreaterThan(String value) {
-            addCriterion("ssh_private_key_file_name >", value, "sshPrivateKeyFileName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSshPrivateKeyFileNameGreaterThanOrEqualTo(String value) {
-            addCriterion("ssh_private_key_file_name >=", value, "sshPrivateKeyFileName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSshPrivateKeyFileNameLessThan(String value) {
-            addCriterion("ssh_private_key_file_name <", value, "sshPrivateKeyFileName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSshPrivateKeyFileNameLessThanOrEqualTo(String value) {
-            addCriterion("ssh_private_key_file_name <=", value, "sshPrivateKeyFileName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSshPrivateKeyFileNameLike(String value) {
-            addCriterion("ssh_private_key_file_name like", value, "sshPrivateKeyFileName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSshPrivateKeyFileNameNotLike(String value) {
-            addCriterion("ssh_private_key_file_name not like", value, "sshPrivateKeyFileName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSshPrivateKeyFileNameIn(List<String> values) {
-            addCriterion("ssh_private_key_file_name in", values, "sshPrivateKeyFileName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSshPrivateKeyFileNameNotIn(List<String> values) {
-            addCriterion("ssh_private_key_file_name not in", values, "sshPrivateKeyFileName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSshPrivateKeyFileNameBetween(String value1, String value2) {
-            addCriterion("ssh_private_key_file_name between", value1, value2, "sshPrivateKeyFileName");
-            return (Criteria) this;
-        }
-
-        public Criteria andSshPrivateKeyFileNameNotBetween(String value1, String value2) {
-            addCriterion("ssh_private_key_file_name not between", value1, value2, "sshPrivateKeyFileName");
+        public Criteria andRepositoryTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("repository_type not between", value1, value2, "repositoryType");
             return (Criteria) this;
         }
     }

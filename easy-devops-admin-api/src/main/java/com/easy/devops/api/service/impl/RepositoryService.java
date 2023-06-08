@@ -2,14 +2,9 @@ package com.easy.devops.api.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.collection.ListUtil;
-import com.easy.core.util.State;
-import com.easy.core.util.StringPool;
-import com.easy.devops.api.domain.bo.HostAndUsername;
 import com.easy.devops.api.domain.entity.RepositoryEntity;
 import com.easy.devops.api.domain.entity.RepositoryEntityExample;
 import com.easy.devops.api.domain.enumx.AdminApiFailureEnum;
-import com.easy.devops.api.domain.enumx.StateEnum;
 import com.easy.devops.api.domain.vo.request.AddRepositoryRequestVo;
 import com.easy.devops.api.domain.vo.request.EditRepositoryRequestVo;
 import com.easy.devops.api.domain.vo.response.RepositoryResponseVo;
@@ -18,11 +13,8 @@ import com.easy.devops.api.mapper.RepositoryEntityMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
 public class RepositoryService {
@@ -49,9 +41,6 @@ public class RepositoryService {
         RepositoryEntity addEntity = new RepositoryEntity();
         addEntity.setDescription(requestVo.getDescription());
         addEntity.setName(requestVo.getName());
-
-        String cloneUrl = requestVo.getCloneUrl();
-        addEntity.setCloneUrlType(cloneUrl.contains(StringPool.AT) ? State.YES.getId() :  State.NO.getId());
 
         addEntity.setCloneUrl(requestVo.getCloneUrl());
         addEntity.setEasyAuthenticateId(requestVo.getEasyAuthenticateId());

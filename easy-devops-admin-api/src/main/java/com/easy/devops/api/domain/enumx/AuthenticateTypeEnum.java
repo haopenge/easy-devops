@@ -13,8 +13,9 @@ import java.util.Objects;
 @Getter
 public enum AuthenticateTypeEnum {
 
-    USER_PWD(1, "账号密码"),
-    SSH_PRIVATE_KEY(5, "ssh私钥");
+    SSH_PRIVATE_KEY(1, "全局ssh私钥"),
+
+    USER_PWD(5, "账号密码");
 
     private final int value;
 

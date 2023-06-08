@@ -4,7 +4,7 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class AuthenticateEntity {
+public class CertificateEntity {
     /**
      * Id
      */
@@ -36,22 +36,13 @@ public class AuthenticateEntity {
     private String username;
 
     /**
-     * 密码
+     * 认证秘钥
      */
-    private String password;
+    private String accessToken;
 
     /**
-     * 认证类型：1-账号密码； 5-ssh私钥
-     */
-    private Integer type;
+     * git仓库类型，1-github  2-gitee   3-gitlab
 
-    /**
-     * ssh私钥本地存储文件名
      */
-    private String sshPrivateKeyFileName;
-
-    /**
-     * ssh私钥
-     */
-    private String sshPrivateKey;
+    private Integer repositoryType;
 }

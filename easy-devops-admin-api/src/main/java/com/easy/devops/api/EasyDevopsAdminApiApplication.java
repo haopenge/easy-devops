@@ -8,13 +8,13 @@ import org.springframework.context.annotation.Configuration;
 /**
  * @author liupenghao
  */
-@MapperScan(basePackages = "com.easy.api.mapper")
+@MapperScan(basePackages = "com.easy.devops.api.mapper")
 @Configuration("com.easy.api")
 @SpringBootApplication
-public class EasyGrayApiApplication {
+public class EasyDevopsAdminApiApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(EasyGrayApiApplication.class, args);
+        SpringApplication.run(EasyDevopsAdminApiApplication.class, args);
     }
 
 }

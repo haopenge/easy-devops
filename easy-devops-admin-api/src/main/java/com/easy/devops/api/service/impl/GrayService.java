@@ -2,7 +2,6 @@ package com.easy.devops.api.service.impl;
 
 import com.easy.devops.api.config.properties.BuildProperties;
 import com.easy.devops.api.config.properties.DockerProperties;
-import com.easy.devops.api.config.properties.GitProperties;
 import com.easy.devops.api.domain.enumx.AdminApiFailureEnum;
 import com.easy.devops.api.domain.vo.request.AddProjectRequestVo;
 import com.easy.devops.api.domain.vo.request.EditProjectRequestVo;
@@ -13,7 +12,6 @@ import com.easy.devops.api.domain.vo.response.GrayEnvResponseVo;
 import com.easy.devops.api.exception.AdminApiException;
 import com.easy.devops.api.mapper.EnvEntityMapper;
 import com.easy.devops.api.mapper.ProjectEntityMapper;
-import com.easy.devops.api.service.IGitService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Service;
@@ -37,13 +35,8 @@ public class GrayService {
     private K8sService k8sService;
 
     @Resource
-    private IGitService gitService;
-
-    @Resource
     private DockerProperties dockerProperties;
 
-    @Resource
-    private GitProperties gitProperties;
 
     @Resource
     private BuildProperties buildProperties;

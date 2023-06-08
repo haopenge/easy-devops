@@ -8,9 +8,9 @@ import lombok.Data;
  * @author liuph
  */
 @Data
-public class AuthenticateResponseVo {
+public class CertificateResponseVo {
 
-    private int id;
+    private Integer id;
 
     /**
      * 名称
@@ -28,8 +28,13 @@ public class AuthenticateResponseVo {
     private String username;
 
     /**
-     * 认证类型：1-账号密码； 5-ssh私钥
+     * 1-全局ssh  5-用户名密码令牌
      */
     private Integer type;
+
+    /**
+     * git仓库类型，1-github  2-gitee   3-gitlab
+     */
+    private Integer repositoryType;
 
 }

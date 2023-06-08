@@ -8,14 +8,9 @@ import lombok.Data;
  * @author liuph
  */
 @Data
-public class EditAuthenticateRequestVo {
+public class EditCertificateRequestVo {
 
     private int id;
-
-    /**
-     * 描述信息
-     */
-    private String description;
 
     /**
      * 用户名
@@ -23,17 +18,17 @@ public class EditAuthenticateRequestVo {
     private String username;
 
     /**
-     * 密码
+     * 认证秘钥
      */
-    private String password;
+    private String accessToken;
 
     /**
-     * 认证类型：1-账号密码； 5-ssh私钥
+     * 描述信息
      */
-    private Integer type;
+    private String description;
 
     /**
      * ssh私钥
      */
-    private String sshPrivateKey;
+    private Integer repositoryType;
 }

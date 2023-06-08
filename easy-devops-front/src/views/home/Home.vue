@@ -100,7 +100,7 @@
                 <Layout style="height: 2000px;">
                     <Main v-if="activeName === 11"/>
                     <Repository v-if="activeName === 12"/>
-                    <Authenticate v-if="activeName === 13"/>
+                    <Certificate v-if="activeName === 13"/>
                     <Project v-if="activeName === 14"
                              @show-config-page="showConfigPage"
                     />
@@ -123,7 +123,7 @@
 import Main from '@/views/gray/Gray.vue'
 import { Content } from 'view-ui-plus'
 import Repository from '@/views/repository/Repository.vue'
-import Authenticate from '@/views/authenticate/Authenticate.vue'
+import Certificate from '@/views/certificate/Certificate.vue'
 import Project from '@/views/project/Project.vue'
 import ProjectConfig from '@/views/project/ProjectConfig.vue'
 import CodeEdit from '@/views/edit/CodeEdit.vue'
@@ -137,7 +137,7 @@ export default {
     Content,
     Main,
     Repository,
-    Authenticate,
+    Certificate,
     Project
   },
   data() {
@@ -158,7 +158,7 @@ export default {
             },
             {
               id: 13,
-              name: '认证管理',
+              name: '凭证管理',
             },
             {
               id: 14,
@@ -194,7 +194,7 @@ export default {
       openNames: [
         1
       ],
-      activeName: 17
+      activeName: 13
     }
   },
   computed: {
