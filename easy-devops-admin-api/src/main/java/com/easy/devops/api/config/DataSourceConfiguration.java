@@ -30,7 +30,6 @@ public class DataSourceConfiguration {
         sqlSessionFactoryBean.setDataSource(dataSource);
 
         // 插件配置----------------start--------------------------
-        AuditInterceptor auditInterceptor = new AuditInterceptor();
         // 分页插件
         System.setProperty("pagehelper.banner", "false");
         Properties properties = new Properties();
@@ -42,7 +41,7 @@ public class DataSourceConfiguration {
         PageInterceptor pageInterceptor = new PageInterceptor();
         pageInterceptor.setProperties(properties);
 
-        sqlSessionFactoryBean.setPlugins(auditInterceptor, pageInterceptor);
+        sqlSessionFactoryBean.setPlugins(pageInterceptor);
         // 插件配置----------------end--------------------------
 
         // 控制台日志配置
