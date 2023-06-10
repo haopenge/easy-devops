@@ -3,9 +3,11 @@ package com.easy.devops.api.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.easy.devops.api.domain.vo.GiteeProjectVo;
-import com.easy.devops.api.domain.vo.response.GitProjectResponseVo;
+import com.easy.devops.api.domain.vo.response.GitCertificateResponseVo;
+import com.easy.devops.api.domain.vo.response.RepositoryResponseVo;
 import com.easy.devops.api.service.IGitService;
 import com.easy.devops.api.util.EasyHttp;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,7 @@ import java.util.Objects;
  *
  * @author liuph
  */
+@Service
 public class GiteeService implements IGitService {
 
     /**
@@ -34,25 +37,18 @@ public class GiteeService implements IGitService {
     private static final String FIND_BRANCH_URL = "https://gitee.com/api/v5/repos/%s/%s/branches?access_token=%s";
 
     @Override
-    public List<GitProjectResponseVo> findRepositories(String accessToken) {
+    public List<GitCertificateResponseVo> findRepositories(String accessToken) {
         List<GiteeProjectVo> giteeProjectVos = EasyHttp.httpGetArray(String.format(FIND_REPOSITORIES_URL, accessToken), null, GiteeProjectVo.class);
-
-        List<GitProjectResponseVo> returnVoList = new ArrayList<>();
-        for (GiteeProjectVo loopVo : giteeProjectVos) {
-            GitProjectResponseVo gitProjectVo = new GitProjectResponseVo();
-            BeanUtil.copyProperties(loopVo, gitProjectVo);
-            returnVoList.add(gitProjectVo);
-        }
-        return returnVoList;
+        return BeanUtil.copyToList(giteeProjectVos, GitCertificateResponseVo.class);
     }
 
     @Override
-    public GitProjectResponseVo findRepository(String username, String repositoryName, String accessToken) {
+    public GitCertificateResponseVo findRepository(String username, String repositoryName, String accessToken) {
         GiteeProjectVo giteeProjectVo = EasyHttp.httpGet(String.format(FIND_REPOSITORY_URL, username, repositoryName, accessToken), null, GiteeProjectVo.class);
         if (Objects.isNull(giteeProjectVo)) {
             return null;
         }
-        GitProjectResponseVo returnVo = new GitProjectResponseVo();
+        GitCertificateResponseVo returnVo = new GitCertificateResponseVo();
         BeanUtil.copyProperties(giteeProjectVo, returnVo);
         return returnVo;
     }

@@ -41,12 +41,7 @@ public class RepositoryEntity {
     private String cloneUrl;
 
     /**
-     * 最新提交的hashCode
-     */
-    private String hashCode;
-
-    /**
      * 认证id
      */
-    private Integer easyAuthenticateId;
+    private Integer easyCertificateId;
 }

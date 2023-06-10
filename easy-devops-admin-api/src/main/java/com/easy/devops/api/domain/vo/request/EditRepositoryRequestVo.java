@@ -19,12 +19,22 @@ public class EditRepositoryRequestVo {
     private String description;
 
     /**
+     * 项目名
+     */
+    private String name;
+
+    /**
      * Git 克隆地址
      */
     private String cloneUrl;
 
     /**
-     * 认证id
+     * 凭证id
      */
-    private Integer easyAuthenticateId;
+    private Integer easyCertificateId;
+
+    /**
+     * 分支
+     */
+    private String branch;
 }

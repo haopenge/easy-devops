@@ -11,7 +11,7 @@ import java.util.Objects;
  * @author liuph
  */
 @Getter
-public enum AuthenticateTypeEnum {
+public enum CertificateTypeEnum {
 
     SSH_PRIVATE_KEY(1, "全局ssh私钥"),
 
@@ -21,12 +21,12 @@ public enum AuthenticateTypeEnum {
 
     private final String describe;
 
-    AuthenticateTypeEnum(int value, String describe) {
+    CertificateTypeEnum(int value, String describe) {
         this.value = value;
         this.describe = describe;
     }
 
     public static boolean existEnum(int value) {
-        return Arrays.stream(AuthenticateTypeEnum.values()).anyMatch(loopEnum -> Objects.equals(loopEnum.value, value));
+        return Arrays.stream(CertificateTypeEnum.values()).anyMatch(loopEnum -> Objects.equals(loopEnum.value, value));
     }
 }

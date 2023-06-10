@@ -17,7 +17,6 @@
       :certificate-type="certificateType"
       :pop-edit-enable="popEditEnable"
       :certificate-pop-visible="certificatePopVisible"
-      :ssh-private-key="sshPrivateKey"
       @certificate-type-change="certificateTypeChange"
       @repository-type-change="repositoryTypeChange"
       @certificate-add="certificateAdd"
@@ -71,7 +70,6 @@ export default {
       popEditEnable: false,
       certificateType: 1,
       repositoryType: 1,
-      sshPrivateKey: ''
     }
   },
   methods: {
@@ -200,11 +198,12 @@ export default {
      * 更新全局仓库凭证
      */
     addGlobalSshCertificate() {
+        console.log('----------------' + this.certificate.sshPrivateKey)
       const payload = {
-        sshPrivateKey: this.sshPrivateKey
+        sshPrivateKey: this.certificate.sshPrivateKey
       }
       axios
-          .post('/certificate/updateSshPrivateKey', payload)
+          .put('/certificate/updateSshPrivateKey', payload)
           .then((response) => {
             fetchResponseData(response)
             //this.refreshProject(this.rightProjectEnvId)
@@ -218,7 +217,7 @@ export default {
      * 新增凭证
      */
     certificateAdd() {
-      if (this.certificate.type === '1') {
+      if (this.certificate.type === 1) {
         this.addGlobalSshCertificate()
       } else {
         this.addAccessTokenCertificate()
@@ -252,7 +251,7 @@ export default {
      * 凭证编辑
      */
     certificateEdit() {
-      if (this.certificate.type === '1') {
+      if (this.certificate.type === 1) {
         this.addGlobalSshCertificate()
       } else {
         this.editAccessTokenCertificate()

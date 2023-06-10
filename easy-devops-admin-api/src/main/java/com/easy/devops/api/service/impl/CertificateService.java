@@ -6,7 +6,7 @@ import com.easy.core.util.StringPool;
 import com.easy.devops.api.config.properties.GlobalProperties;
 import com.easy.devops.api.domain.entity.CertificateEntity;
 import com.easy.devops.api.domain.entity.CertificateEntityExample;
-import com.easy.devops.api.domain.enumx.AuthenticateTypeEnum;
+import com.easy.devops.api.domain.enumx.CertificateTypeEnum;
 import com.easy.devops.api.domain.vo.request.AddCertificateRequestVo;
 import com.easy.devops.api.domain.vo.request.EditCertificateRequestVo;
 import com.easy.devops.api.domain.vo.response.CertificateResponseVo;
@@ -99,12 +99,16 @@ public class CertificateService {
     /**
      * 获取凭证列表
      *
+     * @param containSsh 是否包含全局ssh凭证
      * @return AuthenticateResponseVo
      */
-    public List<CertificateResponseVo> findAll() {
+    public List<CertificateResponseVo> findAll(boolean containSsh) {
         List<CertificateEntity> entityList = certificateEntityMapper.selectByExample(new CertificateEntityExample());
         List<CertificateResponseVo> dataList = BeanUtil.copyToList(entityList, CertificateResponseVo.class);
-        dataList.forEach(loopVo -> loopVo.setType(AuthenticateTypeEnum.USER_PWD.getValue()));
+        dataList.forEach(loopVo -> loopVo.setType(CertificateTypeEnum.USER_PWD.getValue()));
+        if (!containSsh) {
+            return dataList;
+        }
 
         // 补充全局凭证信息
         File file = new File(globalProperties.getAuthSshPrivateKeyFilePath());
@@ -115,7 +119,7 @@ public class CertificateService {
         responseVo.setId(0);
         responseVo.setName("系统");
         responseVo.setDescription(StringPool.EMPTY);
-        responseVo.setType(AuthenticateTypeEnum.SSH_PRIVATE_KEY.getValue());
+        responseVo.setType(CertificateTypeEnum.SSH_PRIVATE_KEY.getValue());
         responseVo.setRepositoryType(0);
         dataList.add(responseVo);
 

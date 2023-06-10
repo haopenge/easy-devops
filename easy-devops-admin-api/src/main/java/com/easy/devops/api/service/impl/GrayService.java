@@ -7,7 +7,7 @@ import com.easy.devops.api.domain.vo.request.AddProjectRequestVo;
 import com.easy.devops.api.domain.vo.request.EditProjectRequestVo;
 import com.easy.devops.api.domain.vo.request.GrayAddRequestVo;
 import com.easy.devops.api.domain.vo.request.GrayEditRequestVo;
-import com.easy.devops.api.domain.vo.response.GitProjectResponseVo;
+import com.easy.devops.api.domain.vo.response.GitCertificateResponseVo;
 import com.easy.devops.api.domain.vo.response.GrayEnvResponseVo;
 import com.easy.devops.api.exception.AdminApiException;
 import com.easy.devops.api.mapper.EnvEntityMapper;
@@ -209,7 +209,7 @@ public class GrayService {
      * @param envId 环境id
      * @return 项目
      */
-    public List<GitProjectResponseVo> findProject(Integer envId) {
+    public List<GitCertificateResponseVo> findProject(Integer envId) {
         /*EasyProjectEntityExample example = new EasyProjectEntityExample();
         example.createCriteria().andEasyEnvIdEqualTo(envId);
         List<EasyProjectEntity> grayProjectEntities = easyProjectEntityMapper.selectByExample(example);

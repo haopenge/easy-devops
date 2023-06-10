@@ -194,7 +194,7 @@ export default {
       openNames: [
         1
       ],
-      activeName: 13
+      activeName: 12
     }
   },
   computed: {

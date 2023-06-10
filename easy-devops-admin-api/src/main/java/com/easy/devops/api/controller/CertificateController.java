@@ -10,13 +10,7 @@ import com.easy.devops.api.exception.AdminApiException;
 import com.easy.devops.api.service.impl.CertificateService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Objects;
@@ -44,9 +38,9 @@ public class CertificateController extends BaseController {
      * 更新ssh 全局凭证
      */
     @PutMapping("/updateSshPrivateKey")
-    public ApiResult<Void> add(AddSshCertificateRequestVo requestVo) {
+    public ApiResult<Void> add(@RequestBody AddSshCertificateRequestVo requestVo) {
         String privateKey = requestVo.getSshPrivateKey();
-        if (isValid(privateKey)) {
+        if (!isValid(privateKey)) {
             throw new AdminApiException(AdminApiFailureEnum.PARAM_ERROR);
         }
         String osName = System.getProperty("os.name");
@@ -101,8 +95,8 @@ public class CertificateController extends BaseController {
      * 获取凭证信息
      */
     @GetMapping("/findAll")
-    public ApiResult<List<CertificateResponseVo>> findAll() {
-        List<CertificateResponseVo> data = certificateService.findAll();
+    public ApiResult<List<CertificateResponseVo>> findAll(@RequestParam(required = false,defaultValue = "true") boolean containSsh) {
+        List<CertificateResponseVo> data = certificateService.findAll(containSsh);
         return success(data);
     }
 

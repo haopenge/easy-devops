@@ -1,14 +1,17 @@
-package com.easy.devops.api.domain.vo;
+package com.easy.devops.api.domain.vo.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
+import java.util.Date;
+
 /**
- * gitee 项目获取vo, 因返回字段过多，这里仅接受我们感兴趣的；
- * @author liuph
+ * git 项目获取vo, 因返回字段过多，这里仅接受我们感兴趣的；
+ *
+ * @author liupenghao
  */
 @Data
-public class GiteeProjectVo {
+public class GitCertificateResponseVo {
 
     /**
      * 仓库id
@@ -28,25 +31,20 @@ public class GiteeProjectVo {
     /**
      * 是否是公共仓库
      */
-    @JsonProperty("public")
     private Boolean isPublic;
 
     /**
      * 默认分支
      */
-    @JsonProperty("default_branch")
     private String defaultBranch;
 
     /**
      * http clone地址
      */
-    @JsonProperty("html_url")
     private String httpCloneUrl;
 
     /**
      * ssh clone地址
      */
-    @JsonProperty("ssh_url")
     private String sshCloneUrl;
-
 }

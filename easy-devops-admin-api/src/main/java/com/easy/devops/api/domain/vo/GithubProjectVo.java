@@ -10,15 +10,42 @@ import lombok.Data;
 @Data
 public class GithubProjectVo {
 
+    /**
+     * 仓库id
+     */
     private Integer id;
 
+    /**
+     * 仓库名称
+     */
     private String name;
 
-    @JsonProperty("full_name")
-    private String fullName;
-
+    /**
+     * 描述
+     */
     private String description;
 
+    /**
+     * 是否是公共仓库
+     */
+    @JsonProperty("private")
+    private Boolean isPrivate;
+
+    /**
+     * 默认分支
+     */
+    @JsonProperty("default_branch")
+    private String defaultBranch;
+
+    /**
+     * http clone地址
+     */
     @JsonProperty("clone_url")
-    private String cloneUrl;
+    private String httpCloneUrl;
+
+    /**
+     * ssh clone地址
+     */
+    @JsonProperty("ssh_url")
+    private String sshCloneUrl;
 }

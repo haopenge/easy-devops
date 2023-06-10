@@ -565,133 +565,63 @@ public class RepositoryEntityExample {
             return (Criteria) this;
         }
 
-        public Criteria andHashCodeIsNull() {
-            addCriterion("hash_code is null");
+        public Criteria andEasyCertificateIdIsNull() {
+            addCriterion("easy_certificate_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andHashCodeIsNotNull() {
-            addCriterion("hash_code is not null");
+        public Criteria andEasyCertificateIdIsNotNull() {
+            addCriterion("easy_certificate_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andHashCodeEqualTo(String value) {
-            addCriterion("hash_code =", value, "hashCode");
+        public Criteria andEasyCertificateIdEqualTo(Integer value) {
+            addCriterion("easy_certificate_id =", value, "easyCertificateId");
             return (Criteria) this;
         }
 
-        public Criteria andHashCodeNotEqualTo(String value) {
-            addCriterion("hash_code <>", value, "hashCode");
+        public Criteria andEasyCertificateIdNotEqualTo(Integer value) {
+            addCriterion("easy_certificate_id <>", value, "easyCertificateId");
             return (Criteria) this;
         }
 
-        public Criteria andHashCodeGreaterThan(String value) {
-            addCriterion("hash_code >", value, "hashCode");
+        public Criteria andEasyCertificateIdGreaterThan(Integer value) {
+            addCriterion("easy_certificate_id >", value, "easyCertificateId");
             return (Criteria) this;
         }
 
-        public Criteria andHashCodeGreaterThanOrEqualTo(String value) {
-            addCriterion("hash_code >=", value, "hashCode");
+        public Criteria andEasyCertificateIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("easy_certificate_id >=", value, "easyCertificateId");
             return (Criteria) this;
         }
 
-        public Criteria andHashCodeLessThan(String value) {
-            addCriterion("hash_code <", value, "hashCode");
+        public Criteria andEasyCertificateIdLessThan(Integer value) {
+            addCriterion("easy_certificate_id <", value, "easyCertificateId");
             return (Criteria) this;
         }
 
-        public Criteria andHashCodeLessThanOrEqualTo(String value) {
-            addCriterion("hash_code <=", value, "hashCode");
+        public Criteria andEasyCertificateIdLessThanOrEqualTo(Integer value) {
+            addCriterion("easy_certificate_id <=", value, "easyCertificateId");
             return (Criteria) this;
         }
 
-        public Criteria andHashCodeLike(String value) {
-            addCriterion("hash_code like", value, "hashCode");
+        public Criteria andEasyCertificateIdIn(List<Integer> values) {
+            addCriterion("easy_certificate_id in", values, "easyCertificateId");
             return (Criteria) this;
         }
 
-        public Criteria andHashCodeNotLike(String value) {
-            addCriterion("hash_code not like", value, "hashCode");
+        public Criteria andEasyCertificateIdNotIn(List<Integer> values) {
+            addCriterion("easy_certificate_id not in", values, "easyCertificateId");
             return (Criteria) this;
         }
 
-        public Criteria andHashCodeIn(List<String> values) {
-            addCriterion("hash_code in", values, "hashCode");
+        public Criteria andEasyCertificateIdBetween(Integer value1, Integer value2) {
+            addCriterion("easy_certificate_id between", value1, value2, "easyCertificateId");
             return (Criteria) this;
         }
 
-        public Criteria andHashCodeNotIn(List<String> values) {
-            addCriterion("hash_code not in", values, "hashCode");
-            return (Criteria) this;
-        }
-
-        public Criteria andHashCodeBetween(String value1, String value2) {
-            addCriterion("hash_code between", value1, value2, "hashCode");
-            return (Criteria) this;
-        }
-
-        public Criteria andHashCodeNotBetween(String value1, String value2) {
-            addCriterion("hash_code not between", value1, value2, "hashCode");
-            return (Criteria) this;
-        }
-
-        public Criteria andEasyAuthenticateIdIsNull() {
-            addCriterion("easy_authenticate_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andEasyAuthenticateIdIsNotNull() {
-            addCriterion("easy_authenticate_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andEasyAuthenticateIdEqualTo(Integer value) {
-            addCriterion("easy_authenticate_id =", value, "easyAuthenticateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEasyAuthenticateIdNotEqualTo(Integer value) {
-            addCriterion("easy_authenticate_id <>", value, "easyAuthenticateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEasyAuthenticateIdGreaterThan(Integer value) {
-            addCriterion("easy_authenticate_id >", value, "easyAuthenticateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEasyAuthenticateIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("easy_authenticate_id >=", value, "easyAuthenticateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEasyAuthenticateIdLessThan(Integer value) {
-            addCriterion("easy_authenticate_id <", value, "easyAuthenticateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEasyAuthenticateIdLessThanOrEqualTo(Integer value) {
-            addCriterion("easy_authenticate_id <=", value, "easyAuthenticateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEasyAuthenticateIdIn(List<Integer> values) {
-            addCriterion("easy_authenticate_id in", values, "easyAuthenticateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEasyAuthenticateIdNotIn(List<Integer> values) {
-            addCriterion("easy_authenticate_id not in", values, "easyAuthenticateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEasyAuthenticateIdBetween(Integer value1, Integer value2) {
-            addCriterion("easy_authenticate_id between", value1, value2, "easyAuthenticateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEasyAuthenticateIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("easy_authenticate_id not between", value1, value2, "easyAuthenticateId");
+        public Criteria andEasyCertificateIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("easy_certificate_id not between", value1, value2, "easyCertificateId");
             return (Criteria) this;
         }
     }

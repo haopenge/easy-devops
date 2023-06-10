@@ -5,8 +5,10 @@ import com.easy.core.domain.ApiResult;
 import com.easy.devops.api.domain.enumx.AdminApiFailureEnum;
 import com.easy.devops.api.domain.vo.request.AddRepositoryRequestVo;
 import com.easy.devops.api.domain.vo.request.EditRepositoryRequestVo;
+import com.easy.devops.api.domain.vo.response.GitCertificateResponseVo;
 import com.easy.devops.api.domain.vo.response.RepositoryResponseVo;
 import com.easy.devops.api.exception.AdminApiException;
+import com.easy.devops.api.service.impl.GiteeService;
 import com.easy.devops.api.service.impl.RepositoryService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -29,16 +31,31 @@ public class RepositoryController extends BaseController {
 
 
     /**
+     * 获取仓库列表
+     *
+     * @param certificateId 凭证id
+     * @return GitCertificateResponseVo
+     */
+    @GetMapping("/findGitRepositories")
+    public ApiResult<List<GitCertificateResponseVo>> findGitRepositories(Integer certificateId) {
+        if (Objects.isNull(certificateId)) {
+            throw new AdminApiException(AdminApiFailureEnum.PARAM_ERROR);
+        }
+        List<GitCertificateResponseVo> dataList = repositoryService.findGitRepositories(certificateId);
+        return success(dataList);
+    }
+
+    /**
      * 新增仓库信息
      */
     @PostMapping("/add")
     public ApiResult<Integer> add(@RequestBody AddRepositoryRequestVo requestVo) {
         String name = requestVo.getName();
         String cloneUrl = requestVo.getCloneUrl();
-        Integer easyAuthenticateId = requestVo.getEasyAuthenticateId();
+        Integer easyCertificateId = requestVo.getEasyCertificateId();
 
-        if (StringUtils.isAnyBlank(name, cloneUrl) || Objects.isNull(easyAuthenticateId)) {
-            throw new AdminApiException(AdminApiFailureEnum.REPOSITORY_NAME_EXISTS);
+        if (StringUtils.isAnyBlank(name, cloneUrl) || Objects.isNull(easyCertificateId)) {
+            throw new AdminApiException(AdminApiFailureEnum.PARAM_ERROR);
         }
         Integer id = repositoryService.add(requestVo);
         return success(id);

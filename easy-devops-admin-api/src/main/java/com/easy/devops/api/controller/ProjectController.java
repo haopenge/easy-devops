@@ -2,12 +2,10 @@ package com.easy.devops.api.controller;
 
 import com.easy.devops.api.domain.vo.request.AddProjectRequestVo;
 import com.easy.devops.api.domain.vo.request.EditProjectRequestVo;
-import com.easy.devops.api.domain.vo.response.GitProjectResponseVo;
 import com.easy.core.domain.ApiResult;
 import com.easy.devops.api.service.impl.ProjectService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @author liupenghao

@@ -16,7 +16,7 @@
 
       <div v-if="certificateType === 1">
         <FormItem label="私钥:" prop="sshPrivateKey">
-          <Input type="textarea" v-model="sshPrivateKey" :rows="4"
+          <Input type="textarea" v-model="certificate.sshPrivateKey" :rows="4"
                  placeholder="-----BEGIN OPENSSH PRIVATE KEY-----&#10;私钥&#10;-----END OPENSSH PRIVATE KEY-----"/>
         </FormItem>
       </div>
@@ -69,28 +69,23 @@ export default {
       default: false
     },
     repositoryType: {
-      type: String,
-      default: '2'
-    },
-    sshPrivateKey: {
-      type: String,
-      default: ''
+      type: Number,
+      default: 2
     }
-
   },
   data() {
     return {
       repositoryTypeOptions: [
         {
-          id: '1',
+          id: 1,
           name: 'github'
         },
         {
-          id: '2',
+          id: 2,
           name: 'gitee'
         },
         {
-          id: '3',
+          id: 3,
           name: 'gitlab'
         }
       ],

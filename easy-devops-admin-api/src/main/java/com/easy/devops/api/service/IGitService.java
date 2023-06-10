@@ -1,6 +1,6 @@
 package com.easy.devops.api.service;
 
-import com.easy.devops.api.domain.vo.response.GitProjectResponseVo;
+import com.easy.devops.api.domain.vo.response.GitCertificateResponseVo;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public interface IGitService {
      * @param accessToken 认证token
      * @return 项目信息
      */
-    List<GitProjectResponseVo> findRepositories(String accessToken);
+    List<GitCertificateResponseVo> findRepositories(String accessToken);
 
     /**
      * 获取git 单个项目
@@ -27,7 +27,7 @@ public interface IGitService {
      * @param accessToken    认证token
      * @return 项目信息
      */
-    GitProjectResponseVo findRepository(String username, String repositoryName, String accessToken);
+    GitCertificateResponseVo findRepository(String username, String repositoryName, String accessToken);
 
     /**
      * 获取git仓库远程分支列表

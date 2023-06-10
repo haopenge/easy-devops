@@ -69,12 +69,8 @@ public class RepositoryEntitySqlProvider {
             VALUES("clone_url", "#{cloneUrl,jdbcType=VARCHAR}");
         }
         
-        if (record.getHashCode() != null) {
-            VALUES("hash_code", "#{hashCode,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getEasyAuthenticateId() != null) {
-            VALUES("easy_authenticate_id", "#{easyAuthenticateId,jdbcType=INTEGER}");
+        if (record.getEasyCertificateId() != null) {
+            VALUES("easy_certificate_id", "#{easyCertificateId,jdbcType=INTEGER}");
         }
         
         return SQL();
@@ -93,8 +89,7 @@ public class RepositoryEntitySqlProvider {
         SELECT("name");
         SELECT("branch");
         SELECT("clone_url");
-        SELECT("hash_code");
-        SELECT("easy_authenticate_id");
+        SELECT("easy_certificate_id");
         FROM("easy_repository");
         applyWhere(example, false);
         
@@ -140,12 +135,8 @@ public class RepositoryEntitySqlProvider {
             SET("clone_url = #{record.cloneUrl,jdbcType=VARCHAR}");
         }
         
-        if (record.getHashCode() != null) {
-            SET("hash_code = #{record.hashCode,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getEasyAuthenticateId() != null) {
-            SET("easy_authenticate_id = #{record.easyAuthenticateId,jdbcType=INTEGER}");
+        if (record.getEasyCertificateId() != null) {
+            SET("easy_certificate_id = #{record.easyCertificateId,jdbcType=INTEGER}");
         }
         
         applyWhere(example, true);
@@ -163,8 +154,7 @@ public class RepositoryEntitySqlProvider {
         SET("name = #{record.name,jdbcType=VARCHAR}");
         SET("branch = #{record.branch,jdbcType=VARCHAR}");
         SET("clone_url = #{record.cloneUrl,jdbcType=VARCHAR}");
-        SET("hash_code = #{record.hashCode,jdbcType=VARCHAR}");
-        SET("easy_authenticate_id = #{record.easyAuthenticateId,jdbcType=INTEGER}");
+        SET("easy_certificate_id = #{record.easyCertificateId,jdbcType=INTEGER}");
         
         RepositoryEntityExample example = (RepositoryEntityExample) parameter.get("example");
         applyWhere(example, true);
@@ -199,12 +189,8 @@ public class RepositoryEntitySqlProvider {
             SET("clone_url = #{cloneUrl,jdbcType=VARCHAR}");
         }
         
-        if (record.getHashCode() != null) {
-            SET("hash_code = #{hashCode,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getEasyAuthenticateId() != null) {
-            SET("easy_authenticate_id = #{easyAuthenticateId,jdbcType=INTEGER}");
+        if (record.getEasyCertificateId() != null) {
+            SET("easy_certificate_id = #{easyCertificateId,jdbcType=INTEGER}");
         }
         
         WHERE("id = #{id,jdbcType=INTEGER}");

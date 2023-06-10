@@ -25,7 +25,12 @@ public class AddRepositoryRequestVo {
     private String cloneUrl;
 
     /**
-     * 认证id
+     * 凭证id
      */
-    private Integer easyAuthenticateId;
+    private Integer easyCertificateId;
+
+    /**
+     * 分支
+     */
+    private String branch;
 }
