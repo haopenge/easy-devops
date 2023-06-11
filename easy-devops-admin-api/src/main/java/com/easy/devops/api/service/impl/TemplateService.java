@@ -79,7 +79,7 @@ public class TemplateService {
             try (
                     InputStream is = Files.newInputStream(Paths.get(globalProperties.getDeployTemplateFileBasePath() + File.separator + loopTemplate.getContentFileKey()));
             ){
-                content = IOUtils.toString(is, StandardCharsets.UTF_8);
+                content = IOUtils.toString(is, String.valueOf(StandardCharsets.UTF_8));
             }catch (Exception e){
                 e.printStackTrace();
             }

@@ -1,29 +1,27 @@
-env: qa
 server:
-    port: 10081
+  port: 10081
 spring:
-    application:
-        name: easy-gray-api
-    cloud:
-        nacos:
-            # nacos 服务注册
-            discovery:
-                register-enabled: true
-                server-addr: 10.8.0.10:8848
-                namespace: 8b496572-c9ca-4361-9fe2-e0444d0a0b3f
-                metadata:
-                    pod_env: ${pod_env}
+  application:
+    name: easy-devops-admin-api
+  main:
+    allow-bean-definition-overriding: true
 
-            # nacos 配置
-            config:
-                server-addr: 10.8.0.10:8848
-                namespace: 8b496572-c9ca-4361-9fe2-e0444d0a0b3f
-                extension-configs:
-                    # 公共配置
-                    - data-id: common.yaml
-                      refresh: true
-                    # 本项目配置
-                    - data-id: easy-gray-api.yaml
-                      refresh: true
-    main:
-        allow-bean-definition-overriding: true
+  # 数据源
+  datasource:
+    url: jdbc:mysql://${DS_HOST:127.0.0.1}:3306/easy_admin?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DS_USERNAME:root}
+    password: ${DS_PASSWORD:root}
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:db/schema.sql
+
+# mybatis 配置
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+k8s:
+  base-path: ${K8S_BASH_PATH:https://10.8.0.1:6443}
