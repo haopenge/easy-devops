@@ -16,17 +16,22 @@
 
 ## 仓库管理
 
-- 新增仓库
 
-1) 选择凭证
+- 选择凭证
 
 ![](../img/add_repository_select_certificate.png)
 
-2) 点击名称输入框，输出项目名自动匹配对应凭证远程仓库项目
+- 点击名称输入框，输出项目名自动匹配对应凭证远程仓库项目
 
 ![](../img/add_repository_select.png)
 
 
 ## 项目管理
 
+- 新增项目-选择仓库
 
+![](../img/project_select_repository.png)
+
+- 新增项目-选择分支
+
+![](../img/project_select_branch.png)
