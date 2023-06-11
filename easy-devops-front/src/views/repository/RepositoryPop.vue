@@ -3,13 +3,11 @@
         <Form ref="repository" :model="repository" :label-width="80">
 
             <FormItem label="凭证:" prop="description">
-                <Select v-model="repository.easyCertificateId" style="width:200px" @on-change="certificateOptionChange" >
-                    <template v-for="(item,index) in certificateOptions" :key=index>
-                        <Option :value=item.id :label=item.name>
-                            <span>{{ item.name }}</span>
-                            <span style="float:right;color:#ccc">{{ item.description }}</span>
-                        </Option>
-                    </template>
+                <Select v-model="repository.easyCertificateId" style="width:200px" @on-change="certificateOptionChange">
+                    <Option v-for="(item,index) in certificateOptions" :key=index :value="item.id" :label="item.name">
+                        <span>{{ item.name }}</span>
+                        <span style="float:right;color:#ccc">{{ item.description }}</span>
+                    </Option>
                 </Select>
             </FormItem>
 
@@ -45,8 +43,6 @@
 
 
 <script>
-
-import repository from "@/views/repository/Repository.vue";
 
 export default {
     props: {
@@ -89,11 +85,7 @@ export default {
         },
         repositoryOnSelect(value) {
             this.$emit('repository-select-event', value)
-        },
-        filterMethod(value, option) {
-            return option.toUpperCase()
-                .indexOf(value.toUpperCase()) !== -1
-        },
+        }
     }
 }
 </script>

@@ -1,5 +1,10 @@
 package com.easy.devops.api.domain.enumx;
 
+import cn.hutool.extra.spring.SpringUtil;
+import com.easy.devops.api.service.IGitService;
+import com.easy.devops.api.service.impl.GiteeService;
+import com.easy.devops.api.service.impl.GithubService;
+import com.easy.devops.api.service.impl.GitlabService;
 import lombok.Getter;
 
 import java.util.Arrays;
@@ -35,5 +40,23 @@ public enum GitRepositoryTypeEnum {
 
     public static GitRepositoryTypeEnum valueOf(int value) {
         return Arrays.stream(GitRepositoryTypeEnum.values()).filter(loopEnum -> Objects.equals(loopEnum.value, value)).findFirst().orElse(null);
+    }
+
+    public static IGitService getGitServiceByValue(int value){
+        GitRepositoryTypeEnum gitRepositoryTypeEnum = valueOf(value);
+        IGitService gitService = null;
+        switch (gitRepositoryTypeEnum) {
+            case GITHUB:
+                gitService = SpringUtil.getBean(GithubService.class);
+                break;
+            case GITEE:
+                gitService = SpringUtil.getBean(GiteeService.class);
+                break;
+            case GITLAB:
+            default:
+                gitService = SpringUtil.getBean(GitlabService.class);
+                break;
+        }
+        return gitService;
     }
 }

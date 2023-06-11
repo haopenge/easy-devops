@@ -23,12 +23,10 @@ public class EditProjectRequestVo {
     /**
      * 仓库id
      */
-    @NotNull
-    private Integer repositoryId;
+    private Integer easyRepositoryId;
 
     /**
      * 分支名
      */
-    @NotBlank
-    private String branchName;
+    private String branch;
 }

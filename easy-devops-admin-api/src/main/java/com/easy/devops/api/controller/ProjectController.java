@@ -3,16 +3,13 @@ package com.easy.devops.api.controller;
 import com.easy.devops.api.domain.vo.request.AddProjectRequestVo;
 import com.easy.devops.api.domain.vo.request.EditProjectRequestVo;
 import com.easy.core.domain.ApiResult;
+import com.easy.devops.api.domain.vo.response.ProjectResponseVo;
 import com.easy.devops.api.service.impl.ProjectService;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author liupenghao
@@ -23,6 +20,18 @@ public class ProjectController extends BaseController {
 
     @Resource
     private ProjectService projectService;
+
+    /**
+     * 获取仓库对应的分支列表
+     *
+     * @param easyRepositoryId 仓库id
+     * @return String
+     */
+    @GetMapping("/findBranches")
+    public ApiResult<List<String>> findBranches(@RequestParam Integer easyRepositoryId) {
+        List<String> dataList = projectService.findBranches(easyRepositoryId);
+        return success(dataList);
+    }
 
     /**
      * 删除灰度环境的项目
@@ -37,16 +46,25 @@ public class ProjectController extends BaseController {
      * 添加项目
      */
     @PostMapping("/add")
-    public ApiResult<Void> addProject(@RequestBody @Validated AddProjectRequestVo addProjectToGrayEnv) {
+    public ApiResult<Void> addProject(@RequestBody AddProjectRequestVo addProjectToGrayEnv) {
         projectService.addProject(addProjectToGrayEnv);
         return success();
+    }
+
+    /**
+     * 获取项目列表
+     */
+    @GetMapping("/findAll")
+    public ApiResult<List<ProjectResponseVo>> findAll(@RequestParam(required = false,defaultValue = "0") Integer envId) {
+        List<ProjectResponseVo> dataList = projectService.findAll(envId);
+        return success(dataList);
     }
 
     /**
      * 编辑项目
      */
     @PostMapping("/edit")
-    public ApiResult<Void> editProject(@RequestBody @Validated EditProjectRequestVo editProjectRequestVo) {
+    public ApiResult<Void> editProject(@RequestBody EditProjectRequestVo editProjectRequestVo) {
         projectService.editProject(editProjectRequestVo);
         return success();
     }
@@ -59,7 +77,7 @@ public class ProjectController extends BaseController {
      */
     @PostMapping("/run")
     public ApiResult<Void> runProjectInGrayEnv(Integer id) {
-      //  grayService.runProjectInGrayEnv(id);
+        //  grayService.runProjectInGrayEnv(id);
         return success();
     }
 
@@ -71,7 +89,7 @@ public class ProjectController extends BaseController {
      */
     @PostMapping("/stop")
     public ApiResult<Void> stopProjectInGrayEnv(Integer id) {
-       // grayService.stopProjectInGrayEnv(id);
+        // grayService.stopProjectInGrayEnv(id);
         return success();
     }
 

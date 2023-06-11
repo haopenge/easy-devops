@@ -33,38 +33,15 @@ public class RepositoryService {
     private RepositoryEntityMapper repositoryEntityMapper;
 
     @Resource
-    private GiteeService giteeService;
-
-    @Resource
-    private GithubService githubService;
-
-    @Resource
-    private GitlabService gitlabService;
-
-    @Resource
     private CertificateEntityMapper certificateEntityMapper;
 
     public List<GitCertificateResponseVo> findGitRepositories(Integer certificateId) {
         CertificateEntity certificateEntity = certificateEntityMapper.selectByPrimaryKey(certificateId);
-        if(Objects.isNull(certificateEntity) || !GitRepositoryTypeEnum.existEnum(certificateEntity.getRepositoryType())){
+        if (Objects.isNull(certificateEntity) || !GitRepositoryTypeEnum.existEnum(certificateEntity.getRepositoryType())) {
             throw new AdminApiException(AdminApiFailureEnum.CERTIFICATE_NOT_EXISTS);
         }
 
-        GitRepositoryTypeEnum gitRepositoryTypeEnum = GitRepositoryTypeEnum.valueOf(certificateEntity.getRepositoryType());
-        IGitService gitService = null;
-        switch (gitRepositoryTypeEnum) {
-            case GITHUB:
-                gitService = githubService;
-                break;
-            case GITEE:
-                gitService = giteeService;
-                break;
-            case GITLAB:
-            default:
-                gitService = gitlabService;
-                break;
-        }
-        assert gitService != null;
+        IGitService gitService = GitRepositoryTypeEnum.getGitServiceByValue(certificateEntity.getRepositoryType());
         return gitService.findRepositories(certificateEntity.getAccessToken());
     }
 
@@ -137,7 +114,7 @@ public class RepositoryService {
     public List<RepositoryResponseVo> findAll() {
         List<RepositoryEntity> entityList = repositoryEntityMapper.selectByExample(new RepositoryEntityExample());
         List<RepositoryResponseVo> dataList = BeanUtil.copyToList(entityList, RepositoryResponseVo.class);
-        if(CollectionUtil.isEmpty(dataList)){
+        if (CollectionUtil.isEmpty(dataList)) {
             return Collections.emptyList();
         }
         List<CertificateEntity> certificateEntities = certificateEntityMapper.selectByExample(new CertificateEntityExample());
@@ -146,7 +123,7 @@ public class RepositoryService {
         for (RepositoryResponseVo responseVo : dataList) {
             Integer easyCertificateId = responseVo.getEasyCertificateId();
             CertificateEntity certificateEntity = certificateMap.get(easyCertificateId);
-            if(Objects.isNull(certificateEntity)){
+            if (Objects.isNull(certificateEntity)) {
                 continue;
             }
             responseVo.setEasyCertificateName(certificateEntity.getName());
