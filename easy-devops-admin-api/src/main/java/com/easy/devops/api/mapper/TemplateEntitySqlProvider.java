@@ -53,38 +53,16 @@ public class TemplateEntitySqlProvider {
             VALUES("update_time", "#{updateTime,jdbcType=TIMESTAMP}");
         }
         
-        if (record.getOrder() != null) {
-            VALUES("order", "#{order,jdbcType=INTEGER}");
+        if (record.getName() != null) {
+            VALUES("name", "#{name,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getContentFileKey() != null) {
+            VALUES("content_file_key", "#{contentFileKey,jdbcType=VARCHAR}");
         }
         
         if (record.getType() != null) {
             VALUES("type", "#{type,jdbcType=INTEGER}");
-        }
-        
-        if (record.getContent() != null) {
-            VALUES("content", "#{content,jdbcType=LONGVARCHAR}");
-        }
-        
-        return SQL();
-    }
-
-    public String selectByExampleWithBLOBs(TemplateEntityExample example) {
-        BEGIN();
-        if (example != null && example.isDistinct()) {
-            SELECT_DISTINCT("id");
-        } else {
-            SELECT("id");
-        }
-        SELECT("create_time");
-        SELECT("update_time");
-        SELECT("order");
-        SELECT("type");
-        SELECT("content");
-        FROM("easy_template");
-        applyWhere(example, false);
-        
-        if (example != null && example.getOrderByClause() != null) {
-            ORDER_BY(example.getOrderByClause());
         }
         
         return SQL();
@@ -99,7 +77,8 @@ public class TemplateEntitySqlProvider {
         }
         SELECT("create_time");
         SELECT("update_time");
-        SELECT("order");
+        SELECT("name");
+        SELECT("content_file_key");
         SELECT("type");
         FROM("easy_template");
         applyWhere(example, false);
@@ -130,34 +109,18 @@ public class TemplateEntitySqlProvider {
             SET("update_time = #{record.updateTime,jdbcType=TIMESTAMP}");
         }
         
-        if (record.getOrder() != null) {
-            SET("order = #{record.order,jdbcType=INTEGER}");
+        if (record.getName() != null) {
+            SET("name = #{record.name,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getContentFileKey() != null) {
+            SET("content_file_key = #{record.contentFileKey,jdbcType=VARCHAR}");
         }
         
         if (record.getType() != null) {
             SET("type = #{record.type,jdbcType=INTEGER}");
         }
         
-        if (record.getContent() != null) {
-            SET("content = #{record.content,jdbcType=LONGVARCHAR}");
-        }
-        
-        applyWhere(example, true);
-        return SQL();
-    }
-
-    public String updateByExampleWithBLOBs(Map<String, Object> parameter) {
-        BEGIN();
-        UPDATE("easy_template");
-        
-        SET("id = #{record.id,jdbcType=INTEGER}");
-        SET("create_time = #{record.createTime,jdbcType=TIMESTAMP}");
-        SET("update_time = #{record.updateTime,jdbcType=TIMESTAMP}");
-        SET("order = #{record.order,jdbcType=INTEGER}");
-        SET("type = #{record.type,jdbcType=INTEGER}");
-        SET("content = #{record.content,jdbcType=LONGVARCHAR}");
-        
-        TemplateEntityExample example = (TemplateEntityExample) parameter.get("example");
         applyWhere(example, true);
         return SQL();
     }
@@ -169,7 +132,8 @@ public class TemplateEntitySqlProvider {
         SET("id = #{record.id,jdbcType=INTEGER}");
         SET("create_time = #{record.createTime,jdbcType=TIMESTAMP}");
         SET("update_time = #{record.updateTime,jdbcType=TIMESTAMP}");
-        SET("order = #{record.order,jdbcType=INTEGER}");
+        SET("name = #{record.name,jdbcType=VARCHAR}");
+        SET("content_file_key = #{record.contentFileKey,jdbcType=VARCHAR}");
         SET("type = #{record.type,jdbcType=INTEGER}");
         
         TemplateEntityExample example = (TemplateEntityExample) parameter.get("example");
@@ -189,16 +153,16 @@ public class TemplateEntitySqlProvider {
             SET("update_time = #{updateTime,jdbcType=TIMESTAMP}");
         }
         
-        if (record.getOrder() != null) {
-            SET("order = #{order,jdbcType=INTEGER}");
+        if (record.getName() != null) {
+            SET("name = #{name,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getContentFileKey() != null) {
+            SET("content_file_key = #{contentFileKey,jdbcType=VARCHAR}");
         }
         
         if (record.getType() != null) {
             SET("type = #{type,jdbcType=INTEGER}");
-        }
-        
-        if (record.getContent() != null) {
-            SET("content = #{content,jdbcType=LONGVARCHAR}");
         }
         
         WHERE("id = #{id,jdbcType=INTEGER}");

@@ -21,17 +21,17 @@ public class TemplateEntity {
     private Date updateTime;
 
     /**
-     * 构建顺序，执行时由小到大
+     * 名称
      */
-    private Integer order;
-
-    /**
-     * 模板类型：1-shell；5-dockerfile ;  10-yaml ; 
-     */
-    private Integer type;
+    private String name;
 
     /**
      * 内容
      */
-    private String content;
+    private String contentFileKey;
+
+    /**
+     * 模板类型：1-dockerfile ；5-shell;  10-yaml ; 
+     */
+    private Integer type;
 }

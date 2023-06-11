@@ -285,63 +285,143 @@ public class TemplateEntityExample {
             return (Criteria) this;
         }
 
-        public Criteria andOrderIsNull() {
-            addCriterion("order is null");
+        public Criteria andNameIsNull() {
+            addCriterion("name is null");
             return (Criteria) this;
         }
 
-        public Criteria andOrderIsNotNull() {
-            addCriterion("order is not null");
+        public Criteria andNameIsNotNull() {
+            addCriterion("name is not null");
             return (Criteria) this;
         }
 
-        public Criteria andOrderEqualTo(Integer value) {
-            addCriterion("order =", value, "order");
+        public Criteria andNameEqualTo(String value) {
+            addCriterion("name =", value, "name");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNotEqualTo(Integer value) {
-            addCriterion("order <>", value, "order");
+        public Criteria andNameNotEqualTo(String value) {
+            addCriterion("name <>", value, "name");
             return (Criteria) this;
         }
 
-        public Criteria andOrderGreaterThan(Integer value) {
-            addCriterion("order >", value, "order");
+        public Criteria andNameGreaterThan(String value) {
+            addCriterion("name >", value, "name");
             return (Criteria) this;
         }
 
-        public Criteria andOrderGreaterThanOrEqualTo(Integer value) {
-            addCriterion("order >=", value, "order");
+        public Criteria andNameGreaterThanOrEqualTo(String value) {
+            addCriterion("name >=", value, "name");
             return (Criteria) this;
         }
 
-        public Criteria andOrderLessThan(Integer value) {
-            addCriterion("order <", value, "order");
+        public Criteria andNameLessThan(String value) {
+            addCriterion("name <", value, "name");
             return (Criteria) this;
         }
 
-        public Criteria andOrderLessThanOrEqualTo(Integer value) {
-            addCriterion("order <=", value, "order");
+        public Criteria andNameLessThanOrEqualTo(String value) {
+            addCriterion("name <=", value, "name");
             return (Criteria) this;
         }
 
-        public Criteria andOrderIn(List<Integer> values) {
-            addCriterion("order in", values, "order");
+        public Criteria andNameLike(String value) {
+            addCriterion("name like", value, "name");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNotIn(List<Integer> values) {
-            addCriterion("order not in", values, "order");
+        public Criteria andNameNotLike(String value) {
+            addCriterion("name not like", value, "name");
             return (Criteria) this;
         }
 
-        public Criteria andOrderBetween(Integer value1, Integer value2) {
-            addCriterion("order between", value1, value2, "order");
+        public Criteria andNameIn(List<String> values) {
+            addCriterion("name in", values, "name");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNotBetween(Integer value1, Integer value2) {
-            addCriterion("order not between", value1, value2, "order");
+        public Criteria andNameNotIn(List<String> values) {
+            addCriterion("name not in", values, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameBetween(String value1, String value2) {
+            addCriterion("name between", value1, value2, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotBetween(String value1, String value2) {
+            addCriterion("name not between", value1, value2, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentFileKeyIsNull() {
+            addCriterion("content_file_key is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentFileKeyIsNotNull() {
+            addCriterion("content_file_key is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentFileKeyEqualTo(String value) {
+            addCriterion("content_file_key =", value, "contentFileKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentFileKeyNotEqualTo(String value) {
+            addCriterion("content_file_key <>", value, "contentFileKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentFileKeyGreaterThan(String value) {
+            addCriterion("content_file_key >", value, "contentFileKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentFileKeyGreaterThanOrEqualTo(String value) {
+            addCriterion("content_file_key >=", value, "contentFileKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentFileKeyLessThan(String value) {
+            addCriterion("content_file_key <", value, "contentFileKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentFileKeyLessThanOrEqualTo(String value) {
+            addCriterion("content_file_key <=", value, "contentFileKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentFileKeyLike(String value) {
+            addCriterion("content_file_key like", value, "contentFileKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentFileKeyNotLike(String value) {
+            addCriterion("content_file_key not like", value, "contentFileKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentFileKeyIn(List<String> values) {
+            addCriterion("content_file_key in", values, "contentFileKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentFileKeyNotIn(List<String> values) {
+            addCriterion("content_file_key not in", values, "contentFileKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentFileKeyBetween(String value1, String value2) {
+            addCriterion("content_file_key between", value1, value2, "contentFileKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentFileKeyNotBetween(String value1, String value2) {
+            addCriterion("content_file_key not between", value1, value2, "contentFileKey");
             return (Criteria) this;
         }
 

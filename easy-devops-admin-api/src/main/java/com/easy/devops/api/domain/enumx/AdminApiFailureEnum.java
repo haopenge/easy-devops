@@ -80,6 +80,13 @@ public enum AdminApiFailureEnum implements ExceptionEnumInterface {
 
     ENV_PROJECT_EXIST("100_702", "此项目已存在，请勿重复添加"),
 
+    // ****************************************** 模板问题 100800 ~ 100899 *************************************************************
+    TEMPLATE_NOT_EXIST("100_801", "此模板不存在，或已删除"),
+
+    TEMPLATE_NAME_EXIST("100_802", "模板名称重复"),
+
+    TEMPLATE_CONTENT_FILE_SAVE_ERROR("100_803","模板内容文件保存失败")
+
     ;
     private String code;
 

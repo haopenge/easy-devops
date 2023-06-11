@@ -25,6 +25,11 @@ public class GlobalProperties {
     /**
      * ssh-私钥凭证保存路径
      */
-    private String authSshPrivateKeyFilePath = System.getProperty("user.home") + File.separator + ".ssh" + File.separator + "id_rsa";
+    private String authSshPrivateKeyFilePath = System.getProperty("user.dir") + File.separator + "work" + File.separator + ".ssh" + File.separator + "id_rsa";
+
+    /**
+     * 发布模板文件路径
+     */
+    private String deployTemplateFileBasePath = System.getProperty("user.dir") + File.separator + "work" + File.separator + "deploy";
 
 }

@@ -101,8 +101,9 @@
                     <Certificate v-if="activeName === 11"/>
                     <Repository v-if="activeName === 12"/>
                     <Project v-if="activeName === 13" @show-config-page="showConfigPage"/>
-                    <ProjectConfig v-if="activeName === 14"/>
-                    <Gray v-if="activeName === 15"/>
+                    <DeployTemplate v-if="activeName === 14"/>
+                    <ProjectConfig v-if="activeName === 15"/>
+                    <Gray v-if="activeName === 16"/>
                 </Layout>
             </Layout>
             <Footer class="layout-footer-center">2011-2016 &copy;xiaoyuxxx</Footer>
@@ -119,6 +120,7 @@ import Certificate from '@/views/certificate/Certificate.vue'
 import Project from '@/views/project/Project.vue'
 import ProjectConfig from '@/views/project/ProjectConfig.vue'
 import Terminal from '@/views/terminal/Terminal.vue'
+import DeployTemplate from "@/views/template/Template.vue";
 
 export default {
     components: {
@@ -128,7 +130,8 @@ export default {
         Gray,
         Repository,
         Certificate,
-        Project
+        Project,
+        DeployTemplate
     },
     data() {
         return {
@@ -152,12 +155,17 @@ export default {
                         },
                         {
                             id: 14,
-                            name: '项目配置'
+                            name: '全局模板'
                         },
                         {
                             id: 15,
+                            name: '项目配置'
+                        },
+                        {
+                            id: 16,
                             name: '灰度管理',
                         },
+
 
                     ]
                 },
@@ -177,7 +185,7 @@ export default {
             openNames: [
                 1
             ],
-            activeName: 14
+            activeName: 16
         }
     },
     computed: {
