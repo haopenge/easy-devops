@@ -83,7 +83,7 @@ export default {
      */
     findCertificate() {
       axios
-          .get('/certificate/findAll')
+          .get('/certificate/findAll?containSsh=' + true)
           .then((response) => {
             const resultData = fetchResponseData(response)
             this.certificateList = resultData.map((item) => ({
