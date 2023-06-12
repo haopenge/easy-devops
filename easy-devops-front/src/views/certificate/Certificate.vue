@@ -14,10 +14,8 @@
 
   <CertificatePop
       :certificate="certificate"
-      :certificate-type="certificateType"
       :pop-edit-enable="popEditEnable"
       :certificate-pop-visible="certificatePopVisible"
-      @certificate-type-change="certificateTypeChange"
       @repository-type-change="repositoryTypeChange"
       @certificate-add="certificateAdd"
       @certificate-edit="certificateEdit"
@@ -68,7 +66,6 @@ export default {
       certificate: {},
       certificatePopVisible: false,
       popEditEnable: false,
-      certificateType: 1,
       repositoryType: 1,
     }
   },
@@ -162,16 +159,16 @@ export default {
 
     /**
      * 展示认证新增弹窗
-     * @param row 目标认证行信息
      */
-    showCertificateAddPop(row) {
+    showCertificateAddPop() {
       this.certificate = {
         id: 0,
         type: 5,
         name: '',
         username: '',
         accessToken: '',
-        repositoryType: '2'
+        repositoryType: 2,
+          kubeConfig: ''
       }
       this.popEditEnable = false
       this.certificatePopVisible = true
@@ -190,17 +187,8 @@ export default {
         description: row.description,
         repositoryType: row.repositoryType
       }
-      this.certificateType = row.type
       this.popEditEnable = true
       this.certificatePopVisible = true
-    },
-
-    /**
-     * 认证类型更改时间
-     * @param typeValue 认证类型
-     */
-    certificateTypeChange(typeValue) {
-      this.certificate.type = typeValue
     },
 
     /**
@@ -212,7 +200,7 @@ export default {
     },
 
     /**
-     * 更新全局仓库凭证
+     * 更新全局ssh凭证
      */
     addGlobalSshCertificate() {
       console.log('----------------' + this.certificate.sshPrivateKey)
@@ -223,12 +211,33 @@ export default {
           .put('/certificate/updateSshPrivateKey', payload)
           .then((response) => {
             fetchResponseData(response)
-            //this.refreshProject(this.rightProjectEnvId)
+              // 刷新列表
+              this.findCertificate()
           })
           .catch((error) => { // 请求失败处理
             console.log(error)
           })
     },
+
+      /**
+       * 更新全局k8s config仓库凭证
+       */
+      addGlobalK8sConfigCertificate() {
+          console.log('----------------' + this.certificate.kubeConfig)
+          const payload = {
+              kubeConfig: this.certificate.kubeConfig
+          }
+          axios
+              .put('/certificate/updateK8sConfig', payload)
+              .then((response) => {
+                  fetchResponseData(response)
+                  // 刷新列表
+                  this.findCertificate()
+              })
+              .catch((error) => { // 请求失败处理
+                  console.log(error)
+              })
+      },
 
     /**
      * 新增凭证
@@ -236,8 +245,10 @@ export default {
     certificateAdd() {
       if (this.certificate.type === 1) {
         this.addGlobalSshCertificate()
-      } else {
-        this.addAccessTokenCertificate()
+      } else if( this.certificate.type === 3){
+          this.addGlobalK8sConfigCertificate()
+      }else {
+          this.addAccessTokenCertificate()
       }
     },
 
