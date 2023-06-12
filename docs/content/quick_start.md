@@ -44,6 +44,7 @@ npm run serve
 ```shell
 http://localhost:8081/
 ```
+
 ![](../img/home.png)
 
 # 项目使用
@@ -57,6 +58,9 @@ http://localhost:8081/
 
 ![](../img/certificate_add_user_pwd.png)
 
+- 新增k8s配置
+
+![](../img/certificate_add_k8s_config.png)
 
 ## 仓库管理
 
