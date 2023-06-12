@@ -15,6 +15,8 @@ public enum CertificateTypeEnum {
 
     SSH_PRIVATE_KEY(1, "全局ssh私钥"),
 
+    K8S_KUBE_CONFIG(3,"k8s配置"),
+
     USER_PWD(5, "账号密码");
 
     private final int value;

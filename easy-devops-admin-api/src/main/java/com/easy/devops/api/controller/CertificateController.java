@@ -3,6 +3,7 @@ package com.easy.devops.api.controller;
 import com.easy.core.domain.ApiResult;
 import com.easy.devops.api.domain.enumx.AdminApiFailureEnum;
 import com.easy.devops.api.domain.vo.request.AddCertificateRequestVo;
+import com.easy.devops.api.domain.vo.request.AddK8sCertificateRequestVo;
 import com.easy.devops.api.domain.vo.request.AddSshCertificateRequestVo;
 import com.easy.devops.api.domain.vo.request.EditCertificateRequestVo;
 import com.easy.devops.api.domain.vo.response.CertificateResponseVo;
@@ -10,7 +11,14 @@ import com.easy.devops.api.exception.AdminApiException;
 import com.easy.devops.api.service.impl.CertificateService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Objects;
@@ -38,7 +46,7 @@ public class CertificateController extends BaseController {
      * 更新ssh 全局凭证
      */
     @PutMapping("/updateSshPrivateKey")
-    public ApiResult<Void> add(@RequestBody AddSshCertificateRequestVo requestVo) {
+    public ApiResult<Void> updateSshPrivateKey(@RequestBody AddSshCertificateRequestVo requestVo) {
         String privateKey = requestVo.getSshPrivateKey();
         if (!isValid(privateKey)) {
             throw new AdminApiException(AdminApiFailureEnum.PARAM_ERROR);
@@ -49,6 +57,24 @@ public class CertificateController extends BaseController {
         }
 
         certificateService.updateSshPrivateKey(privateKey);
+        return success();
+    }
+
+    /**
+     * 更新k8s配置
+     */
+    @PutMapping("/updateK8sConfig")
+    public ApiResult<Void> updateK8sConfig(@RequestBody AddK8sCertificateRequestVo requestVo) {
+        String kubeConfig = requestVo.getKubeConfig();
+        if (StringUtils.isBlank(kubeConfig)) {
+            throw new AdminApiException(AdminApiFailureEnum.PARAM_ERROR);
+        }
+        String osName = System.getProperty("os.name");
+        if(osName.toLowerCase().contains("windows") || osName.toLowerCase().contains("mac")){
+            throw new AdminApiException(AdminApiFailureEnum.CERTIFICATE_NEED_CONFIG_BY_YOURSELF);
+        }
+
+        certificateService.updateK8sConfig(kubeConfig);
         return success();
     }
 

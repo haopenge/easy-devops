@@ -89,7 +89,7 @@ export default {
             this.certificateList = resultData.map((item) => ({
               id: item.id,
               type: item.type,
-              typeShow: item.type === 1 ? '全局ssh' : '仓库凭证',
+              typeShow: this.getTypeShow(item.type),
               name: item.name,
               description: item.description,
               username: item.username,
@@ -114,6 +114,23 @@ export default {
         return 'gitee'
       } else if (repositoryType === 3) {
         return 'gitlab'
+      } else {
+        return ''
+      }
+    },
+
+    /**
+     * 获取对应的type展示信息
+     * @param type type
+     * @returns {string} type描述
+     */
+    getTypeShow(type) {
+      if (type === 1) {
+        return '全局ssh'
+      } else if (type === 3) {
+        return 'k8s配置'
+      } else if (type === 5) {
+        return '仓库凭证'
       } else {
         return ''
       }
@@ -198,7 +215,7 @@ export default {
      * 更新全局仓库凭证
      */
     addGlobalSshCertificate() {
-        console.log('----------------' + this.certificate.sshPrivateKey)
+      console.log('----------------' + this.certificate.sshPrivateKey)
       const payload = {
         sshPrivateKey: this.certificate.sshPrivateKey
       }

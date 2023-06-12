@@ -27,6 +27,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 
+import static com.easy.devops.api.domain.enumx.AdminApiFailureEnum.CERTIFICATE_K8S_CONFIG_SAVE_ERROR;
 import static com.easy.devops.api.domain.enumx.AdminApiFailureEnum.CERTIFICATE_NAME_EXISTS;
 import static com.easy.devops.api.domain.enumx.AdminApiFailureEnum.CERTIFICATE_NOT_EXISTS;
 import static com.easy.devops.api.domain.enumx.AdminApiFailureEnum.CERTIFICATE_SSH_PRIVATE_KEY_SAVE_ERROR;
@@ -121,7 +122,20 @@ public class CertificateService {
         responseVo.setDescription(StringPool.EMPTY);
         responseVo.setType(CertificateTypeEnum.SSH_PRIVATE_KEY.getValue());
         responseVo.setRepositoryType(0);
-        dataList.add(responseVo);
+        dataList.add(0,responseVo);
+
+        // 补充k8s配置信息
+        File k8sConfigFile = new File(globalProperties.getK8sConfigFilePath());
+        if (!k8sConfigFile.exists()) {
+            return dataList;
+        }
+        CertificateResponseVo k8sResponseVo = new CertificateResponseVo();
+        k8sResponseVo.setId(0);
+        k8sResponseVo.setName("系统");
+        k8sResponseVo.setDescription(StringPool.EMPTY);
+        k8sResponseVo.setType(CertificateTypeEnum.K8S_KUBE_CONFIG.getValue());
+        k8sResponseVo.setRepositoryType(0);
+        dataList.add(1,k8sResponseVo);
 
         return dataList;
     }
@@ -151,6 +165,20 @@ public class CertificateService {
         } catch (Exception e) {
             log.error(CERTIFICATE_SSH_PRIVATE_KEY_SAVE_ERROR.getMessage(), e);
             throw new AdminApiException(CERTIFICATE_SSH_PRIVATE_KEY_SAVE_ERROR);
+        }
+    }
+
+    /**
+     * 更新部署服务器 k8s 配置
+     * @param kubeConfig k8s配置
+     */
+    public void updateK8sConfig(String kubeConfig) {
+        // 存储 ssh文件到服务器
+        try (InputStream is = new ByteArrayInputStream(kubeConfig.getBytes(StandardCharsets.UTF_8)); OutputStream os = Files.newOutputStream(Paths.get(globalProperties.getK8sConfigFilePath()))) {
+            IoUtil.copy(is, os);
+        } catch (Exception e) {
+            log.error(CERTIFICATE_K8S_CONFIG_SAVE_ERROR.getMessage(), e);
+            throw new AdminApiException(CERTIFICATE_K8S_CONFIG_SAVE_ERROR);
         }
     }
 }

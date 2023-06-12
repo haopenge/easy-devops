@@ -61,7 +61,9 @@ public enum AdminApiFailureEnum implements ExceptionEnumInterface {
 
     CERTIFICATE_NOT_EXISTS("100_502", "凭证不存在或已删除"),
 
-    CERTIFICATE_NEED_CONFIG_BY_YOURSELF("100_503","windows或者mac环境请手动配置系统ssh私钥"),
+    CERTIFICATE_NEED_CONFIG_BY_YOURSELF("100_503","windows或者mac环境请手动配置"),
+
+    CERTIFICATE_K8S_CONFIG_SAVE_ERROR("100_504", "k8s配置保存失败"),
 
 
     // ****************************************** 仓库问题 100600 ~ 100699 *************************************************************

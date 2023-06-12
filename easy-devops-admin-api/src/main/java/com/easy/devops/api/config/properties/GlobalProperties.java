@@ -28,6 +28,11 @@ public class GlobalProperties {
     private String authSshPrivateKeyFilePath = System.getProperty("user.home") + File.separator + ".ssh" + File.separator + "id_rsa";
 
     /**
+     * k8s .kube/config 保存路径
+     */
+    private String k8sConfigFilePath = System.getProperty("user.home") + File.separator + ".kube" + File.separator + "config";
+
+    /**
      * 发布模板文件路径
      */
     private String deployTemplateFileBasePath = System.getProperty("user.dir") + File.separator + "work" + File.separator + "deploy";
