@@ -1,7 +1,5 @@
 import axios from 'axios'
-import $message from 'ant-design-vue/lib/message'
 import $storage from './storage'
-import router from '../router/index'
 
 const $http = axios.create({
     responseType: 'json', baseURL: process.env.VUE_APP_BASE_API, timeout: 10000
