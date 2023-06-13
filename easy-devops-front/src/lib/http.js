@@ -6,11 +6,16 @@ const $http = axios.create({
 })
 
 // 默认配置项
-const defaultConfig = {
+const DEFAULT_CONFIG = {
     // 是否需要登陆
-    auth: true, // 超时时间
-    timeout: 10000, // 请求头
-    contentType: 'application/json'
+    auth: true,
+    // 超时时间
+    timeout: 10000,
+    // 请求头
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+    }
 }
 
 /**
@@ -91,13 +96,8 @@ const $export = (url, data, config) => {
 /**
  * 填充默认配置
  */
-function fillDefaultConfig(config) {
-    for (const defaultConfigKey in defaultConfig) {
-        if (!(defaultConfigKey in config)) {
-            config[defaultConfigKey] = defaultConfig[defaultConfigKey]
-        }
-    }
-    return config
+const fillDefaultConfig = (config) => {
+    return { ...DEFAULT_CONFIG, ...config }
 }
 
 /**
@@ -121,8 +121,22 @@ $http.interceptors.response.use(response => {
         }
         return result.data || []
     }
-}, err => {
     return Promise.reject('error')
+}, err => {
+    if (err.response) {
+        // 请求已发出，但服务器响应的状态码不在 2xx 范围内
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+    } else if (err.request) {
+        // 请求已发出，但没有收到响应
+        console.log(err.request);
+    } else {
+        // 其他错误
+        console.log('Error', err.message);
+    }
+    console.log(err.config);
+    return Promise.reject(err)
 })
 
 export default {

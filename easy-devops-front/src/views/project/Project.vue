@@ -26,8 +26,8 @@
     />
 </template>
 <script>
-import axios from "axios";
 import ProjectPop from '@/views/project/ProjectPop.vue'
+import $api from "@/lib/api";
 
 export default {
     components: {
@@ -62,20 +62,12 @@ export default {
                     align: 'center'
                 }
             ],
-            project: {
-
-            },
-            projectList: [
-            ],
-            repositories: [
-
-            ],
-            branches: [
-            ],
+            project: {},
+            projectList: [],
+            repositories: [],
+            branches: [],
             projectPopVisible: false,
-            branchesMap: {
-
-            },
+            branchesMap: {},
             isEditPop: false
         }
     },
@@ -90,23 +82,17 @@ export default {
          * 获取项目列表
          */
         findProjectHttp() {
-            axios
-                .get('/project/findAll')
-                .then((response) => {
-                    const resultData = fetchResponseData(response)
-                    this.projectList = resultData.map((item) => ({
-                        id: item.id,
-                        name: item.name,
-                        easyEnvId: item.easyEnvId,
-                        easyRepositoryId: item.easyRepositoryId,
-                        easyRepositoryName: item.easyRepositoryName,
-                        easyCertificateName: item.easyCertificateName,
-                        branch: item.branch
-                    }))
-                })
-                .catch((error) => { // 请求失败处理
-                    console.log(error)
-                })
+            $api.project.findAll({}).then(data => {
+                this.projectList = data.map((item) => ({
+                    id: item.id,
+                    name: item.name,
+                    easyEnvId: item.easyEnvId,
+                    easyRepositoryId: item.easyRepositoryId,
+                    easyRepositoryName: item.easyRepositoryName,
+                    easyCertificateName: item.easyCertificateName,
+                    branch: item.branch
+                }))
+            })
         },
 
 
@@ -114,26 +100,20 @@ export default {
          * 获取仓库列表
          */
         findRepositoriesHttp() {
-            axios
-                .get('/repository/findAll')
-                .then((response) => {
-                    const resultData = fetchResponseData(response)
-                    this.repositories = resultData.map((item) => ({
-                        id: item.id,
-                        name: item.name,
-                        description: item.description,
-                        cloneUrl: item.cloneUrl,
-                        easyCertificateId: item.easyRepositoryId,
-                        easyCertificateName: item.easyCertificateName,
-                        branch: item.branch
-                    }))
-                    this.repositories.forEach((item) => {
-                        this.findRepositoryBranchesHttp(item.id)
-                    })
+            $api.repository.findAll().then(data => {
+                this.repositories = data.map((item) => ({
+                    id: item.id,
+                    name: item.name,
+                    description: item.description,
+                    cloneUrl: item.cloneUrl,
+                    easyCertificateId: item.easyRepositoryId,
+                    easyCertificateName: item.easyCertificateName,
+                    branch: item.branch
+                }))
+                this.repositories.forEach((item) => {
+                    this.findRepositoryBranchesHttp(item.id)
                 })
-                .catch((error) => { // 请求失败处理
-                    console.log(error)
-                })
+            })
         },
 
         /**
@@ -157,19 +137,16 @@ export default {
          * 获取仓库列表
          */
         findRepositoryBranchesHttp(easyRepositoryId) {
-            if(this.branchesMap[easyRepositoryId]){
+            if (this.branchesMap[easyRepositoryId]) {
                 this.branches = this.branchesMap[easyRepositoryId];
                 return
             }
-            axios
-                .get('/project/findBranches?easyRepositoryId='+easyRepositoryId)
-                .then((response) => {
-                    this.branchesMap[easyRepositoryId] = fetchResponseData(response);
-                    this.branches = this.branchesMap[easyRepositoryId];
-                })
-                .catch((error) => { // 请求失败处理
-                    console.log(error)
-                })
+            $api.project.findRepositoryBranches({
+                easyRepositoryId: easyRepositoryId
+            }).then(data => {
+                this.branchesMap[easyRepositoryId] = data;
+                this.branches = this.branchesMap[easyRepositoryId];
+            })
         },
 
         /**
@@ -196,55 +173,37 @@ export default {
          * @param id 弹窗id
          */
         remove(id) {
-            axios
-                .delete('/project/deleteById?id=' + id)
-                .then((response) => {
-                    fetchResponseData(response)
-                    this.findProjectHttp()
-                })
-                .catch((error) => { // 请求失败处理
-                    console.log(error)
-                })
+            $api.project.deleteById({
+                id: id
+            }).then(data => {
+                this.findProjectHttp()
+            })
         },
         /**
          * 项目保存
          */
         projectSave() {
-            let payload = {
+            $api.project.add({
                 name: this.project.name,
                 easyRepositoryId: this.project.easyRepositoryId,
                 branch: this.project.branch
-            }
-            axios
-                .post('/project/add', payload)
-                .then((response) => {
-                    fetchResponseData(response)
-                    this.findProjectHttp()
-                })
-                .catch((error) => { // 请求失败处理
-                    console.log(error)
-                })
+            }).then(data => {
+                this.findProjectHttp()
+            })
         },
 
         /**
          * 项目编辑
          */
-        projectEdit(){
-            let payload = {
+        projectEdit() {
+            $api.project.edit({
                 id: this.project.id,
                 name: this.project.name,
                 easyRepositoryId: this.project.easyRepositoryId,
                 branch: this.project.branch
-            }
-            axios
-                .post('/project/edit', payload)
-                .then((response) => {
-                    fetchResponseData(response)
-                    this.findProjectHttp()
-                })
-                .catch((error) => { // 请求失败处理
-                    console.log(error)
-                })
+            }).then(data => {
+                this.findProjectHttp()
+            })
         },
 
         /**
@@ -265,27 +224,10 @@ export default {
         /**
          * 分支被选择
          */
-        branchChange(branch){
+        branchChange(branch) {
             this.project.branch = branch
         }
     }
 }
 
-/**
- * 获取http 相应信息
- * @param response http响应体
- * @returns {*[]}
- */
-function fetchResponseData(response) {
-    if (response && response.data) {
-        const result = response.data
-        const {success} = result
-        const {message} = result
-
-        if (!success) {
-            alert(message)
-        }
-        return result.data || []
-    }
-}
 </script>

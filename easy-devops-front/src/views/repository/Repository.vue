@@ -25,7 +25,7 @@
 <script>
 
 import RepositoryPop from '@/views/repository/RepositoryPop.vue'
-import axios from "axios";
+import $api from "@/lib/api";
 
 export default {
     components: {
@@ -113,59 +113,41 @@ export default {
          * @param id 弹窗id
          */
         remove(id) {
-            axios
-                .delete('/repository/deleteById?id=' + id)
-                .then((response) => {
-                    fetchResponseData(response)
-                    this.findRepositoriesHttp()
-                })
-                .catch((error) => { // 请求失败处理
-                    console.log(error)
-                })
+            $api.repository.deleteById({
+                id: id
+            }).then(data => {
+                this.findRepositoriesHttp()
+            })
         },
         /**
          * 仓库保存
          */
         repositorySaveHttp() {
-            let payload = {
+            $api.repository.add({
                 name: this.repository.name,
                 description: this.repository.description,
                 cloneUrl: this.repository.cloneUrl,
                 easyCertificateId: this.repository.certificateId,
                 branch: this.repository.branch
-            }
-            axios
-                .post('/repository/add', payload)
-                .then((response) => {
-                    fetchResponseData(response)
-                    this.findRepositoriesHttp()
-                })
-                .catch((error) => { // 请求失败处理
-                    console.log(error)
-                })
+            }).then(data => {
+                this.findRepositoriesHttp()
+            })
         },
 
         /**
          * 仓库更新
          */
         repositoryEditHttp() {
-            let payload = {
+            $api.repository.edit({
                 id: this.repository.id,
                 name: this.repository.name,
                 description: this.repository.description,
                 cloneUrl: this.repository.cloneUrl,
                 easyCertificateId: this.repository.certificateId,
                 branch: this.repository.branch
-            }
-            axios
-                .put('/repository/edit', payload)
-                .then((response) => {
-                    fetchResponseData(response)
-                    this.findRepositoriesHttp()
-                })
-                .catch((error) => { // 请求失败处理
-                    console.log(error)
-                })
+            }).then(data => {
+                this.findRepositoriesHttp()
+            })
         },
 
         /**
@@ -186,66 +168,52 @@ export default {
                 this.gitRepositories =  this.gitRepositoriesMap[certificateOptionId]
                 console.log('缓存命中  certificateOptionId = ' + certificateOptionId)
             }
-            axios
-                .get('/repository/findGitRepositories?certificateId=' + certificateOptionId)
-                .then((response) => {
-                    const resultData = fetchResponseData(response)
-                    this.gitRepositoriesMap[certificateOptionId] = resultData.map((item) => ({
-                        id: item.id,
-                        name: item.name,
-                        description: item.description,
-                        isPublic: item.isPublic,
-                        branch: item.defaultBranch,
-                        cloneUrl: item.httpCloneUrl
-                    }))
-                    console.log('添加缓存  certificateOptionId = ' + certificateOptionId)
-                    this.gitRepositories =  this.gitRepositoriesMap[certificateOptionId]
-                })
-                .catch((error) => { // 请求失败处理
-                    console.log(error)
-                })
+            $api.repository.findGitRepositories({
+                certificateId: certificateOptionId
+            }).then(data => {
+                this.gitRepositoriesMap[certificateOptionId] = data.map((item) => ({
+                    id: item.id,
+                    name: item.name,
+                    description: item.description,
+                    isPublic: item.isPublic,
+                    branch: item.defaultBranch,
+                    cloneUrl: item.httpCloneUrl
+                }))
+                console.log('添加缓存  certificateOptionId = ' + certificateOptionId)
+                this.gitRepositories =  this.gitRepositoriesMap[certificateOptionId]
+            })
         },
 
         /**
          * 获取凭证
          */
         findCertificate() {
-            axios
-                .get('/certificate/findAll?containSsh=' + false)
-                .then((response) => {
-                    const resultData = fetchResponseData(response)
-                    this.certificateOptions = resultData.map((item) => ({
-                        id: item.id,
-                        name: item.name,
-                        description: item.description
-                    }))
-                })
-                .catch((error) => { // 请求失败处理
-                    console.log(error)
-                })
+            $api.certificate.findAll({
+                containSsh:false
+            }).then(data => {
+                this.certificateOptions = data.map((item) => ({
+                    id: item.id,
+                    name: item.name,
+                    description: item.description
+                }))
+            })
         },
 
         /**
          * 获取仓库列表
          */
         findRepositoriesHttp() {
-            axios
-                .get('/repository/findAll')
-                .then((response) => {
-                    const resultData = fetchResponseData(response)
-                    this.repositoryList = resultData.map((item) => ({
-                        id: item.id,
-                        name: item.name,
-                        description: item.description,
-                        cloneUrl: item.cloneUrl,
-                        easyCertificateId: item.easyCertificateId,
-                        easyCertificateName: item.easyCertificateName,
-                        branch: item.branch
-                    }))
-                })
-                .catch((error) => { // 请求失败处理
-                    console.log(error)
-                })
+            $api.repository.findAll({}).then(data => {
+                this.repositoryList = data.map((item) => ({
+                    id: item.id,
+                    name: item.name,
+                    description: item.description,
+                    cloneUrl: item.cloneUrl,
+                    easyCertificateId: item.easyCertificateId,
+                    easyCertificateName: item.easyCertificateName,
+                    branch: item.branch
+                }))
+            })
         },
 
         /**
@@ -259,24 +227,6 @@ export default {
             this.repository.cloneUrl = result.cloneUrl
             this.repository.branch = result.branch
         }
-    }
-}
-
-/**
- * 获取http 相应信息
- * @param response http响应体
- * @returns {*[]}
- */
-function fetchResponseData(response) {
-    if (response && response.data) {
-        const result = response.data
-        const {success} = result
-        const {message} = result
-
-        if (!success) {
-            alert(message)
-        }
-        return result.data || []
     }
 }
 </script>

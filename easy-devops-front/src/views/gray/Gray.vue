@@ -126,7 +126,7 @@ export default {
      * @param envId 环境id
      */
     refreshProject(envId) {
-      console.log('.... findProject', envId)
+      console.log('.... findAll', envId)
       axios
           .get(`/project/findByEnvId?envId=${envId}`)
           .then((response) => {
