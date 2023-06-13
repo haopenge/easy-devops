@@ -14,7 +14,7 @@
     <div>
       <Steps :current="buildStepIndex" direction="vertical" class="ivu-space-center">
         <template v-for="(item,index) in buildSteps" :key="index">
-          <Step :title=item @click="buildStepClick(index)"/>
+          <Step :title=item.name :content="item.description" @click="buildStepClick(index)"/>
         </template>
       </Steps>
     </div>
@@ -26,6 +26,17 @@
     <div>
       <template v-if="buildStepIndex === 0">
         <Form>
+          <FormItem label="模板:" prop="templates">
+            <Select v-model="template" multiple :max-tag-count="2" :max-tag-placeholder="maxTagPlaceholder">
+              <Option v-for="item in templates" :value="item.name" :key="item.name">{{ item.name }}</Option>
+            </Select>
+          </FormItem>
+        </Form>
+        <Button type="primary" style="width: 800px; margin-top: 10px" @click="saveConfig">保存</Button>
+      </template>
+
+      <template v-if="buildStepIndex === 1">
+        <Form>
           <div v-for="(item, index) in builds" :key="index">
             <Divider>步骤{{ index + 1 }}</Divider>
             <FormItem label="名称:" prop="name">
@@ -34,20 +45,20 @@
             </FormItem>
 
             <FormItem label="脚本:" prop="name" v-if="item.type === 2">
-                <br>
-                <Codemirror
-                        v-model="item.content"
-                        placeholder="Code gose here..."
-                        :style="{ height: '400px' }"
-                        :autofocus="true"
-                        :indent-with-tab="true"
-                        :tabSize="2"
-                        :extensions="extensions"
-                        @ready="log('ready', $event)"
-                        @change="codeChange($event,item)"
-                        @focus="log('focus', $event)"
-                        @blur="log('blur', $event)"
-                />
+              <br>
+              <Codemirror
+                  v-model="item.content"
+                  :placeholder="contentPlaceholder"
+                  :style="{ height: '400px' }"
+                  :autofocus="true"
+                  :indent-with-tab="true"
+                  :tabSize="2"
+                  :extensions="extensions"
+                  @ready="log('ready', $event)"
+                  @change="codeChange($event,item)"
+                  @focus="log('focus', $event)"
+                  @blur="log('blur', $event)"
+              />
             </FormItem>
           </div>
           <Button type="info" ghost style="width: 400px; margin-right: 11px" @click="addCheckOut">新增检出</Button>
@@ -56,12 +67,12 @@
         <Button type="primary" style="width: 800px; margin-top: 10px" @click="saveConfig">保存</Button>
       </template>
 
-      <template v-if="buildStepIndex === 1">
+      <template v-if="buildStepIndex === 2">
         <Form>
-          <FormItem label="命名空间:" prop="namespace" >
-            <Select v-model="namespace" style="width:333px" @on-change="namespaceOnSelect" >
+          <FormItem label="命名空间:" prop="namespace">
+            <Select v-model="namespace" style="width:333px" @on-change="namespaceOnSelect">
               <template v-for="(item,index) in namespaces" :key=index>
-                <Option :value=item.name :label=item.name >
+                <Option :value=item.name :label=item.name>
                   <span>{{ item.name }}</span>
                   <span style="float:right;color:#ccc">{{ item.description }}</span>
                 </Option>
@@ -74,16 +85,15 @@
     </div>
   </Space>
 
-
 </template>
 
 
 <script>
 
-import { Button, Form, Layout, Space } from 'view-ui-plus'
-import { Codemirror } from "vue-codemirror";
-import { java } from "@codemirror/lang-java";
-import { oneDark } from "@codemirror/theme-one-dark";
+import {Button, Form, Layout, Space} from 'view-ui-plus'
+import {Codemirror} from "vue-codemirror";
+import {java} from "@codemirror/lang-java";
+import {oneDark} from "@codemirror/theme-one-dark";
 
 export default {
   name: 'build',
@@ -99,10 +109,23 @@ export default {
     return {
       builds: [],
       buildSteps: [
-        '构建配置',
-        '发布配置'
+        {
+          id: 1,
+          name: '模板挂载',
+          description: '挂载模板文件，方便服务构建'
+        },
+        {
+          id: 2,
+          name: '构建配置',
+          description: '执行服务构建操作，确保发布所需配置加载完毕'
+        },
+        {
+          id: 3,
+          name: '发布配置',
+          description: '执行启动服务操作，服务可以对外提供服务'
+        },
       ],
-      buildStepIndex: 1,
+      buildStepIndex: 0,
       namespace: 'qa',
       namespaces: [
         {
@@ -114,8 +137,29 @@ export default {
           description: '灰度功能测试环境'
         }
       ],
-      extensions : [java(), oneDark],
-      log: console.log
+      extensions: [java(), oneDark],
+      log: console.log,
+      templates : [
+        {
+          id: 1,
+          name: 'java-dockerfile',
+          description:'后端java通用dockerfile'
+        },
+        {
+          id: 2,
+          name: 'maven-setting',
+          description:'maven仓库配置'
+        },
+        {
+          id: 3,
+          name: 'pod-develop_yaml',
+          description:'通用k8s pod发布yaml模板'
+        }
+      ],
+      template: [1,2],
+      maxTagPlaceholder (num) {
+        return 'more '+ num;
+      }
     }
   },
   methods: {
@@ -152,12 +196,13 @@ export default {
       let newShBuild = {
         name: '',
         type: 2,
-        content: 'FROM registry.cn-hangzhou.aliyuncs.com/ranmo/mvn:1.6\n' +
-          'EXPOSE 10080\n' +
-          'COPY ./target/*.jar $APP_PATH/app.jar\n' +
-          'CMD ["sh","-c","java -jar $APP_PATH/app.jar"]',
+        content: '',
         nameDisable: false
       }
+      this.contentPlaceholder = 'FROM registry.cn-hangzhou.aliyuncs.com/ranmo/mvn:1.6\n' +
+          'EXPOSE 10080\n' +
+          'COPY ./target/*.jar $APP_PATH/app.jar\n' +
+          'CMD ["sh","-c","java -jar $APP_PATH/app.jar"]'
       this.builds.push(newShBuild)
     },
 
@@ -173,14 +218,14 @@ export default {
      * @param value 脚本值
      * @param item  对应行记录
      */
-    codeChange(value,item){
+    codeChange(value, item) {
       item.content = value;
     },
 
     /**
      * 保存配置
      */
-    saveConfig(){
+    saveConfig() {
       alert(this.builds.at(0).content)
     }
 

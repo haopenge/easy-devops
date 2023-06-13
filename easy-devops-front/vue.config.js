@@ -30,7 +30,7 @@ const config = {
     }
   },
   devServer: {
-    open: true,
+    open: false,
     port: 8081,
     host: 'localhost',
     proxy: {

@@ -4,11 +4,9 @@
   "description": "a template project for vue3, vue-router, vuex, ViewUIPlus and @vue/cli.",
   "scripts": {
     "dev": "npm run serve",
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --disable-websocket",
     "build": "vue-cli-service build",
-    "build:staging": "vue-cli-service build --mode=staging",
-    "lint": "eslint ./src --ext .js,.vue",
-    "lint:fix": "eslint ./src --ext .js,.vue --fix"
+    "build:staging": "vue-cli-service build --mode=staging"
   },
   "dependencies": {
     "@codemirror/commands": "^6.2.4",
