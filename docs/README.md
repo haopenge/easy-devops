@@ -19,8 +19,7 @@
 # 介绍
 
 此项目是一款轻量发布系统；
-![](doc/img/img_1.png)
-
+![home.png](img/project.png)
 
 # mr规范
 
