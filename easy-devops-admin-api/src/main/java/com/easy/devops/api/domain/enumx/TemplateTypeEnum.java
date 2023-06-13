@@ -15,7 +15,10 @@ public enum TemplateTypeEnum {
 
     DOCKERFILE(1, "Dockerfile"),
     SHELL(5, "Shell"),
-    YAML(10, "Yaml")
+    YAML(10, "Yaml"),
+    JSON(11, "Json"),
+    PROPERTIES(12, "Properties"),
+    XML(13, "Xml"),
 
     ;
 
