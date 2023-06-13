@@ -28,6 +28,8 @@
 import CertificatePop from '@/views/certificate/CertificatePop.vue'
 import axios from "axios";
 
+import $api from '@/lib/api.js'
+
 export default {
   name: 'certificate',
   components: {
@@ -79,24 +81,23 @@ export default {
      * 获取凭证
      */
     findCertificate() {
-      axios
-          .get('/certificate/findAll?containSsh=' + true)
-          .then((response) => {
-            const resultData = fetchResponseData(response)
-            this.certificateList = resultData.map((item) => ({
-              id: item.id,
-              type: item.type,
-              typeShow: this.getTypeShow(item.type),
-              name: item.name,
-              description: item.description,
-              username: item.username,
-              repositoryType: item.repositoryType,
-              repositoryTypeShow: this.getRepositoryTypeShow(item.repositoryType)
-            }))
-          })
-          .catch((error) => { // 请求失败处理
-            console.log(error)
-          })
+      $api.certificate.findCertificate({
+        containSsh: true
+      }).then(data => {
+        this.certificateList = data.map((item) => ({
+          id: item.id,
+          type: item.type,
+          typeShow: this.getTypeShow(item.type),
+          name: item.name,
+          description: item.description,
+          username: item.username,
+          repositoryType: item.repositoryType,
+          repositoryTypeShow: this.getRepositoryTypeShow(item.repositoryType)
+        }))
+        console.log('findCertificate ' + JSON.stringify(data))
+      }).catch(error => {
+        console.log('findCertificate ' + JSON.stringify(error))
+      })
     },
 
     /**
@@ -137,23 +138,20 @@ export default {
      * 新增仓库凭证
      */
     addAccessTokenCertificate() {
-      const payload = {
-        name: this.certificate.name,
-        username: this.certificate.username,
-        description: this.certificate.description,
-        accessToken: this.certificate.accessToken,
-        repositoryType: this.certificate.repositoryType
-      }
-      axios
-          .post('/certificate/add', payload)
-          .then((response) => {
-            fetchResponseData(response)
-            // 刷新列表
-            this.findCertificate()
-          })
-          .catch((error) => { // 请求失败处理
-            console.log(error)
-          })
+      $api.certificate.addAccessTokenCertificate(
+          {
+            name: this.certificate.name,
+            username: this.certificate.username,
+            description: this.certificate.description,
+            accessToken: this.certificate.accessToken,
+            repositoryType: this.certificate.repositoryType
+          }
+      ).then(data => {
+        // 刷新列表
+        this.findCertificate()
+      }).catch(error => {
+        console.error('addAccessTokenCertificate ' + JSON.stringify(error))
+      })
     },
 
 
@@ -168,7 +166,7 @@ export default {
         username: '',
         accessToken: '',
         repositoryType: 2,
-          kubeConfig: ''
+        kubeConfig: ''
       }
       this.popEditEnable = false
       this.certificatePopVisible = true
@@ -211,33 +209,33 @@ export default {
           .put('/certificate/updateSshPrivateKey', payload)
           .then((response) => {
             fetchResponseData(response)
-              // 刷新列表
-              this.findCertificate()
+            // 刷新列表
+            this.findCertificate()
           })
           .catch((error) => { // 请求失败处理
             console.log(error)
           })
     },
 
-      /**
-       * 更新全局k8s config仓库凭证
-       */
-      addGlobalK8sConfigCertificate() {
-          console.log('----------------' + this.certificate.kubeConfig)
-          const payload = {
-              kubeConfig: this.certificate.kubeConfig
-          }
-          axios
-              .put('/certificate/updateK8sConfig', payload)
-              .then((response) => {
-                  fetchResponseData(response)
-                  // 刷新列表
-                  this.findCertificate()
-              })
-              .catch((error) => { // 请求失败处理
-                  console.log(error)
-              })
-      },
+    /**
+     * 更新全局k8s config仓库凭证
+     */
+    addGlobalK8sConfigCertificate() {
+      console.log('----------------' + this.certificate.kubeConfig)
+      const payload = {
+        kubeConfig: this.certificate.kubeConfig
+      }
+      axios
+          .put('/certificate/updateK8sConfig', payload)
+          .then((response) => {
+            fetchResponseData(response)
+            // 刷新列表
+            this.findCertificate()
+          })
+          .catch((error) => { // 请求失败处理
+            console.log(error)
+          })
+    },
 
     /**
      * 新增凭证
@@ -245,10 +243,10 @@ export default {
     certificateAdd() {
       if (this.certificate.type === 1) {
         this.addGlobalSshCertificate()
-      } else if( this.certificate.type === 3){
-          this.addGlobalK8sConfigCertificate()
-      }else {
-          this.addAccessTokenCertificate()
+      } else if (this.certificate.type === 3) {
+        this.addGlobalK8sConfigCertificate()
+      } else {
+        this.addAccessTokenCertificate()
       }
     },
 
@@ -291,16 +289,12 @@ export default {
      * @param id
      */
     deleteCertificate(id) {
-      axios
-          .delete(`/certificate/deleteById?id=${id}`)
-          .then((response) => {
-            fetchResponseData(response)
-            // 刷新列表
-            this.findCertificate()
-          })
-          .catch((error) => { // 请求失败处理
-            console.log(error)
-          })
+      $api.certificate.deleteCertificate({
+        id: id
+      }).then((data) => {
+        // 刷新列表
+        this.findCertificate()
+      })
     }
   }
 }
