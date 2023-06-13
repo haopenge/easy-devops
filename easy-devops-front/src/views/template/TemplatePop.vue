@@ -17,7 +17,7 @@
             <FormItem label="内容:" prop="type">
                 <Codemirror
                         v-model="template.content"
-                        placeholder="Code gose here..."
+                        :placeholder="contentPlaceholder"
                         :style="{ height: '400px' }"
                         :autofocus="true"
                         :indent-with-tab="true"
@@ -40,6 +40,11 @@ export default {
     components: {
         Codemirror,
     },
+  data (){
+    return {
+
+    }
+  },
     props: {
         templatePopVisible: {
             type: Boolean,
@@ -56,7 +61,11 @@ export default {
         extensions: {
             type: Array,
             default: [java(), oneDark]
-        }
+        },
+      contentPlaceholder: {
+          type: String,
+          default: ''
+      }
     },
     methods: {
         ok() {
