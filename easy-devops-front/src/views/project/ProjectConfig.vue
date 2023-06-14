@@ -27,7 +27,7 @@
       <template v-if="buildStepIndex === 0">
         <Form>
           <FormItem label="模板:" prop="templates">
-            <Select v-model="template" multiple :max-tag-count="2" :max-tag-placeholder="maxTagPlaceholder">
+            <Select v-model="template" multiple :max-tag-count="5" :max-tag-placeholder="maxTagPlaceholder">
               <Option v-for="item in templates" :value="item.name" :key="item.name">{{ item.name }}</Option>
             </Select>
           </FormItem>

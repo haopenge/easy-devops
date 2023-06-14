@@ -104,7 +104,8 @@ const fillDefaultConfig = (config) => {
  * 请求拦截器
  */
 $http.interceptors.request.use(config => {
-    console.log('请求拦截器 ' + JSON.stringify(config))
+    console.log('请求拦截器：' + JSON.stringify(config))
+    config.url = '/api' + config.url
     return config;
 }, err => {
     return Promise.reject(err)

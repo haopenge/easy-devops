@@ -26,7 +26,6 @@
 
 <script>
 import CertificatePop from '@/views/certificate/CertificatePop.vue'
-import axios from "axios";
 import $api from '@/lib/api.js'
 
 export default {
@@ -93,9 +92,6 @@ export default {
                     repositoryType: item.repositoryType,
                     repositoryTypeShow: this.getRepositoryTypeShow(item.repositoryType)
                 }))
-                console.log('findAll ' + JSON.stringify(data))
-            }).catch(error => {
-                console.log('findAll ' + JSON.stringify(error))
             })
         },
 

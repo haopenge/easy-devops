@@ -34,12 +34,12 @@ const config = {
     port: 8081,
     host: 'localhost',
     proxy: {
-      '/': {
+      '/api': {
         target: 'http://localhost:10081',
         changeOrigin: true,
-        /* pathRewrite: {
+         pathRewrite: {
           '^/api': ''
-        } */
+        }
       }
     }
   }
