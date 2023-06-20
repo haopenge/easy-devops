@@ -6,3 +6,4 @@
 *.iml
 target/
 work/
+logs/
