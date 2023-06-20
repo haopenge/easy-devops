@@ -1,0 +1,106 @@
+server:
+  port: 8989
+
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/youlai_boot?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&autoReconnect=true&allowMultiQueries=true
+    username: root
+    password: root12138
+  redis:
+    host: 127.0.0.1
+    password: nF5jB0zF3fJ4bF6FF
+mybatis-plus:
+  global-config:
+    db-config:
+      # 主键ID类型
+      id-type: none
+      # 逻辑删除字段名称
+      logic-delete-field: deleted
+      # 逻辑删除-删除值
+      logic-delete-value: 1
+      # 逻辑删除-未删除值
+      logic-not-delete-value: 0
+  configuration:
+    # 驼峰下划线转换
+    map-underscore-to-camel-case: true
+    # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+# 认证配置
+auth:
+  token:
+    secret_key: SecretKey012345678901234567890123456789012345678901234567890123456789
+    # token 有效期(单位:秒)
+    ttl: 18000
+
+oss:
+  # OSS 类型 (目前支持aliyun、minio)
+  type: minio
+  # MinIO 对象存储服务
+  minio:
+    # 服务Endpoint
+    endpoint: http://localhost:9000
+    # 访问凭据
+    access-key: minioadmin
+    # 凭据密钥
+    secret-key: minioadmin
+    # 存储桶名称
+    bucket-name: default
+    # (可选)自定义域名，如果配置了域名，生成的文件URL是域名格式，未配置则URL则是IP格式 (eg: https://oss.youlai.tech)
+    custom-domain:
+  # 阿里云OSS对象存储服务
+  aliyun:
+    # 服务Endpoint
+    endpoint: oss-cn-hangzhou.aliyuncs.com
+    # 访问凭据
+    access-key-id: your-access-key-id
+    # 凭据密钥
+    access-key-secret: your-access-key-secret
+    # 存储桶名称
+    bucket-name: default
+
+
+
+# springdoc配置： https://springdoc.org/properties.html
+springdoc:
+  swagger-ui:
+    enabled: true
+    operationsSorter: alpha
+    tags-sorter: alpha
+  api-docs:
+    enabled: true
+
+# 验证码配置
+easy-captcha:
+  # 验证码类型: arithmetic-算术
+  type: arithmetic
+  # 验证码有效时间(单位：秒)
+  ttl: 120
+
+# xxl-job 定时任务配置
+xxl:
+  job:
+    admin:
+      # 多个地址使用,分割
+      addresses: http://127.0.0.1:8080/xxl-job-admin
+    accessToken: default_token
+    executor:
+      appname: xxl-job-executor-${spring.application.name}
+      address:
+      ip:
+      port: 9999
+      logpath: /data/applogs/xxl-job/jobhandler
+      logretentiondays: 30
+
+# 系统配置
+system:
+  config:
+    # 数据权限开关
+    data-permission-enabled: true
+    # 定时任务 xxl-job 开关
+    xxl-job-enabled: false
+    # WebSocket 开关
+    websocket-enabled: true

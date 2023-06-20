@@ -45,8 +45,6 @@ public class IpUtils {
             ipAddress = request.getRemoteAddr();
         }
         if (ipAddress.equals("127.0.0.1") || ipAddress.equals("0:0:0:0:0:0:0:1")) {
-
-
             ipAddress = getMyIp();
         }
 
@@ -94,7 +92,6 @@ public class IpUtils {
                 log.debug(netInterface.getName());
                 Enumeration<InetAddress> addresses = netInterface.getInetAddresses();
                 while (addresses.hasMoreElements()) {
-
                     ip = addresses.nextElement();
                     if (ip instanceof java.net.Inet4Address) {
 
