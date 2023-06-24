@@ -4,8 +4,6 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.io.IoUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.easy.core.util.StringPool;
-import com.youlai.system.common.enums.CertificateTypeEnum;
 import com.youlai.system.common.exception.AdminApiException;
 import com.youlai.system.config.properties.GlobalProperties;
 import com.youlai.system.mapper.EasyCertificateMapper;
@@ -19,7 +17,6 @@ import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
@@ -54,17 +51,18 @@ public class EasyCertificateServiceImpl extends ServiceImpl<EasyCertificateMappe
      * @return 新增成功后id
      */
     public Integer add(AddCertificateRequestVo requestVo) {
-        EasyCertificate addEntity = new EasyCertificate();
-        addEntity.setName(requestVo.getName());
-        addEntity.setDescription(requestVo.getDescription());
-        addEntity.setRepositoryType(requestVo.getRepositoryType());
-
-        List<EasyCertificate> authenticateEntities = easyCertificateMapper.selectList(new LambdaQueryWrapper<EasyCertificate>().select(EasyCertificate::getName));
+        List<EasyCertificate> authenticateEntities = easyCertificateMapper
+                .selectList(new LambdaQueryWrapper<EasyCertificate>()
+                        .eq(EasyCertificate::getName,requestVo.getName()));
         if (!CollectionUtils.isEmpty(authenticateEntities)) {
             throw new AdminApiException(CERTIFICATE_NAME_EXISTS);
         }
 
         // 用户名、密码凭证
+        EasyCertificate addEntity = new EasyCertificate();
+        addEntity.setName(requestVo.getName());
+        addEntity.setDescription(requestVo.getDescription());
+        addEntity.setRepositoryType(requestVo.getRepositoryType());
         addEntity.setUsername(requestVo.getUsername());
         addEntity.setAccessToken(requestVo.getAccessToken());
 
@@ -85,6 +83,7 @@ public class EasyCertificateServiceImpl extends ServiceImpl<EasyCertificateMappe
 
         EasyCertificate updateEntity = new EasyCertificate();
         updateEntity.setId(requestVo.getId());
+        updateEntity.setName(requestVo.getName());
         updateEntity.setDescription(requestVo.getDescription());
         updateEntity.setRepositoryType(requestVo.getRepositoryType());
 
@@ -98,57 +97,20 @@ public class EasyCertificateServiceImpl extends ServiceImpl<EasyCertificateMappe
     /**
      * 获取凭证列表
      *
-     * @param containSsh 是否包含全局ssh凭证
      * @return AuthenticateResponseVo
      */
-    public List<CertificateResponseVo> findAll(boolean containSsh) {
+    public List<CertificateResponseVo> findAll() {
         List<EasyCertificate> entityList = easyCertificateMapper.selectList(new LambdaQueryWrapper<>());
-        List<CertificateResponseVo> dataList = BeanUtil.copyToList(entityList, CertificateResponseVo.class);
-        dataList.forEach(loopVo -> loopVo.setType(CertificateTypeEnum.USER_PWD.getValue()));
-        if (!containSsh) {
-            return dataList;
-        }
-
-        // 补充全局凭证信息
-        File file = new File(globalProperties.getAuthSshPrivateKeyFilePath());
-        if (!file.exists()) {
-            return dataList;
-        }
-        CertificateResponseVo responseVo = new CertificateResponseVo();
-        responseVo.setId(0);
-        responseVo.setName("系统");
-        responseVo.setDescription(StringPool.EMPTY);
-        responseVo.setType(CertificateTypeEnum.SSH_PRIVATE_KEY.getValue());
-        responseVo.setRepositoryType(0);
-        dataList.add(0, responseVo);
-
-        // 补充k8s配置信息
-        File k8sConfigFile = new File(globalProperties.getK8sConfigFilePath());
-        if (!k8sConfigFile.exists()) {
-            return dataList;
-        }
-        CertificateResponseVo k8sResponseVo = new CertificateResponseVo();
-        k8sResponseVo.setId(0);
-        k8sResponseVo.setName("系统");
-        k8sResponseVo.setDescription(StringPool.EMPTY);
-        k8sResponseVo.setType(CertificateTypeEnum.K8S_KUBE_CONFIG.getValue());
-        k8sResponseVo.setRepositoryType(0);
-        dataList.add(1, k8sResponseVo);
-
-        return dataList;
+        return BeanUtil.copyToList(entityList, CertificateResponseVo.class);
     }
 
     /**
      * 删除凭证信息
      *
-     * @param id 凭证id
+     * @param ids 凭证id
      */
-    public void deleteById(Integer id) {
-        EasyCertificate dbEntity = easyCertificateMapper.selectById(id);
-        if (Objects.isNull(dbEntity)) {
-            throw new AdminApiException(CERTIFICATE_NOT_EXISTS);
-        }
-        easyCertificateMapper.deleteById(id);
+    public void deleteById(List<Integer> ids) {
+        easyCertificateMapper.deleteBatchIds(ids);
     }
 
     /**

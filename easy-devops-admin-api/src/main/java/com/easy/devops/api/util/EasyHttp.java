@@ -1,10 +1,18 @@
 package com.easy.devops.api.util;
 
 import com.alibaba.fastjson.JSON;
-import com.easy.devops.api.domain.bo.FormDataFileBo;
 import com.easy.core.domain.ApiResult;
+import com.easy.devops.api.domain.bo.FormDataFileBo;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.*;
+import okhttp3.FormBody;
+import okhttp3.Headers;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;

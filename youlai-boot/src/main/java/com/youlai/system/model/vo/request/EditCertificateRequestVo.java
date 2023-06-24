@@ -13,6 +13,11 @@ public class EditCertificateRequestVo {
     private Integer id;
 
     /**
+     * 名称
+     */
+    private String name;
+
+    /**
      * 用户名
      */
     private String username;

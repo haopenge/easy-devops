@@ -20,12 +20,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Tag(name = "凭证管理")
 @RestController
@@ -109,11 +110,12 @@ public class EasyCertificateController extends BaseController {
      * 删除凭证信息
      */
     @DeleteMapping("/deleteById")
-    public ApiResult<Void> deleteById(Integer id) {
-        if (Objects.isNull(id)) {
+    public ApiResult<Void> deleteById(String ids) {
+        if (StringUtils.isBlank(ids)) {
             throw new AdminApiException(AdminApiFailureEnum.PARAM_ERROR);
         }
-        certificateService.deleteById(id);
+        List<Integer> idList = Arrays.stream(ids.split(",")).map(Integer::parseInt).collect(Collectors.toList());
+        certificateService.deleteById(idList);
         return success();
     }
 
@@ -121,8 +123,8 @@ public class EasyCertificateController extends BaseController {
      * 获取凭证信息
      */
     @GetMapping("/findAll")
-    public ApiResult<List<CertificateResponseVo>> findAll(@RequestParam(required = false,defaultValue = "true") boolean containSsh) {
-        List<CertificateResponseVo> data = certificateService.findAll(containSsh);
+    public ApiResult<List<CertificateResponseVo>> findAll() {
+        List<CertificateResponseVo> data = certificateService.findAll();
         return success(data);
     }
 

@@ -28,9 +28,9 @@ public class CertificateResponseVo {
     private String username;
 
     /**
-     * 1-全局ssh  5-用户名密码令牌
+     * 认证秘钥
      */
-    private Integer type;
+    private String accessToken;
 
     /**
      * git仓库类型，1-github  2-gitee   3-gitlab
