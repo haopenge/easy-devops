@@ -74,7 +74,6 @@ function httpFindAll() {
     certificateList.value = data.map((item) => ({
       id: item.id,
       type: item.type,
-      typeShow: getTypeShow({type: item.type}),
       name: item.name,
       description: item.description,
       username: item.username,
@@ -100,23 +99,6 @@ function getRepositoryTypeShow({repositoryType}: { repositoryType: any }) {
     return 'gitee'
   } else if (repositoryType === 3) {
     return 'gitlab'
-  } else {
-    return ''
-  }
-}
-
-/**
- * 获取对应的type展示信息
- * @param type type
- * @returns {string} type描述
- */
-function getTypeShow({type}: { type: any }) {
-  if (type === 1) {
-    return '全局ssh'
-  } else if (type === 3) {
-    return 'k8s配置'
-  } else if (type === 5) {
-    return '仓库凭证'
   } else {
     return ''
   }
@@ -214,6 +196,7 @@ function resetForm() {
       >
         <el-table-column type="selection" width="55" align="center"/>
         <el-table-column label="名称" prop="name"/>
+        <el-table-column label="用户名" prop="username"/>
         <el-table-column label="仓库类型" prop="repositoryTypeShow"/>
         <el-table-column label="描述" prop="description"/>
 
