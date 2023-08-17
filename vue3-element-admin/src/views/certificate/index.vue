@@ -172,7 +172,6 @@ function resetForm() {
     <el-card shadow="never">
       <template #header>
         <el-button
-            v-hasPerm="['sys:dict_type:add']"
             type="success"
             @click="openDialog()">
           <i-ep-plus/>
@@ -203,7 +202,6 @@ function resetForm() {
         <el-table-column fixed="right" label="操作" width="220">
           <template #default="scope">
             <el-button
-                v-hasPerm="['sys:dict_type:edit']"
                 type="primary"
                 link
                 size="small"
@@ -212,7 +210,6 @@ function resetForm() {
               编辑
             </el-button>
             <el-button
-                v-hasPerm="['sys:dict_type:delete']"
                 type="primary"
                 link
                 size="small"

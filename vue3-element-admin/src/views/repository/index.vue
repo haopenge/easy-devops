@@ -24,8 +24,6 @@ const rules = reactive({
 
 });
 
-
-const state = ref('')
 const links = ref<GitRepositoryVo[]>([])
 
 const querySearch = (queryString: string, cb: any) => {

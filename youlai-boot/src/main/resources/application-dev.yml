@@ -5,12 +5,12 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://10.8.0.10:3306/youlai_boot?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&autoReconnect=true&allowMultiQueries=true
+    url: jdbc:mysql://10.8.0.6:3306/youlai_boot?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&autoReconnect=true&allowMultiQueries=true
     username: root
     password: root12138
   redis:
-    host: 10.8.0.10
-    #password: nF5jB0zF3fJ4bF6FF
+    host: 10.8.0.6
+    password: nF5jB0zF3fJ4bF6FF
 mybatis-plus:
   global-config:
     db-config:

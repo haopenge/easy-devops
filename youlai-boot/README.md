@@ -60,7 +60,7 @@
 
 ### 2. 配置修改
 
-[application-dev.yml](src/main/resources/application-dev.yml) 修改MySQL、Redis连接配置；
+[application-dev.yml](src/main/resources/application-windows.yml) 修改MySQL、Redis连接配置；
 
 ### 3. 后端启动
 执行 [SystemApplication.java](src/main/java/com/youlai/system/SystemApplication.java) 的 main 方法完成后端项目启动；

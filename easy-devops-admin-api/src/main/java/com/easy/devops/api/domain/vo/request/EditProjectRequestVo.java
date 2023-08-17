@@ -2,9 +2,6 @@ package com.easy.devops.api.domain.vo.request;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
 /**
  * 编辑项目Vo
  *
@@ -14,6 +11,11 @@ import javax.validation.constraints.NotNull;
 public class EditProjectRequestVo {
 
     private Integer id;
+
+    /**
+     * 项目名
+     */
+    private String name;
 
     /**
      * 环境id

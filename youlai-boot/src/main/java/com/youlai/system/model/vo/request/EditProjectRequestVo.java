@@ -13,6 +13,11 @@ public class EditProjectRequestVo {
     private Integer id;
 
     /**
+     * 项目名
+     */
+    private String name;
+
+    /**
      * 环境id
      */
     private Integer envId;

@@ -1,18 +1,24 @@
-package com.easy.devops.api.service.impl;
+package com.youlai.system.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.easy.devops.api.domain.entity.*;
-import com.easy.devops.api.domain.enumx.AdminApiFailureEnum;
-import com.easy.devops.api.domain.enumx.GitRepositoryTypeEnum;
-import com.easy.devops.api.domain.vo.request.AddProjectRequestVo;
-import com.easy.devops.api.domain.vo.request.EditProjectRequestVo;
-import com.easy.devops.api.domain.vo.response.ProjectResponseVo;
-import com.easy.devops.api.exception.AdminApiException;
-import com.easy.devops.api.mapper.CertificateEntityMapper;
-import com.easy.devops.api.mapper.EnvEntityMapper;
-import com.easy.devops.api.mapper.ProjectEntityMapper;
-import com.easy.devops.api.mapper.RepositoryEntityMapper;
-import com.easy.devops.api.service.IGitService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.youlai.system.common.enums.AdminApiFailureEnum;
+import com.youlai.system.common.enums.GitRepositoryTypeEnum;
+import com.youlai.system.common.exception.AdminApiException;
+import com.youlai.system.mapper.EasyCertificateMapper;
+import com.youlai.system.mapper.EasyEnvMapper;
+import com.youlai.system.mapper.EasyProjectMapper;
+import com.youlai.system.mapper.EasyRepositoryMapper;
+import com.youlai.system.model.entity.EasyCertificate;
+import com.youlai.system.model.entity.EasyEnv;
+import com.youlai.system.model.entity.EasyProject;
+import com.youlai.system.model.entity.EasyRepository;
+import com.youlai.system.model.vo.request.AddProjectRequestVo;
+import com.youlai.system.model.vo.request.EditProjectRequestVo;
+import com.youlai.system.model.vo.response.ProjectResponseVo;
+import com.youlai.system.service.EasyProjectService;
+import com.youlai.system.service.IGitService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -21,30 +27,32 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-
 /**
- * 项目
- */
+* @author liupenghao
+* @description 针对表【easy_project(项目)】的数据库操作Service实现
+* @createDate 2023-08-17 11:42:09
+*/
 @Service
-public class ProjectService {
+public class EasyProjectServiceImpl extends ServiceImpl<EasyProjectMapper, EasyProject>
+    implements EasyProjectService{
 
     @Resource
-    private ProjectEntityMapper projectEntityMapper;
+    private EasyEnvMapper envMapper;
 
     @Resource
-    private EnvEntityMapper envEntityMapper;
+    private EasyProjectMapper projectMapper;
 
     @Resource
-    private RepositoryEntityMapper repositoryEntityMapper;
+    private EasyCertificateMapper certificateMapper;
 
     @Resource
-    private CertificateEntityMapper certificateEntityMapper;
+    private EasyRepositoryMapper repositoryMapper;
 
     public Integer addProject(AddProjectRequestVo requestVo) {
         // 校验环境
         Integer envId = requestVo.getEnvId();
         if (Objects.nonNull(envId)) {
-            EnvEntity envEntity = envEntityMapper.selectByPrimaryKey(envId);
+            EasyEnv envEntity = envMapper.selectById(envId);
             if (Objects.isNull(envEntity)) {
                 throw new AdminApiException(AdminApiFailureEnum.GRAY_ENV_NOT_EXIST);
             }
@@ -53,28 +61,28 @@ public class ProjectService {
         }
 
         // 校验此项目是否已存在
-        ProjectEntityExample example = new ProjectEntityExample();
-        example.createCriteria()
-                .andNameEqualTo(requestVo.getName()).andEasyEnvIdNotEqualTo(envId);
-        List<ProjectEntity> entityList = projectEntityMapper.selectByExample(example);
-        if (!CollectionUtils.isEmpty(entityList)) {
+        EasyProject dbProject = projectMapper.selectOne(new LambdaQueryWrapper<EasyProject>()
+                .eq(EasyProject::getName,requestVo.getName())
+                .eq(EasyProject::getEasyEnvId,envId)
+        );
+        if (Objects.nonNull(dbProject)) {
             throw new AdminApiException(AdminApiFailureEnum.ENV_PROJECT_EXIST);
         }
 
         // 校验仓库
         Integer repositoryId = requestVo.getEasyRepositoryId();
-        RepositoryEntity repositoryEntity = repositoryEntityMapper.selectByPrimaryKey(repositoryId);
+        EasyRepository repositoryEntity = repositoryMapper.selectById(repositoryId);
         if (Objects.isNull(repositoryEntity)) {
             throw new AdminApiException(AdminApiFailureEnum.REPOSITORY_NOT_EXISTS);
         }
 
         // 新增项目
-        ProjectEntity projectEntity = new ProjectEntity();
+        EasyProject projectEntity = new EasyProject();
         projectEntity.setName(requestVo.getName());
         projectEntity.setEasyEnvId(envId);
         projectEntity.setEasyRepositoryId(repositoryId);
         projectEntity.setBranch(requestVo.getBranch());
-        projectEntityMapper.insertSelective(projectEntity);
+        projectMapper.insert(projectEntity);
 
         return projectEntity.getId();
     }
@@ -83,7 +91,7 @@ public class ProjectService {
         // 校验环境
         Integer envId = requestVo.getEnvId();
         if (Objects.nonNull(envId)) {
-            EnvEntity envEntity = envEntityMapper.selectByPrimaryKey(envId);
+            EasyEnv envEntity = envMapper.selectById(envId);
             if (Objects.isNull(envEntity)) {
                 throw new AdminApiException(AdminApiFailureEnum.GRAY_ENV_NOT_EXIST);
             }
@@ -91,44 +99,40 @@ public class ProjectService {
             envId = 0;
         }
 
-        ProjectEntity projectEntity = projectEntityMapper.selectByPrimaryKey(requestVo.getId());
+        EasyProject projectEntity = projectMapper.selectById(requestVo.getId());
         if (Objects.isNull(projectEntity)) {
             throw new AdminApiException(AdminApiFailureEnum.ENV_PROJECT_NOT_EXIST);
         }
 
         // 校验仓库
         Integer repositoryId = requestVo.getEasyRepositoryId();
-        RepositoryEntity repositoryEntity = repositoryEntityMapper.selectByPrimaryKey(repositoryId);
+        EasyRepository repositoryEntity = repositoryMapper.selectById(repositoryId);
         if (Objects.isNull(repositoryEntity)) {
             throw new AdminApiException(AdminApiFailureEnum.REPOSITORY_NOT_EXISTS);
         }
 
         // 新增项目
-        ProjectEntity updateEntity = new ProjectEntity();
+        EasyProject updateEntity = new EasyProject();
         updateEntity.setId(requestVo.getId());
         updateEntity.setName(requestVo.getName());
         updateEntity.setEasyEnvId(envId);
         updateEntity.setEasyRepositoryId(repositoryId);
         updateEntity.setBranch(requestVo.getBranch());
-        projectEntityMapper.updateByPrimaryKeySelective(updateEntity);
+        projectMapper.updateById(updateEntity);
     }
 
-    public void deleteById(Integer id) {
-        ProjectEntity projectEntity = projectEntityMapper.selectByPrimaryKey(id);
-        if (Objects.isNull(projectEntity)) {
-            throw new AdminApiException(AdminApiFailureEnum.ENV_PROJECT_NOT_EXIST);
-        }
+    public void deleteById(List<Integer> idList) {
         // TODO 校验服务是否已在运行
-        projectEntityMapper.deleteByPrimaryKey(id);
+        projectMapper.deleteBatchIds(idList);
     }
 
     public List<String> findBranches(Integer easyRepositoryId) {
-        RepositoryEntity repositoryEntity = repositoryEntityMapper.selectByPrimaryKey(easyRepositoryId);
+        EasyRepository repositoryEntity = repositoryMapper.selectById(easyRepositoryId);
         if (Objects.isNull(repositoryEntity)) {
             throw new AdminApiException(AdminApiFailureEnum.REPOSITORY_NOT_EXISTS);
         }
-        CertificateEntity certificateEntity = certificateEntityMapper.selectByPrimaryKey(repositoryEntity.getEasyCertificateId());
-        if (Objects.isNull(certificateEntity) || !GitRepositoryTypeEnum.existEnum(certificateEntity.getRepositoryType())) {
+        EasyCertificate certificateEntity = certificateMapper.selectById(repositoryEntity.getEasyCertificateId());
+        if (Objects.isNull(certificateEntity) || ! GitRepositoryTypeEnum.existEnum(certificateEntity.getRepositoryType())) {
             throw new AdminApiException(AdminApiFailureEnum.CERTIFICATE_NOT_EXISTS);
         }
         IGitService gitService = GitRepositoryTypeEnum.getGitServiceByValue(certificateEntity.getRepositoryType());
@@ -137,33 +141,32 @@ public class ProjectService {
 
     public List<ProjectResponseVo> findAll(Integer envId) {
         if(envId != 0){
-            EnvEntity envEntity = envEntityMapper.selectByPrimaryKey(envId);
+            EasyEnv envEntity = envMapper.selectById(envId);
             if (Objects.isNull(envEntity)) {
                 throw new AdminApiException(AdminApiFailureEnum.GRAY_ENV_NOT_EXIST);
             }
         }
-        List<ProjectEntity> projectEntities = projectEntityMapper.selectByExample(new ProjectEntityExample());
+        List<EasyProject> projectEntities = projectMapper.selectList(new LambdaQueryWrapper<>());
         if(CollectionUtils.isEmpty(projectEntities)){
             return Collections.emptyList();
         }
 
-        List<CertificateEntity> certificateEntities = certificateEntityMapper.selectByExample(new CertificateEntityExample());
-        Map<Integer, CertificateEntity> certificateMap = certificateEntities.stream().collect(Collectors.toMap(CertificateEntity::getId, Function.identity()));
+        List<EasyCertificate> certificateEntities = certificateMapper.selectList(new LambdaQueryWrapper<>());
+        Map<Integer, EasyCertificate> certificateMap = certificateEntities.stream().collect(Collectors.toMap(EasyCertificate::getId, Function.identity()));
 
-        RepositoryEntityExample example = new RepositoryEntityExample();
-        List<RepositoryEntity> repositoryEntityList = repositoryEntityMapper.selectByExample(example);
-        Map<Integer, RepositoryEntity> repositoryMap = repositoryEntityList.stream().collect(Collectors.toMap(RepositoryEntity::getId, Function.identity()));
+        List<EasyRepository> repositoryEntityList = repositoryMapper.selectList(new LambdaQueryWrapper<>());
+        Map<Integer, EasyRepository> repositoryMap = repositoryEntityList.stream().collect(Collectors.toMap(EasyRepository::getId, Function.identity()));
 
         List<ProjectResponseVo> dataList = new ArrayList<>();
-        for (ProjectEntity loopProject : projectEntities) {
+        for (EasyProject loopProject : projectEntities) {
             ProjectResponseVo responseVo = BeanUtil.toBean(loopProject, ProjectResponseVo.class);
 
             Integer easyRepositoryId = loopProject.getEasyRepositoryId();
-            RepositoryEntity repositoryEntity = repositoryMap.get(easyRepositoryId);
+            EasyRepository repositoryEntity = repositoryMap.get(easyRepositoryId);
             if(Objects.nonNull(repositoryEntity)){
                 responseVo.setEasyRepositoryName(repositoryEntity.getName());
 
-                CertificateEntity certificateEntity = certificateMap.get(repositoryEntity.getEasyCertificateId());
+                EasyCertificate certificateEntity = certificateMap.get(repositoryEntity.getEasyCertificateId());
                 if(Objects.nonNull(certificateEntity)){
                     responseVo.setEasyCertificateName(certificateEntity.getName());
                 }
@@ -172,4 +175,9 @@ public class ProjectService {
         }
         return dataList;
     }
+
 }
+
+
+
+
