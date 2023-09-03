@@ -254,9 +254,13 @@
         </dependency>
         <dependency>
             <groupId>io.github.haopenge</groupId>
-            <artifactId>Unknown</artifactId>
+            <artifactId>easy-core</artifactId>
             <version>1.0.0</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
         </dependency>
 
     </dependencies>
