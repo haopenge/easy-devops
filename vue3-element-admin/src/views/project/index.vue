@@ -44,7 +44,33 @@ const repositorySelect = (item: RepositoryVo) => {
 	popVo.easyRepositoryName = item.name
 	popVo.easyRepositoryId = item.id
 
+	// 更新仓库分支列表
+	$project.findBranches(popVo.easyRepositoryId).then(({data}) => {
+		branchLinks.value = data
+	}).finally(() => {
 
+	})
+}
+
+
+const branchLinks = ref<string[]>([])
+const branchQuerySearch = (queryString: string, cb: any) => {
+	const results = queryString
+			? branchLinks.value.filter(link => {
+				var linkName = link;
+				if (linkName) {
+					return linkName.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+				} else {
+					return ""
+				}
+			})
+			: branchLinks.value
+	// call callback function to return suggestion objects
+	cb(results)
+}
+
+const branchSelect = (item: string) => {
+	popVo.branch = item
 }
 
 /**
@@ -74,18 +100,21 @@ const handleSubmit = useThrottleFn(() => {
 		if (valid) {
 			const id = popVo.id;
 			loading.value = true;
+			formDataVo.name = popVo.name;
+			formDataVo.branch = popVo.branch;
+			formDataVo.easyRepositoryId = popVo.easyRepositoryId;
+
 			if (id) {
 				formDataVo.id = popVo.id;
-				$repository.edit(formDataVo)
+				$project.edit(formDataVo)
 						.then(() => {
 							ElMessage.success("修改仓库成功");
 							closeDialog();
 							httpFindAll();
-
 						})
 						.finally(() => (loading.value = false));
 			} else {
-				$repository.add(formDataVo)
+				$project.add(formDataVo)
 						.then(() => {
 							ElMessage.success("新增仓库成功");
 							closeDialog();
@@ -212,7 +241,6 @@ function resetForm() {
 				<el-table-column label="仓库名称" prop="easyRepositoryName"/>
 				<el-table-column label="凭证名称" prop="easyCertificateName"/>
 				<el-table-column label="分支" prop="branch"/>
-
 				<el-table-column fixed="right" label="操作" width="220">
 					<template #default="scope">
 						<el-button
@@ -268,7 +296,16 @@ function resetForm() {
 				</el-form-item>
 
 				<el-form-item label="分支" prop="branch">
-					<el-input v-model="popVo.branch" type="text"/>
+					<el-autocomplete
+							v-model="popVo.branch"
+							:fetch-suggestions="branchQuerySearch"
+							placeholder="请输入分支名"
+							@select="branchSelect"
+					>
+						<template #default="{ item }">
+							<div class="value">{{ item }}</div>
+						</template>
+					</el-autocomplete>
 				</el-form-item>
 			</el-form>
 			<template #footer>

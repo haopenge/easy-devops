@@ -8,8 +8,8 @@
         <artifactId>easy-parent</artifactId>
         <version>1.0.0</version>
     </parent>
-
-   cc
+    <artifactId>easy-core</artifactId>
+    <version>1.0.0</version>
     <description>easy-core</description>
     <properties>
 
@@ -106,6 +106,10 @@
             <artifactId>mybatis</artifactId>
             <version>3.5.11</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
 
         <!-- =========================== my end =========================== -->

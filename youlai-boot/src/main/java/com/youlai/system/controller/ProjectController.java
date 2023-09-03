@@ -72,7 +72,7 @@ public class ProjectController extends BaseController {
     /**
      * 编辑项目
      */
-    @PostMapping("/edit")
+    @PutMapping("/edit")
     public ApiResult<Void> editProject(@RequestBody EditProjectRequestVo editProjectRequestVo) {
         projectService.editProject(editProjectRequestVo);
         return success();

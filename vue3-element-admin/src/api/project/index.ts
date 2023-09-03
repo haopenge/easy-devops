@@ -30,8 +30,15 @@ const $project = {
 	 */
 	deleteById(ids: string){
 		return service.delete("/project/deleteById?ids=" + ids);
-	}
+	},
 
+	/**
+	 * 获取仓库分支
+	 * @param easyRepositoryId 仓库id
+	 */
+	findBranches(easyRepositoryId: number | undefined) {
+		return service.get("/project/findBranches?easyRepositoryId=" + easyRepositoryId);
+	}
 }
 
 export default $project;

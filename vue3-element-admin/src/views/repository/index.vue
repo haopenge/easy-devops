@@ -250,7 +250,7 @@ function resetForm() {
         <el-table-column label="名称" prop="name"/>
         <el-table-column label="描述" prop="description"/>
         <el-table-column label="仓库名" prop="easyCertificateName"/>
-        <el-table-column label="分支" prop="branch"/>
+        <el-table-column label="默认分支" prop="branch"/>
 
         <el-table-column fixed="right" label="操作" width="220">
           <template #default="scope">
