@@ -12,6 +12,9 @@ import 'virtual:svg-icons-register';
 // 国际化
 import i18n from '@/lang/index';
 
+// 代码编辑组件
+import  {InstallCodemirro}  from "codemirror-editor-vue3"
+
 // 样式
 import 'element-plus/theme-chalk/dark/css-vars.css';
 import '@/styles/index.scss';
@@ -23,4 +26,7 @@ setupDirective(app);
 // 全局注册 状态管理(store)
 setupStore(app);
 
-app.use(router).use(i18n).mount('#app');
+app.use(router)
+	.use(i18n)
+	.use(InstallCodemirro)
+	.mount('#app');

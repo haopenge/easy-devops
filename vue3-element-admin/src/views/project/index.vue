@@ -1,10 +1,9 @@
 <script lang="ts" setup>
 
-import {RepositoryPopVo, RepositoryVo} from "@/api/repository/types";
+import { RepositoryVo} from "@/api/repository/types";
 import $repository from "@/api/repository";
 import $project from "@/api/project";
 import {ProjectVo, ProjectForm, ProjectPopVo} from "@/api/project/types";
-import Repository from "@/api/repository";
 
 const projectVoList = ref<ProjectVo[]>();
 
@@ -169,6 +168,14 @@ function openDialog(data?: ProjectVo) {
 }
 
 /**
+ * 设置项目
+ */
+function handleSetting(id?: number) {
+	const deleteIds = [id || ids.value].join(",");
+	ElMessage.warning("功能待完善");
+}
+
+/**
  * 删除项目
  */
 function handleDelete(id?: number) {
@@ -255,10 +262,19 @@ function resetForm() {
 								type="primary"
 								link
 								size="small"
+								@click.stop="handleSetting(scope.row.id)">
+							<i-ep-setting/>
+							设置
+						</el-button>
+						<el-button
+								type="primary"
+								link
+								size="small"
 								@click.stop="handleDelete(scope.row.id)">
 							<i-ep-delete/>
 							删除
 						</el-button>
+
 					</template>
 
 				</el-table-column>
