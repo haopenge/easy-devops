@@ -11,21 +11,16 @@
 
 			<el-main>
 				<el-form
+						:rules="rules"
 						ref="dataFormRef"
 						label-width="80px">
-					<el-form-item label="名称:" prop="branch">
-						<el-input v-model="newStepName" type="text"/>
+					<el-form-item label="名称:" prop="name">
+						<el-input v-model="newStepName" type="text" placeholder="代码检出"/>
 					</el-form-item>
-					<el-form-item label="脚本:" prop="branch">
-						<div>
-							<el-radio-group v-model="codeType" size="small" @change="typeChange">
-								<el-radio-button label="Dockerfile"/>
-								<el-radio-button label="Yaml"/>
-								<el-radio-button label="Properties"/>
-								<el-radio-button label="Xml"/>
-							</el-radio-group>
-						</div>
+					<el-form-item label="脚本:" prop="script">
 						<Codemirror
+								width="800"
+								height="800"
 								v-model:value="codeMirrorVo.value"
 								:options="codeMirrorVo.cmOptions"
 								border
@@ -47,6 +42,10 @@
 
 <script lang="ts" setup>
 import {BuildStepVo} from "@/api/config/types";
+import "codemirror/mode/shell/shell.js"
+
+import "codemirror/theme/seti.css"
+import Codemirror from "codemirror-editor-vue3"
 import {CodeMirrorVo} from "@/api/template/types";
 
 const active = ref(2)
@@ -56,6 +55,10 @@ const activities = ref<BuildStepVo[]>([
 	{
 		id: 1,
 		title: "代码检出"
+	},
+	{
+		id: 2,
+		title: "项目构建"
 	}
 ]);
 const next = () => {
@@ -71,14 +74,21 @@ const stepClick = () => {
 	console.log('stepClick = ')
 }
 
+
+const rules = reactive({
+	name: [{required: true, message: "名称不能为空", trigger: "blur"}],
+	script: [{required: true, message: "脚本不能为空", trigger: "blur"}],
+});
+
+
 // ---------------------------------  codemirror	--------------------------------
-const codeType = ref<string>("Xml")
 
 // ---------------------------------  codemirror	--------------------------------
 const codeMirrorVo = ref<CodeMirrorVo>({
-	value: 'hello world',
+	value: '#!/bin/bash \nhello world',
 	cmOptions: {
-		mode: "text/x-dockerfile",
+		// mode: "text/x-dockerfile",
+		mode: "text/x-sh",
 		theme: "seti"
 	}
 })
@@ -96,24 +106,8 @@ const onReady = (cm: any) => {
 }
 
 
-// ------------ 类型选择	--------------------------------
-const typeChange = (value: string | number | boolean) => {
-	console.log('typeChange = ' + value)
-}
-
-
 onMounted(() => {
-	setTimeout(() => {
-		cmRef.value?.refresh()
-	}, 1000)
 
-	setTimeout(() => {
-		cmRef.value?.resize(800, 200)
-	}, 2000)
-
-	setTimeout(() => {
-		cmRef.value?.cminstance.isClean()
-	}, 3000)
 })
 
 onUnmounted(() => {

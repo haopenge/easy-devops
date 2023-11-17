@@ -10,7 +10,7 @@ spring:
     password: root12138
   redis:
     host: 127.0.0.1
-    password: nF5jB0zF3fJ4bF6FF
+    #password: nF5jB0zF3fJ4bF6FF
 mybatis-plus:
   global-config:
     db-config:
