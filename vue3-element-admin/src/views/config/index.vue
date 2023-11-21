@@ -1,42 +1,50 @@
 <template>
+
 	<div class="app-container">
-		<el-container>
-			<el-header>
-				<el-steps :active="active" finish-status="success">
-					<template v-for="loop in activities">
-						<el-step :title="loop.title" @onclick="stepClick"/>
-					</template>
-				</el-steps>
-			</el-header>
+		<div class="common-layout">
+			<el-container>
+				<el-aside width="150px" style="margin-top: 30px; margin-left: 20px">
+					<el-steps :active="active" finish-status="success" direction="vertical" space="100px">
+						<template v-for="loop in activities">
+							<el-step :title="loop.title" @onclick="stepClick"/>
+						</template>
+					</el-steps>
+				</el-aside>
+				<el-main>
+					<el-form
+							:rules="rules"
+							ref="dataFormRef"
+							label-width="80px">
+						<el-form-item label="名称:" prop="name">
+							<el-input v-model="newStepName" type="text" placeholder="代码检出"/>
+						</el-form-item>
+						<el-form-item label="脚本:" prop="script">
+							<Codemirror
+									width="800"
+									height="500"
+									v-model:value="codeMirrorVo.value"
+									:options="codeMirrorVo.cmOptions"
+									border
+									ref="cmRef"
+									@change="onChange"
+									@input="onInput"
+									@ready="onReady"
+							>
+							</Codemirror>
+						</el-form-item>
+						<div style="margin-left: 81px">
+							<div style="margin-bottom: 10px">
+								<el-button type="primary" plain @click="next" style="width: 380px">新增检出</el-button>
+								<el-button type="success" plain @click="next" style="width: 380px">新增脚本</el-button>
+							</div>
+							<el-button type="primary" @click="next" style="width: 780px">保存</el-button>
+						</div>
 
-			<el-main>
-				<el-form
-						:rules="rules"
-						ref="dataFormRef"
-						label-width="80px">
-					<el-form-item label="名称:" prop="name">
-						<el-input v-model="newStepName" type="text" placeholder="代码检出"/>
-					</el-form-item>
-					<el-form-item label="脚本:" prop="script">
-						<Codemirror
-								width="800"
-								height="800"
-								v-model:value="codeMirrorVo.value"
-								:options="codeMirrorVo.cmOptions"
-								border
-								ref="cmRef"
-								@change="onChange"
-								@input="onInput"
-								@ready="onReady"
-						>
-						</Codemirror>
-					</el-form-item>
-					<el-button style="margin-top: 12px" @click="next">新增</el-button>
+					</el-form>
+				</el-main>
+			</el-container>
+		</div>
 
-				</el-form>
-
-			</el-main>
-		</el-container>
 	</div>
 </template>
 
