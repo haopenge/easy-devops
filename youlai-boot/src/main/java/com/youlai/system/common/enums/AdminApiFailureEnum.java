@@ -61,7 +61,7 @@ public enum AdminApiFailureEnum implements ExceptionEnumInterface {
 
     CERTIFICATE_NOT_EXISTS("100_502", "凭证不存在或已删除"),
 
-    CERTIFICATE_NEED_CONFIG_BY_YOURSELF("100_503","windows或者mac环境请手动配置"),
+    CERTIFICATE_NEED_CONFIG_BY_YOURSELF("100_503", "windows或者mac环境请手动配置"),
 
     CERTIFICATE_K8S_CONFIG_SAVE_ERROR("100_504", "k8s配置保存失败"),
 
@@ -87,9 +87,14 @@ public enum AdminApiFailureEnum implements ExceptionEnumInterface {
 
     TEMPLATE_NAME_EXIST("100_802", "模板名称重复"),
 
-    TEMPLATE_CONTENT_FILE_SAVE_ERROR("100_803","模板内容文件保存失败")
+    TEMPLATE_CONTENT_FILE_SAVE_ERROR("100_803", "模板内容文件保存失败"),
 
-    ;
+    PROJECT_SCRIPT_SAVE_FAIL("100_900", "项目脚本保存失败"),
+
+    PROJECT_SCRIPT_FIND_FAIL("100_901", "项目脚本获取失败"),
+
+
+    PROJECT_NOT_EXIST("100_902", "项目不存在");
     private String code;
 
     private String message;

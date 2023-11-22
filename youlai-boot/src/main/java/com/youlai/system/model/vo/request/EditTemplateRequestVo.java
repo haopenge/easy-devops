@@ -1,11 +1,9 @@
-package com.easy.devops.api.domain.vo.response;
+package com.youlai.system.model.vo.request;
 
 import lombok.Data;
 
-import java.util.Date;
-
 @Data
-public class TemplateResponseVo {
+public class EditTemplateRequestVo {
 
     private Integer id;
 
@@ -13,16 +11,6 @@ public class TemplateResponseVo {
      * 名称
      */
     private String name;
-
-    /**
-     * 创建时间
-     */
-    private Date createTime;
-
-    /**
-     * 更新时间
-     */
-    private Date updateTime;
 
     /**
      * 模板类型：1-shell；5-dockerfile ;  10-yaml ;
@@ -33,4 +21,5 @@ public class TemplateResponseVo {
      * 内容
      */
     private String content;
+
 }

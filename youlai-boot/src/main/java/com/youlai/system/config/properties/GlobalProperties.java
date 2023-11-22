@@ -37,4 +37,9 @@ public class GlobalProperties {
      */
     private String deployTemplateFileBasePath = System.getProperty("user.dir") + File.separator + "work" + File.separator + "deploy";
 
+    /**
+     * 脚本地址
+     */
+    private String scriptPath = System.getProperty("user.dir") + File.separator + "work" + File.separator + "script";
+
 }

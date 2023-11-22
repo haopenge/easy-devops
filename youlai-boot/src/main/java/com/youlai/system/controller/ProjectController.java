@@ -6,6 +6,8 @@ import com.youlai.system.common.enums.AdminApiFailureEnum;
 import com.youlai.system.common.exception.AdminApiException;
 import com.youlai.system.model.vo.request.AddProjectRequestVo;
 import com.youlai.system.model.vo.request.EditProjectRequestVo;
+import com.youlai.system.model.vo.request.UpdateConfigVo;
+import com.youlai.system.model.vo.response.ProjectConfigResponseVo;
 import com.youlai.system.model.vo.response.ProjectResponseVo;
 import com.youlai.system.service.impl.EasyProjectServiceImpl;
 import org.apache.commons.lang3.StringUtils;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -64,7 +67,7 @@ public class ProjectController extends BaseController {
      * 获取项目列表
      */
     @GetMapping("/findAll")
-    public ApiResult<List<ProjectResponseVo>> findAll(@RequestParam(required = false,defaultValue = "0") Integer envId) {
+    public ApiResult<List<ProjectResponseVo>> findAll(@RequestParam(required = false, defaultValue = "0") Integer envId) {
         List<ProjectResponseVo> dataList = projectService.findAll(envId);
         return success(dataList);
     }
@@ -79,27 +82,32 @@ public class ProjectController extends BaseController {
     }
 
     /**
-     * 运行项目
+     * 配置项目
      *
-     * @param id 项目id
+     * @param configVo 项目Vo
      * @return Void
      */
-    @PostMapping("/run")
-    public ApiResult<Void> runProjectInGrayEnv(Integer id) {
-        //  grayService.runProjectInGrayEnv(id);
+    @PostMapping("/config")
+    public ApiResult<Void> configProject(@RequestBody UpdateConfigVo configVo) {
+        if (StringUtils.isAnyBlank(configVo.getDockerScript(), configVo.getPushScript()) || Objects.isNull(configVo.getId())) {
+            throw new AdminApiException(AdminApiFailureEnum.PARAM_ERROR);
+        }
+        projectService.configProject(configVo);
         return success();
     }
 
     /**
-     * 停止项目
+     * 获取项目配置
      *
-     * @param id 项目id
      * @return Void
      */
-    @PostMapping("/stop")
-    public ApiResult<Void> stopProjectInGrayEnv(Integer id) {
-        // grayService.stopProjectInGrayEnv(id);
-        return success();
+    @GetMapping("/findConfigById")
+    public ApiResult<ProjectConfigResponseVo> findConfigById(Integer id) {
+        if (Objects.isNull(id)) {
+            throw new AdminApiException(AdminApiFailureEnum.PARAM_ERROR);
+        }
+        ProjectConfigResponseVo projectConfigResponseVo = projectService.findConfigById(id);
+        return success(projectConfigResponseVo);
     }
 
 }

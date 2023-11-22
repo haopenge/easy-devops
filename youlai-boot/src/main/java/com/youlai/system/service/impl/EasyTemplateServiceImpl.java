@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 /**
 * @author liupenghao
 * @description 针对表【easy_template(模板)】的数据库操作Service实现
-* @createDate 2023-09-04 17:47:44
+* @createDate 2023-11-22 15:04:45
 */
 @Service
 public class EasyTemplateServiceImpl extends ServiceImpl<EasyTemplateMapper, EasyTemplate>

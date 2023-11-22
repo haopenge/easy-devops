@@ -12,11 +12,12 @@
             <result property="easyEnvId" column="easy_env_id" jdbcType="INTEGER"/>
             <result property="easyRepositoryId" column="easy_repository_id" jdbcType="INTEGER"/>
             <result property="branch" column="branch" jdbcType="VARCHAR"/>
+            <result property="easyTemplateIds" column="easy_template_ids" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,create_time,update_time,
         name,easy_env_id,easy_repository_id,
-        branch
+        branch,easy_template_ids
     </sql>
 </mapper>

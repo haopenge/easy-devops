@@ -6,12 +6,12 @@ import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.lang.UUID;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.youlai.system.common.enums.AdminApiFailureEnum;
-import com.youlai.system.common.enums.TemplateTypeEnum;
 import com.youlai.system.common.exception.AdminApiException;
 import com.youlai.system.config.properties.GlobalProperties;
 import com.youlai.system.mapper.EasyTemplateMapper;
 import com.youlai.system.model.entity.EasyTemplate;
 import com.youlai.system.model.vo.request.AddTemplateRequestVo;
+import com.youlai.system.model.vo.request.EditTemplateRequestVo;
 import com.youlai.system.model.vo.response.TemplateResponseVo;
 import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Service;
@@ -41,8 +41,8 @@ public class TemplateService {
 
     public Integer add(AddTemplateRequestVo requestVo) {
         EasyTemplate template = templateEntityMapper.selectOne(new LambdaQueryWrapper<EasyTemplate>()
-                .eq(EasyTemplate::getName,requestVo.getName())
-                .eq(EasyTemplate::getType,requestVo.getType())
+                .eq(EasyTemplate::getName, requestVo.getName())
+                .eq(EasyTemplate::getType, requestVo.getType())
         );
         if (Objects.nonNull(template)) {
             throw new AdminApiException(AdminApiFailureEnum.TEMPLATE_NAME_EXIST);
@@ -50,13 +50,13 @@ public class TemplateService {
 
         String contentFileKey = UUID.fastUUID().toString();
         String contentFilePath = globalProperties.getDeployTemplateFileBasePath() + File.separator + contentFileKey;
-        FileUtil.mkdir(FileUtil.getParent(contentFilePath,1));
+        FileUtil.mkdir(FileUtil.getParent(contentFilePath, 1));
         try (
                 InputStream is = new ByteArrayInputStream(requestVo.getContent().getBytes(StandardCharsets.UTF_8));
                 OutputStream os = Files.newOutputStream(Paths.get(contentFilePath))
-                ){
+        ) {
             IoUtil.copy(is, os);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new AdminApiException(AdminApiFailureEnum.TEMPLATE_NAME_EXIST);
         }
 
@@ -70,22 +70,18 @@ public class TemplateService {
 
     public List<TemplateResponseVo> findAll() {
         List<EasyTemplate> templateEntities = templateEntityMapper.selectList(new LambdaQueryWrapper<>());
-        if(CollectionUtils.isEmpty(templateEntities)){
+        if (CollectionUtils.isEmpty(templateEntities)) {
             return Collections.emptyList();
         }
         List<TemplateResponseVo> dataList = new ArrayList<>();
         for (EasyTemplate loopTemplate : templateEntities) {
             TemplateResponseVo responseVo = BeanUtil.toBean(loopTemplate, TemplateResponseVo.class);
-            TemplateTypeEnum templateTypeEnum = TemplateTypeEnum.valueOf(loopTemplate.getType());
-            if(Objects.nonNull(templateTypeEnum)){
-                responseVo.setTypeShow(templateTypeEnum.getDescription());
-            }
             String content = null;
             try (
                     InputStream is = Files.newInputStream(Paths.get(globalProperties.getDeployTemplateFileBasePath() + File.separator + loopTemplate.getContentFileKey()));
-            ){
+            ) {
                 content = IOUtils.toString(is, String.valueOf(StandardCharsets.UTF_8));
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             responseVo.setContent(content);
@@ -94,15 +90,33 @@ public class TemplateService {
         return dataList;
     }
 
-    public void deleteById(Integer id) {
-        EasyTemplate templateEntity = templateEntityMapper.selectById(id);
-        if(Objects.isNull(templateEntity)){
+    public void deleteById(List<Integer> idList) {
+        templateEntityMapper.deleteBatchIds(idList);
+    }
+
+    public void edit(EditTemplateRequestVo requestVo) {
+        EasyTemplate template = templateEntityMapper.selectById(requestVo.getId());
+        if (Objects.isNull(template)) {
             throw new AdminApiException(AdminApiFailureEnum.TEMPLATE_NOT_EXIST);
         }
-        templateEntityMapper.deleteById(id);
-        File contentFile = new File(globalProperties.getDeployTemplateFileBasePath() + File.separator + templateEntity.getContentFileKey());
-        if(contentFile.exists()){
-            contentFile.delete();
+
+        String contentFileKey = template.getContentFileKey();
+        String contentFilePath = globalProperties.getDeployTemplateFileBasePath() + File.separator + contentFileKey;
+        FileUtil.mkdir(FileUtil.getParent(contentFilePath, 1));
+        try (
+                InputStream is = new ByteArrayInputStream(requestVo.getContent().getBytes(StandardCharsets.UTF_8));
+                OutputStream os = Files.newOutputStream(Paths.get(contentFilePath))
+        ) {
+            IoUtil.copy(is, os);
+        } catch (Exception e) {
+            throw new AdminApiException(AdminApiFailureEnum.TEMPLATE_NAME_EXIST);
         }
+
+        EasyTemplate editEntity = new EasyTemplate();
+        editEntity.setName(requestVo.getName());
+        editEntity.setType(requestVo.getType());
+        editEntity.setContentFileKey(contentFileKey);
+        editEntity.setId(requestVo.getId());
+        templateEntityMapper.updateById(editEntity);
     }
 }

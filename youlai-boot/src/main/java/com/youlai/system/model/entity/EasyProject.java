@@ -4,10 +4,9 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Data;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import lombok.Data;
 
 /**
  * 项目
@@ -51,6 +50,11 @@ public class EasyProject implements Serializable {
      * git项目分支
      */
     private String branch;
+
+    /**
+     * 挂载的模板id，多个用，分隔
+     */
+    private String easyTemplateIds;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

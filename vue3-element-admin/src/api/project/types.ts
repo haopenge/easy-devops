@@ -3,7 +3,7 @@
  */
 export interface ProjectVo {
 	id?: number;
-    name?: string;
+	name?: string;
 	easyRepositoryId?: number;
 	easyRepositoryName?: string;
 	easyCertificateName?: string;
@@ -16,7 +16,7 @@ export interface ProjectVo {
 export interface ProjectForm {
 	id?: number;
 	envId?: number;
-    name?: string;
+	name?: string;
 	easyRepositoryId?: number;
 	branch?: string;
 
@@ -31,4 +31,26 @@ export interface ProjectPopVo {
 	easyRepositoryId?: number;
 	easyRepositoryName?: string;
 	branch?: string;
+	dockerTemplateId?: number;
+}
+
+/**
+ * 项目配置Vo
+ */
+export interface ProjectConfigVo {
+	id?: number;
+	easyTemplateIds?: string;
+	dockerScript?: string;
+	pushScript?: string;
+}
+
+/**
+ * 项目模板选项
+ */
+export interface ProjectTemplateOption {
+	id?: number;
+
+	name?: string;
+
+	type?: string;
 }

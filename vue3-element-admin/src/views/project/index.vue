@@ -1,12 +1,19 @@
 <script lang="ts" setup>
 
-import { RepositoryVo} from "@/api/repository/types";
+import {RepositoryVo} from "@/api/repository/types";
 import $repository from "@/api/repository";
 import $project from "@/api/project";
-import {ProjectVo, ProjectForm, ProjectPopVo} from "@/api/project/types";
+import {ProjectVo, ProjectForm, ProjectPopVo, ProjectConfigVo, ProjectTemplateOption} from "@/api/project/types";
+import {CodeMirrorVo} from "@/api/template/types";
+
+import $template from "@/api/template";
+
+import Codemirror from "codemirror-editor-vue3"
+import "codemirror/mode/shell/shell.js"
+import "codemirror/theme/seti.css"
+
 
 const projectVoList = ref<ProjectVo[]>();
-
 const loading = ref(false);
 const ids = ref<number[]>([]);
 const dataFormRef = ref(ElForm);
@@ -35,7 +42,6 @@ const querySearch = (queryString: string, cb: any) => {
 				}
 			})
 			: links.value
-	// call callback function to return suggestion objects
 	cb(results)
 }
 
@@ -64,7 +70,6 @@ const branchQuerySearch = (queryString: string, cb: any) => {
 				}
 			})
 			: branchLinks.value
-	// call callback function to return suggestion objects
 	cb(results)
 }
 
@@ -168,14 +173,6 @@ function openDialog(data?: ProjectVo) {
 }
 
 /**
- * 设置项目
- */
-function handleSetting(id?: number) {
-	const deleteIds = [id || ids.value].join(",");
-	ElMessage.warning("功能待完善");
-}
-
-/**
  * 删除项目
  */
 function handleDelete(id?: number) {
@@ -215,10 +212,173 @@ function resetForm() {
 	popVo.id = undefined;
 }
 
+// =========================== 配置弹窗 =======================
+const configDialogPop = reactive<DialogOption>({
+	visible: false,
+});
+
+/**
+ * 打开仓库管理表单弹窗
+ *
+ * @param data 仓库vo
+ */
+function openConfigDialog(data?: ProjectVo) {
+	findTemplateList();
+	findConfigById(data?.id);
+
+	configDialogPop.visible = true;
+	configDialogPop.title = "配置项目";
+	popVo.id = data?.id
+	popVo.name = data?.name
+}
+
+// 模板
+const templates = ref<number[]>([]);
+const templateList = ref<ProjectTemplateOption[]>([]);
+
+/**
+ * 获取项目配置
+ */
+function findConfigById(id?: number) {
+	$project.findConfigById(id).then(({data}) => {
+		if (data.easyTemplateIds != "0") {
+			templates.value = data.easyTemplateIds.split(",").map(Number);
+		}
+		if (data.dockerScript != "") {
+			dockerScriptVo.value.value = data.dockerScript;
+		}
+		if (data.pushScript != "") {
+			pushScriptVo.value.value = data.pushScript;
+		}
+	}).finally(() => {
+
+	});
+}
+
+/**
+ * 获取模板列表
+ */
+function findTemplateList() {
+	if (templateList.value.length > 0) {
+		return;
+	}
+	$template.findAll().then(({data}) => {
+		data.forEach(loopTemplate => {
+			templateList.value?.push({
+				id: loopTemplate.id,
+				name: loopTemplate.name,
+				type: typeFormatter(loopTemplate.type)
+			});
+		})
+	}).finally(() => {
+
+	});
+}
+
+/**
+ * 类型转化
+ * @param row
+ */
+function typeFormatter(type?: number) {
+	switch (type) {
+		case 1:
+			return 'Dockerfile';
+		case  2:
+			return 'Yaml';
+		case 3:
+			return 'Properties';
+		case 4:
+			return 'Xml';
+		case 5:
+			return 'JavaScript';
+		case 6:
+			return 'Json';
+		case 7:
+			return 'Shell';
+		default:
+			return 'shell';
+	}
+}
+
+
+/**
+ * 项目配置表单提交
+ */
+const handleConfigSubmit = useThrottleFn(() => {
+	$project.config({
+		id: popVo.id,
+		easyTemplateIds: templates.value.join(","),
+		dockerScript: dockerScriptVo.value.value,
+		pushScript: pushScriptVo.value.value
+	}).then((data => {
+		console.log("response data = " + JSON.stringify(data));
+		ElMessage.success("配置成功");
+		closeConfigDialog();
+	})).finally(
+
+	)
+}, 3000);
+
+
+/**
+ * 关闭配置弹窗
+ */
+function closeConfigDialog() {
+	configDialogPop.visible = false;
+	configResetForm();
+}
+
+
+const configDataFormRef = ref(ElForm);
+
+/**
+ * 重置表单
+ */
+function configResetForm() {
+	configDataFormRef.value.resetFields();
+	configDataFormRef.value.clearValidate();
+	popVo.id = undefined;
+
+	templates.value = [];
+	dockerScriptVo.value.value = '#!/bin/bash \n';
+	pushScriptVo.value.value = '#!/bin/bash \n';
+
+}
+
+
+// ---------------------------------  codemirror	--------------------------------
+const dockerScriptVo = ref<CodeMirrorVo>({
+	value: '#!/bin/bash',
+	cmOptions: {
+		mode: "text/x-sh",
+		theme: "seti"
+	}
+})
+const dockerScriptRef = ref()
+
+const pushScriptVo = ref<CodeMirrorVo>({
+	value: '#!/bin/bash',
+	cmOptions: {
+		mode: "text/x-sh",
+		theme: "seti"
+	}
+})
+const pushScriptRef = ref()
+
+/**
+ * 解决弹窗中codemirror 行号与代码重叠的问题
+ */
+function initializeCodemirror() {
+	dockerScriptRef.value?.refresh();
+	pushScriptRef.value?.refresh();
+}
+
 </script>
 
 <template>
 	<div class="app-container">
+
+		<!--	    ========================= 项目列表 ===================================	-->
 		<el-card shadow="never">
 			<template #header>
 				<el-button
@@ -262,9 +422,9 @@ function resetForm() {
 								type="primary"
 								link
 								size="small"
-								@click.stop="handleSetting(scope.row.id)">
+								@click.stop="openConfigDialog(scope.row)">
 							<i-ep-setting/>
-							设置
+							配置
 						</el-button>
 						<el-button
 								type="primary"
@@ -281,6 +441,8 @@ function resetForm() {
 			</el-table>
 		</el-card>
 
+		<!--			========================== 项目弹窗 ================================== -->
+
 		<el-dialog
 				v-model="dialog.visible"
 				:title="dialog.title"
@@ -290,7 +452,7 @@ function resetForm() {
 					ref="dataFormRef"
 					:model="popVo"
 					:rules="rules"
-					label-width="80px">
+					label-width="90px">
 
 				<el-form-item label="名称" prop="name">
 					<el-input v-model="popVo.name" type="text"/>
@@ -331,6 +493,72 @@ function resetForm() {
 				</div>
 			</template>
 		</el-dialog>
+
+
+		<!--			========================== 配置弹窗 ================================== -->
+		<el-dialog
+				v-model="configDialogPop.visible"
+				:title="configDialogPop.title"
+				width="900px"
+				@opened="initializeCodemirror"
+		>
+			<el-form
+					ref="configDataFormRef"
+					:model="popVo">
+				<el-form-item label="项目名称" prop="name">
+					<el-input disabled v-model="popVo.name" type="text"/>
+				</el-form-item>
+				<el-form-item label="模板挂载" prop="name">
+					<el-select
+							v-model="templates"
+							multiple
+							collapse-tags
+							collapse-tags-tooltip
+							:max-collapse-tags="6"
+							placeholder="请选择需要挂载的模板。 。 。"
+							style="width: 800px"
+					>
+						<el-option
+								v-for="item in templateList"
+								:key="item.name"
+								:label="item.type"
+								:value="item.id"
+						>
+							<span style="float: left">{{ item.name }}</span>
+							<span style="float: right;color: var(--el-text-color-secondary);font-size: 13px;">{{ item.type }}</span>
+						</el-option>
+					</el-select>
+				</el-form-item>
+				<el-form-item label="构建脚本" prop="dockerScript">
+					<Codemirror
+							style="line-height: 1.5"
+							width="800"
+							height="300"
+							border
+							ref="dockerScriptRef"
+							v-model:value="dockerScriptVo.value"
+							:options="dockerScriptVo.cmOptions"
+					/>
+				</el-form-item>
+				<el-form-item label="发布脚本" prop="pushScript">
+					<Codemirror
+							style="line-height: 1.5"
+							width="800"
+							height="300"
+							border
+							ref="pushScriptRef"
+							v-model:value="pushScriptVo.value"
+							:options="pushScriptVo.cmOptions"
+					/>
+				</el-form-item>
+			</el-form>
+			<template #footer>
+				<div class="dialog-footer">
+					<el-button type="primary" @click="handleConfigSubmit(popVo)">确 定</el-button>
+					<el-button @click="closeConfigDialog">取 消</el-button>
+				</div>
+			</template>
+		</el-dialog>
 	</div>
 </template>
 
@@ -338,19 +566,5 @@ function resetForm() {
 .my-autocomplete li {
 	line-height: normal;
 	padding: 7px;
-}
-
-.my-autocomplete li .name {
-	text-overflow: ellipsis;
-	overflow: hidden;
-}
-
-.my-autocomplete li .addr {
-	font-size: 12px;
-	color: #b4b4b4;
-}
-
-.my-autocomplete li .highlighted .addr {
-	color: #ddd;
 }
 </style>

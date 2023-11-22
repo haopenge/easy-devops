@@ -71,10 +71,6 @@ public class TemplateService {
         List<TemplateResponseVo> dataList = new ArrayList<>();
         for (TemplateEntity loopTemplate : templateEntities) {
             TemplateResponseVo responseVo = BeanUtil.toBean(loopTemplate, TemplateResponseVo.class);
-            TemplateTypeEnum templateTypeEnum = TemplateTypeEnum.valueOf(loopTemplate.getType());
-            if(Objects.nonNull(templateTypeEnum)){
-                responseVo.setTypeShow(templateTypeEnum.getDescription());
-            }
             String content = null;
             try (
                     InputStream is = Files.newInputStream(Paths.get(globalProperties.getDeployTemplateFileBasePath() + File.separator + loopTemplate.getContentFileKey()));

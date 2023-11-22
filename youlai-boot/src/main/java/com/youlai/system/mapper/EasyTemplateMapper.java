@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 /**
 * @author liupenghao
 * @description 针对表【easy_template(模板)】的数据库操作Mapper
-* @createDate 2023-09-04 17:47:44
+* @createDate 2023-11-22 15:04:45
 * @Entity com.youlai.system.model.entity.EasyTemplate
 */
 @Mapper
