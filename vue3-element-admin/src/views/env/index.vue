@@ -29,34 +29,32 @@ function handleSelectionChange(selection: any) {
 	ids.value = selection.map((item: any) => item.id);
 }
 
+function envRowClick(row?: any, column?: any, event?: any) {
+	console.log("row = " + JSON.stringify(row))
+}
+
 /**
  * 表单提交
  */
 const handleSubmit = useThrottleFn(() => {
-	dataFormRef.value.validate((valid: any) => {
-		if (valid) {
-			const id = formData.id;
-			loading.value = true;
-			if (id) {
-				$env.edit(formData)
-						.then(() => {
-							ElMessage.success("修改环境成功");
-							closeDialog();
-							httpFindAll();
+	if (formData.id) {
+		$env.edit(formData)
+				.then(() => {
+					ElMessage.success("修改环境成功");
+					closeDialog();
+					httpFindAll();
 
-						})
-						.finally(() => (loading.value = false));
-			} else {
-				$env.add(formData)
-						.then(() => {
-							ElMessage.success("新增环境成功");
-							closeDialog();
-							httpFindAll();
-						})
-						.finally(() => (loading.value = false));
-			}
-		}
-	});
+				})
+				.finally(() => (loading.value = false));
+	} else {
+		$env.add(formData)
+				.then(() => {
+					ElMessage.success("新增环境成功");
+					closeDialog();
+					httpFindAll();
+				})
+				.finally(() => (loading.value = false));
+	}
 }, 3000);
 
 
@@ -137,6 +135,9 @@ function resetForm() {
 	dataFormRef.value.clearValidate();
 
 	formData.id = undefined;
+	formData.expireTime = undefined;
+	formData.name = undefined;
+	formData.description = undefined;
 }
 
 </script>
@@ -144,58 +145,64 @@ function resetForm() {
 <template>
 
 	<div class="app-container">
-		<el-card shadow="never">
-			<template #header>
-				<el-button
-						type="success"
-						@click="openDialog()">
-					<i-ep-plus/>
-					新增
-				</el-button>
-				<el-button
-						type="danger"
-						:disabled="ids.length === 0"
-						@click="handleDelete()">
-					<i-ep-delete/>
-					删除
-				</el-button>
-			</template>
-
-			<el-table :data="envList"
-								ref="dataTableRef"
-								v-loading="loading"
-								highlight-current-row
-								border
-								@selection-change="handleSelectionChange"
-			>
-				<el-table-column type="selection" width="55" align="center"/>
-				<el-table-column label="名称" prop="name"/>
-				<el-table-column label="过期时间" prop="expireTime"/>
-				<el-table-column label="描述" prop="description"/>
-
-				<el-table-column fixed="right" label="操作" width="220">
-					<template #default="scope">
+		<el-container>
+			<el-aside width="600px">
+				<el-card shadow="never">
+					<template #header>
 						<el-button
-								type="primary"
-								link
-								size="small"
-								@click.stop="openDialog(scope.row)">
-							<i-ep-edit/>
-							编辑
+								type="success"
+								@click="openDialog()">
+							<i-ep-plus/>
+							新增
 						</el-button>
 						<el-button
-								type="primary"
-								link
-								size="small"
-								@click.stop="handleDelete(scope.row.id)">
+								type="danger"
+								:disabled="ids.length === 0"
+								@click="handleDelete()">
 							<i-ep-delete/>
 							删除
 						</el-button>
 					</template>
 
-				</el-table-column>
-			</el-table>
-		</el-card>
+					<el-table :data="envList"
+										ref="dataTableRef"
+										v-loading="loading"
+										highlight-current-row
+										@selection-change="handleSelectionChange"
+										@row-click="envRowClick">
+						<el-table-column label="名称" width="100px" prop="name"/>
+						<el-table-column label="过期时间" prop="expireTime"/>
+						<el-table-column label="描述" prop="description"/>
+
+						<el-table-column fixed="right" label="操作" width="100">
+							<template #default="scope">
+								<el-button
+										type="primary"
+										link
+										size="small"
+										@click.stop="openDialog(scope.row)">
+									<i-ep-edit/>
+									编辑
+								</el-button>
+								<br/>
+								<el-button
+										type="primary"
+										link
+										size="small"
+										@click.stop="handleDelete(scope.row.id)">
+									<i-ep-delete/>
+									删除
+								</el-button>
+							</template>
+						</el-table-column>
+					</el-table>
+				</el-card>
+			</el-aside>
+			<el-main>
+				11111111111111111
+			</el-main>
+		</el-container>
+
 
 		<el-dialog
 				v-model="dialog.visible"

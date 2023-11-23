@@ -1,6 +1,7 @@
 server:
   port: 8989
 
+
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
@@ -11,6 +12,7 @@ spring:
   redis:
     host: 10.8.0.18
     #password: nF5jB0zF3fJ4bF6FF
+
 mybatis-plus:
   global-config:
     db-config:
