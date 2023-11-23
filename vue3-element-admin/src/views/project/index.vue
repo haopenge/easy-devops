@@ -520,8 +520,8 @@ function initializeCodemirror() {
 					>
 						<el-option
 								v-for="item in templateList"
-								:key="item.name"
-								:label="item.type"
+								:key="item.type"
+								:label="item.name"
 								:value="item.id"
 						>
 							<span style="float: left">{{ item.name }}</span>
